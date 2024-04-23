@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         characterController.Move(movement);
         
         if (!characterController.isGrounded) {
-            yVelocity += gravity;
+            yVelocity += gravity*Time.deltaTime;
             airTime++;
         } else {
             yVelocity = 0;
