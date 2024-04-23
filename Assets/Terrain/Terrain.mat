@@ -154,6 +154,12 @@ Material:
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
     - _EnvironmentReflections: 1
+    - _FadeLength: 6
+    - _FadeNoiseAmplitude: 5.49
+    - _FadeNoiseScale: 1
+    - _FadeSize: 500
+    - _FogLength: 30
+    - _FogSize: 500
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _Height: 2000
