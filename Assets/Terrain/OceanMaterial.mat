@@ -112,7 +112,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SampleGI: 0
-    - _Scale: 0.01
+    - _Scale: 0.015
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Speed: -10
@@ -122,6 +122,7 @@ Material:
     - _Surface: 1
     - _UVSec: 0
     - _YSpeed: 10
+    - _ZScale: 0.333
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 0.6186077, b: 1, a: 0.69411767}
