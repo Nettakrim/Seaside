@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = 1f;
     public float jump = 100f;
 
-    private float yVelocity = 1f;
+    private float downVelocity = 1f;
     private int airTime = 0;
 
     private CharacterController characterController;
@@ -17,6 +17,10 @@ public class PlayerController : MonoBehaviour
     public float windDistance;
     public float windForce;
 
+    public float oceanHeight;
+    public float oceanForce;
+    public float oceanDamp;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -24,28 +28,32 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Player movement
-        float moveVertical = Input.GetAxis("Vertical");
-        Vector3 forward = transform.forward;
-        forward.y = 0;
-        Vector3 movement = forward * moveVertical * movementSpeed * Time.deltaTime;
-        movement += transform.right * Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime;
-        movement += Vector3.down * yVelocity * Time.deltaTime;
+        Vector3 movement = GetWalkingForce() * movementSpeed;
 
-        movement += GetInwardsWindForce() * windForce * Time.deltaTime;
+        movement += Vector3.down * downVelocity;
+
+        movement += GetInwardsWindForce() * windForce;
+
+        movement *= Time.deltaTime;
 
         characterController.Move(movement);
         
         if (!characterController.isGrounded) {
-            yVelocity += gravity*Time.deltaTime;
-            airTime++;
+            if (transform.position.y > oceanHeight) {
+                downVelocity += gravity*Time.deltaTime;
+                airTime++;     
+            } else {
+                if (downVelocity > 0) downVelocity /= 1+(Time.deltaTime*oceanDamp);
+                downVelocity -= (oceanHeight-transform.position.y)*oceanForce*Time.deltaTime;
+                airTime = 0;
+            } 
         } else {
-            yVelocity = 0;
+            downVelocity = 0;
             airTime = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && airTime < 10) {
-            yVelocity -= jump;
+            downVelocity -= jump;
             airTime = 10;
         }
 
@@ -54,6 +62,17 @@ public class PlayerController : MonoBehaviour
         float pitch = Input.GetAxis("Pitch") * rotationSpeed * Time.deltaTime;
         transform.Rotate(pitch, rotation, 0f);
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+    }
+
+    public Vector3 GetWalkingForce() {
+        float moveVertical = Input.GetAxis("Vertical");
+        Vector3 forward = transform.forward;
+        forward.y = 0;
+        Vector3 movement = forward * moveVertical;
+
+        movement += transform.right * Input.GetAxis("Horizontal");
+
+        return movement;
     }
 
     public Vector3 GetInwardsWindForce() {

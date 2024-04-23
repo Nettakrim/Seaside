@@ -182,6 +182,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   windDistance: 8
   windForce: 40
+  oceanHeight: 18.25
+  oceanForce: 10
+  oceanDamp: 20
 --- !u!143 &68232575
 CharacterController:
   m_ObjectHideFlags: 0
