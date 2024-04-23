@@ -11,8 +11,11 @@ public class PlayerController : MonoBehaviour
     private float yVelocity = 1f;
     private int airTime = 0;
 
-
     private CharacterController characterController;
+
+    public AnimationCurve windCurve;
+    public float windDistance;
+    public float windForce;
 
     private void Start()
     {
@@ -29,6 +32,8 @@ public class PlayerController : MonoBehaviour
         movement += transform.right * Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime;
         movement += Vector3.down * yVelocity * Time.deltaTime;
 
+        movement += GetInwardsWindForce() * windForce * Time.deltaTime;
+
         characterController.Move(movement);
         
         if (!characterController.isGrounded) {
@@ -44,13 +49,31 @@ public class PlayerController : MonoBehaviour
             airTime = 10;
         }
 
-
-
         // Player rotation
         float rotation = Input.GetAxis("Turn") * rotationSpeed * Time.deltaTime;
         float pitch = Input.GetAxis("Pitch") * rotationSpeed * Time.deltaTime;
         transform.Rotate(pitch, rotation, 0f);
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+    }
+
+    public Vector3 GetInwardsWindForce() {
+        Vector3 force = Vector3.zero;
+
+        if (transform.position.x < -500+windDistance) {
+            force += new Vector3(1 - windCurve.Evaluate((transform.position.x+500) / windDistance), 0f, 0f);
+        }
+        if (transform.position.x > 500-windDistance) {
+            force += new Vector3(-windCurve.Evaluate((transform.position.x-500 + windDistance) / windDistance), 0f, 0f);
+        }
+        
+        if (transform.position.z < -500+windDistance) {
+            force += new Vector3(0f, 0f, 1 - windCurve.Evaluate((transform.position.z+500) / windDistance));
+        }
+        if (transform.position.z > 500-windDistance) {
+            force += new Vector3(0f, 0f, -windCurve.Evaluate((transform.position.z-500 + windDistance) / windDistance));
+        }
+        
+        return force;
     }
 }
 

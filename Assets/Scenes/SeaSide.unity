@@ -155,7 +155,33 @@ MonoBehaviour:
   movementSpeed: 5
   rotationSpeed: 200
   gravity: 25
-  jump: 10
+  jump: 8
+  windCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.4701449
+      outSlope: 0.4701449
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2125
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.2030017
+      outSlope: 0.2030017
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.325
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  windDistance: 8
+  windForce: 40
 --- !u!143 &68232575
 CharacterController:
   m_ObjectHideFlags: 0
