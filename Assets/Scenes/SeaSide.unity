@@ -186,6 +186,7 @@ MonoBehaviour:
   oceanForce: 10
   oceanDamp: 20
   oceanWalkSpeedMultiplier: 0.75
+  cameras: {fileID: 488442973}
 --- !u!143 &68232575
 CharacterController:
   m_ObjectHideFlags: 0
@@ -220,14 +221,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 68232573}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9063079, z: 0, w: 0.42261827}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -383, y: 27.57, z: 441.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 488442973}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 130, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &68232577
 MonoBehaviour:
   m_ObjectHideFlags: 0

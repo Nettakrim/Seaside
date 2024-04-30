@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     public float oceanDamp;
     public float oceanWalkSpeedMultiplier = 0.75f;
 
+    public Transform cameras;
+    private float pitch;
+    private float yaw;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -58,20 +62,19 @@ public class PlayerController : MonoBehaviour
             airTime = 10;
         }
 
-        // Player rotation
-        float rotation = Input.GetAxis("Turn") * rotationSpeed * Time.deltaTime;
-        float pitch = Input.GetAxis("Pitch") * rotationSpeed * Time.deltaTime;
-        transform.Rotate(pitch, rotation, 0f);
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+        // Player rotation - rotate the camera instead of the player themselves
+        pitch += Input.GetAxis("Pitch") * rotationSpeed * Time.deltaTime;
+        yaw += Input.GetAxis("Turn") * rotationSpeed * Time.deltaTime;
+        cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
     public Vector3 GetWalkingForce() {
         float moveVertical = Input.GetAxis("Vertical");
-        Vector3 forward = transform.forward;
+        Vector3 forward = cameras.forward;
         forward.y = 0;
         Vector3 movement = forward * moveVertical;
 
-        movement += transform.right * Input.GetAxis("Horizontal");
+        movement += cameras.right * Input.GetAxis("Horizontal");
 
         if (transform.position.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
 

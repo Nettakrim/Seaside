@@ -97,6 +97,8 @@ Material:
     - _AO: 2.4
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AltitudeScale: 300
+    - _AltitudeStart: 100
     - _BaseLight: 0.35
     - _BillboardKwToggle: 0
     - _BillboardShadowFade: 0.5
@@ -117,6 +119,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HueVariationKwToggle: 1
+    - _MaxAltitudeLerp: 0.666
     - _Metallic: 0
     - _Mode: 0
     - _NoiseScale: 500
@@ -143,6 +146,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - _AltitudeColor: {r: 0.7176471, g: 0.5557261, b: 0.3764706, a: 1}
     - _BaseColor: {r: 0.51365554, g: 0.9063354, b: 0.44920892, a: 1}
     - _Color: {r: 0.5136555, g: 0.9063354, b: 0.44920892, a: 1}
     - _Color2: {r: 0.4147817, g: 0.6037736, b: 0.15606974, a: 1}
