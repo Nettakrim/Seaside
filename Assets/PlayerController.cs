@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public float oceanHeight;
     public float oceanForce;
     public float oceanDamp;
+    public float oceanWalkSpeedMultiplier = 0.75f;
 
     private void Start()
     {
@@ -71,6 +72,8 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = forward * moveVertical;
 
         movement += transform.right * Input.GetAxis("Horizontal");
+
+        if (transform.position.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
 
         return movement;
     }
