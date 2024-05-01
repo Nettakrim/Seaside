@@ -28,8 +28,8 @@ public class Gallery : MonoBehaviour
     }
 
     public void AddImage(Texture2D tex) {
-        tex.Apply(false, true);
         GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
         galleryPhoto.Initialise(tex);
+        tex.Apply(false, true);
     }
 }

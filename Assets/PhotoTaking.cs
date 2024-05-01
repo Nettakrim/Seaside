@@ -32,6 +32,9 @@ public class PhotoTaking : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         RenderTexture.active = previous;
 
+        ImageMetadata imageMetadata = new ImageMetadata();
+        ImageBurner.Encode(tex, imageMetadata.ToBytes());
+
         byte[] bytes = tex.EncodeToPNG(); 
         
         string path = Application.persistentDataPath + "/" + name + ".png";
