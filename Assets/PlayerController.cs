@@ -2,29 +2,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public float movementSpeed = 5f;
-    public float rotationSpeed = 200f;
-    public float gravity = 1f;
-    public float jump = 100f;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 200f;
+    [SerializeField] private float gravity = 1f;
+    [SerializeField] private float jump = 100f;
 
     private float downVelocity = 1f;
     private int airTime = 0;
+    [SerializeField] private int coyoteTime = 0;
 
     private CharacterController characterController;
 
-    public AnimationCurve windCurve;
-    public float windDistance;
-    public float windForce;
+    [SerializeField] private AnimationCurve windCurve;
+    [SerializeField] private float windDistance;
+    [SerializeField] private float windForce;
 
-    public float oceanHeight;
-    public float oceanForce;
-    public float oceanDamp;
-    public float oceanWalkSpeedMultiplier = 0.75f;
+    [SerializeField] private float oceanHeight;
+    [SerializeField] private float oceanForce;
+    [SerializeField] private float oceanDamp;
+    [SerializeField] private float oceanWalkSpeedMultiplier = 0.75f;
 
-    public Transform cameras;
+    [SerializeField] private Transform cameras;
     private float pitch;
     private float yaw;
+
+    private bool jumpBuffered;
 
     private void Start()
     {
@@ -57,9 +59,14 @@ public class PlayerController : MonoBehaviour
             airTime = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && airTime < 10) {
+        if (Input.GetKeyDown(KeyCode.Space) && downVelocity >= -0.1) {
+            jumpBuffered |= true;
+        }
+
+        if (jumpBuffered && airTime < coyoteTime) {
             downVelocity -= jump;
-            airTime = 10;
+            airTime = coyoteTime;
+            jumpBuffered = false;
         }
 
         // Player rotation - rotate the camera instead of the player themselves
@@ -68,7 +75,7 @@ public class PlayerController : MonoBehaviour
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
-    public Vector3 GetWalkingForce() {
+    [SerializeField] private Vector3 GetWalkingForce() {
         float r = yaw*Mathf.Deg2Rad;
         Vector3 forward = new Vector3(Mathf.Sin(r), 0, Mathf.Cos(r));
 
@@ -79,7 +86,7 @@ public class PlayerController : MonoBehaviour
         return movement;
     }
 
-    public Vector3 GetInwardsWindForce() {
+    [SerializeField] private Vector3 GetInwardsWindForce() {
         Vector3 force = Vector3.zero;
 
         if (transform.position.x < -500+windDistance) {

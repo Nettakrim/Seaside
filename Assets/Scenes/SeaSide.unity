@@ -240,6 +240,7 @@ MonoBehaviour:
   rotationSpeed: 200
   gravity: 25
   jump: 8
+  coyoteTime: 20
   windCurve:
     serializedVersion: 2
     m_Curve:
