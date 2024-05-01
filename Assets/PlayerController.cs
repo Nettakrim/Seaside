@@ -69,12 +69,10 @@ public class PlayerController : MonoBehaviour
     }
 
     public Vector3 GetWalkingForce() {
-        float moveVertical = Input.GetAxis("Vertical");
-        Vector3 forward = cameras.forward;
-        forward.y = 0;
-        Vector3 movement = forward * moveVertical;
+        float r = yaw*Mathf.Deg2Rad;
+        Vector3 forward = new Vector3(Mathf.Sin(r), 0, Mathf.Cos(r));
 
-        movement += cameras.right * Input.GetAxis("Horizontal");
+        Vector3 movement = (forward*Input.GetAxis("Vertical")) + (new Vector3(forward.z, 0, -forward.x)*Input.GetAxis("Horizontal"));
 
         if (transform.position.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
 
