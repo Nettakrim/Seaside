@@ -4,8 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ImageBurner {
-    public static class Info {
-        public static int HEADER_SIZE = 5;
+    public static class HeaderInfo {
+        public static int size = 8;
+
+        public static int GetFlagInt(int width, int height) {
+            //first byte of the flag int is all 0, meaning its this default checksum-style flag, which is some arbitrary hash to do with the width and height of the image
+            //if the essentially reserved 4 bytes at the start ever needed to be used, then the first byte should be something other than 0 to signify that a different format is being used
+            return (((((width+1)<<4)^(height-1)<<1)%16777213)^58913)&0xFFFFFF;
+        }
     }
 
 
@@ -13,14 +19,13 @@ namespace ImageBurner {
     public class Encoder {
         public Encoder(Texture2D texture) {
             tex = texture;
-            position = Info.HEADER_SIZE;
+            position = HeaderInfo.size;
             limit = (tex.width*tex.height)/2;
         }
 
         public void Close() {
-            int length = position-Info.HEADER_SIZE;
-            byte flags = 0;
-            EncodeByte(flags, 0);
+            int length = position-HeaderInfo.size;
+            DataTypes.EncodeInt32(this, HeaderInfo.GetFlagInt(tex.width, tex.height));
             DataTypes.EncodeInt32(this, length);
             //force error if you try to encode after finishing
             limit = -1;
@@ -78,18 +83,19 @@ namespace ImageBurner {
         public Decoder(Texture2D texture) {
             tex = texture;
             position = 0;
-            limit = Info.HEADER_SIZE;
+            limit = HeaderInfo.size;
 
-            byte flags = DecodeByte();
-            if (flags != 0) {
-                throw new Exception("Image has invalid flags ("+flags+")");
+            int flags = DataTypes.DecodeInt32(this);
+            int correctFlags = HeaderInfo.GetFlagInt(tex.width, tex.height);
+            if (flags != correctFlags) {
+                throw new Exception("Image has invalid flags so its probably just a regular image (found "+flags+", should be "+correctFlags+")");
             }
 
-            limit = DataTypes.DecodeInt32(this)+Info.HEADER_SIZE;
+            limit = DataTypes.DecodeInt32(this)+HeaderInfo.size;
         }
 
         public void Close() {
-            //force error if you try to encode after finishing
+            //force error if you try to decode after finishing
             limit = -1;   
         }
 
