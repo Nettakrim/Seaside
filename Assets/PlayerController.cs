@@ -46,12 +46,12 @@ public class PlayerController : MonoBehaviour
         characterController.Move(movement);
         
         if (!characterController.isGrounded) {
-            if (transform.position.y > oceanHeight) {
+            if (transform.localPosition.y > oceanHeight) {
                 downVelocity += gravity*Time.deltaTime;
                 airTime++;     
             } else {
                 if (downVelocity > 0) downVelocity /= 1+(Time.deltaTime*oceanDamp);
-                downVelocity -= (oceanHeight-transform.position.y)*oceanForce*Time.deltaTime;
+                downVelocity -= (oceanHeight-transform.localPosition.y)*oceanForce*Time.deltaTime;
                 airTime = 0;
             } 
         } else {
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 movement = (forward*Input.GetAxis("Vertical")) + (new Vector3(forward.z, 0, -forward.x)*Input.GetAxis("Horizontal"));
 
-        if (transform.position.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
+        if (transform.localPosition.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
 
         return movement;
     }
@@ -89,21 +89,42 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 GetInwardsWindForce() {
         Vector3 force = Vector3.zero;
 
-        if (transform.position.x < -500+windDistance) {
-            force += new Vector3(1 - windCurve.Evaluate((transform.position.x+500) / windDistance), 0f, 0f);
+        if (transform.localPosition.x < -500+windDistance) {
+            force += new Vector3(1 - windCurve.Evaluate((transform.localPosition.x+500) / windDistance), 0f, 0f);
         }
-        if (transform.position.x > 500-windDistance) {
-            force += new Vector3(-windCurve.Evaluate((transform.position.x-500 + windDistance) / windDistance), 0f, 0f);
+        if (transform.localPosition.x > 500-windDistance) {
+            force += new Vector3(-windCurve.Evaluate((transform.localPosition.x-500 + windDistance) / windDistance), 0f, 0f);
         }
         
-        if (transform.position.z < -500+windDistance) {
-            force += new Vector3(0f, 0f, 1 - windCurve.Evaluate((transform.position.z+500) / windDistance));
+        if (transform.localPosition.z < -500+windDistance) {
+            force += new Vector3(0f, 0f, 1 - windCurve.Evaluate((transform.localPosition.z+500) / windDistance));
         }
-        if (transform.position.z > 500-windDistance) {
-            force += new Vector3(0f, 0f, -windCurve.Evaluate((transform.position.z-500 + windDistance) / windDistance));
+        if (transform.localPosition.z > 500-windDistance) {
+            force += new Vector3(0f, 0f, -windCurve.Evaluate((transform.localPosition.z-500 + windDistance) / windDistance));
         }
         
         return force;
+    }
+
+    public Vector3 GetPosition() {
+        return transform.localPosition;
+    }
+
+    public Vector2 GetRotation() {
+        return new Vector2(pitch, yaw);
+    }
+
+    public void SetPositionAndRotation(Vector3 position, Vector2 rotation) {
+        SetLocalPosition(position);
+        pitch = rotation.x;
+        yaw = rotation.y;
+    }
+
+    private void SetLocalPosition(Vector3 position) {
+        //for some reason character controllers prevent position being set when enabled
+        characterController.enabled = false;
+        transform.localPosition = position;
+        characterController.enabled = true;
     }
 }
 

@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photoCamera: {fileID: 1556051442}
   gallery: {fileID: 1235500575}
+  player: {fileID: 68232574}
 --- !u!1001 &137163122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2355,6 +2356,7 @@ MonoBehaviour:
   galleryPhotoPrefab: {fileID: 5674516937585220827, guid: 54f5312b746cdf84e9d418e502d840ea,
     type: 3}
   photoLayoutParent: {fileID: 2029979819}
+  player: {fileID: 68232574}
 --- !u!1001 &1378530476
 PrefabInstance:
   m_ObjectHideFlags: 0

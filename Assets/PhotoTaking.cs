@@ -13,6 +13,8 @@ public class PhotoTaking : MonoBehaviour
 
     protected ImageMetadata currentMetadata;
 
+    [SerializeField] protected PlayerController player;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
     }
@@ -30,6 +32,8 @@ public class PhotoTaking : MonoBehaviour
     protected void TakePhoto() {
         photoCamera.Render();
         currentMetadata = new ImageMetadata();
+        currentMetadata.position = player.GetPosition();
+        currentMetadata.rotation = player.GetRotation();
     }
 
     protected void SaveLastPhoto() {

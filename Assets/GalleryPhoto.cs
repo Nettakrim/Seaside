@@ -10,6 +10,8 @@ public class GalleryPhoto : MonoBehaviour
 
     [SerializeField] private RawImage image;
 
+    public Button testButton;
+
     public void Initialise(Texture2D tex, ImageMetadata metadata) {
         if (metadata == null) {
             this.metadata = new ImageMetadata();
@@ -19,5 +21,9 @@ public class GalleryPhoto : MonoBehaviour
         }
 
         image.texture = tex;
+    }
+
+    public void Teleport(PlayerController playerController) {
+        playerController.SetPositionAndRotation(metadata.position, metadata.rotation);
     }
 }

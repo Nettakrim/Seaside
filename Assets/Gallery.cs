@@ -11,6 +11,8 @@ public class Gallery : MonoBehaviour
     [SerializeField] private GalleryPhoto galleryPhotoPrefab;
     [SerializeField] private Transform photoLayoutParent;
 
+    [SerializeField] private PlayerController player;
+
     private void Start() {
         LoadFromFiles();
     }
@@ -32,6 +34,7 @@ public class Gallery : MonoBehaviour
         galleryPhoto.Initialise(tex, metadata);
         tex.Apply(false, true);
 
+        galleryPhoto.testButton.onClick.AddListener(delegate {galleryPhoto.Teleport(player);});
         photos.Add(galleryPhoto);
     }
 

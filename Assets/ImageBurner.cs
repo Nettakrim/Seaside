@@ -25,6 +25,7 @@ namespace ImageBurner {
 
         public void Close() {
             int length = position-HeaderInfo.size;
+            position = 0;
             DataTypes.EncodeInt32(this, HeaderInfo.GetFlagInt(tex.width, tex.height));
             DataTypes.EncodeInt32(this, length);
             //force error if you try to encode after finishing
