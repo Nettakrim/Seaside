@@ -3,38 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ImageBurner {
-    public static void Encode(Texture2D tex, byte[] data) {
-        int limit = ((tex.width*tex.height)/2)-5;
-        if (data.Length > limit) {
-            throw new Exception("Cant encode more than "+limit+" bytes in a "+tex.width+"x"+tex.height+" image ("+data.Length+" bytes attempted)");
-        }
-
-        ImageEncoder encoder = new ImageEncoder(tex, 0);
-        encoder.EncodeByte(0); //reserved byte for any flags like version
-        encoder.EncodeBytes(BitConverter.GetBytes(data.Length));
-        encoder.EncodeBytes(data);
+namespace ImageBurner {
+    public class Info {
+        public static int HEADER_SIZE = 5;
     }
 
-    public static byte[] Decode(Texture2D tex) {
-        ImageDecoder decoder = new ImageDecoder(tex, 0);
-        byte flags = decoder.DecodeByte();
-        if (flags != 0) {
-            throw new Exception("Image has invalid flags ("+flags+")");
+
+
+    public class Encoder {
+        public Encoder(Texture2D texture) {
+            tex = texture;
+            position = Info.HEADER_SIZE;
+            limit = (tex.width*tex.height)/2;
         }
 
-        int length = BitConverter.ToInt32(decoder.DecodeBytes(4));
-        return decoder.DecodeBytes(length);
-    }
-
-    public class ImageEncoder {
-        public ImageEncoder(Texture2D tex, int startPosition) {
-            this.tex = tex;
-            position = startPosition;
+        public void Close() {
+            int length = position-Info.HEADER_SIZE;
+            EncodeByte(0, 0);
+            EncodeInt32(length);
+            //force error if you try to encode after finishing
+            limit = -1;
         }
 
-        public Texture2D tex;
-        public int position = 0;
+        public static explicit operator Encoder(Texture2D tex) => new(tex);
+
+        protected Texture2D tex;
+        protected int position;
+        protected int limit;
 
         public void EncodeBytes(byte[] bytes) {
             foreach (byte b in bytes) {
@@ -46,13 +41,16 @@ public class ImageBurner {
             EncodeByte(b, position);
         }
 
-        public void EncodeByte(byte b, int pos) {
+        protected void EncodeByte(byte b, int pos) {
+            if (pos > limit) {
+                throw new IndexOutOfRangeException("Byte index "+pos+" out of bounds for limit "+limit+", texture is "+tex.width+"x"+tex.height);
+            }
             EncodeNibble((byte)(b >> 4), pos*2);
             EncodeNibble((byte)(b & 15), pos*2 + 1);
             position = pos+1;
         }
 
-        private void EncodeNibble(byte nibble, int pixelPos) {
+        protected void EncodeNibble(byte nibble, int pixelPos) {
             Color color = tex.GetPixel(pixelPos%tex.width, pixelPos/tex.width);
             color.r = BurnValue(color.r, nibble, 1, 0);
             color.g = BurnValue(color.g, nibble, 1, 1);
@@ -60,23 +58,49 @@ public class ImageBurner {
             tex.SetPixel(pixelPos%tex.width, pixelPos/tex.width, color);
         }
 
-        private float BurnValue(float f, int burnValue, int burnAmount, int shift) {
+        protected float BurnValue(float f, int burnValue, int burnAmount, int shift) {
             int i = (int)(f*255f);
             int rounding = 1 << burnAmount;
             i = (i/rounding)*rounding;
             i += (burnValue&((rounding-1)<<shift))>>shift;
             return i/255f;
         }
-    }
 
-    public class ImageDecoder {
-        public ImageDecoder(Texture2D tex, int startPosition) {
-            this.tex = tex;
-            position = startPosition;
+        public int GetRemainingBytes() {
+            return Mathf.Max(limit-position, 0);
         }
 
-        public Texture2D tex;
-        public int position = 0;
+        public void EncodeInt32(int value) {
+            EncodeBytes(BitConverter.GetBytes(value));
+        }
+    }
+
+
+
+    public class Decoder {
+        public Decoder(Texture2D texture) {
+            tex = texture;
+            position = 0;
+            limit = Info.HEADER_SIZE;
+
+            byte flags = DecodeByte();
+            if (flags != 0) {
+                throw new Exception("Image has invalid flags ("+flags+")");
+            }
+
+            limit = DecodeInt32()+Info.HEADER_SIZE;
+        }
+
+        public void Close() {
+            //force error if you try to encode after finishing
+            limit = -1;   
+        }
+
+        public static explicit operator Decoder(Texture2D tex) => new(tex);
+
+        protected Texture2D tex;
+        protected int position;
+        protected int limit;
 
         public byte[] DecodeBytes(int length) {
             byte[] bytes = new byte[length];
@@ -90,24 +114,36 @@ public class ImageBurner {
             return DecodeByte(position);
         }
 
-        public byte DecodeByte(int pos) {
+        protected byte DecodeByte(int pos) {
+            if (pos > limit) {
+                Debug.LogWarning("Byte index "+pos+" out of bounds for limit "+limit+", returning 0");
+                return 0;
+            }
             byte b = (byte)((DecodeNibble(pos*2) << 4) | DecodeNibble(pos*2 + 1));
             position = pos+1;
             return b;
         }
 
-        private byte DecodeNibble(int pixelPos) {
+        protected byte DecodeNibble(int pixelPos) {
             Color color = tex.GetPixel(pixelPos%tex.width, pixelPos/tex.width);
             byte b = 0;
-            b |= UnburnValue(color.r, 1, 0);
-            b |= UnburnValue(color.g, 1, 1);
-            b |= UnburnValue(color.b, 2, 2);
+            b |= GetBurntValue(color.r, 1, 0);
+            b |= GetBurntValue(color.g, 1, 1);
+            b |= GetBurntValue(color.b, 2, 2);
             return b;
         }
 
-        private byte UnburnValue(float f, int burnAmount, int shift) {
+        protected byte GetBurntValue(float f, int burnAmount, int shift) {
             int i = (int)(f*255f);
             return (byte)((i%(1<<burnAmount)) << shift);
+        }
+
+        public int GetRemainingBytes() {
+            return Mathf.Max(limit-position, 0);
+        }
+
+        public int DecodeInt32() {
+            return BitConverter.ToInt32(DecodeBytes(4));
         }
     }
 }

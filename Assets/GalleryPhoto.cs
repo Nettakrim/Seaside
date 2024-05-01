@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ImageBurner;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,8 @@ public class GalleryPhoto : MonoBehaviour
     [SerializeField] private RawImage image;
 
     public void Initialise(Texture2D tex) {
-        byte[] bytes = ImageBurner.Decode(tex);
-        imageMetadata = ImageMetadata.FromBytes(bytes);
+        ImageMetadata imageMetadata = new ImageMetadata();
+        imageMetadata.Decode((Decoder)tex);
 
         image.texture = tex;
     }

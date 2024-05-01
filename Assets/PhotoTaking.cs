@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using ImageBurner;
 using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour
@@ -33,7 +34,7 @@ public class PhotoTaking : MonoBehaviour
         RenderTexture.active = previous;
 
         ImageMetadata imageMetadata = new ImageMetadata();
-        ImageBurner.Encode(tex, imageMetadata.ToBytes());
+        imageMetadata.Encode((Encoder)tex);
 
         byte[] bytes = tex.EncodeToPNG(); 
         
