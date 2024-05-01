@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using ImageBurner;
 using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour

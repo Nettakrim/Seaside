@@ -16,6 +16,44 @@ namespace ImageBurner {
 
 
 
+    public static class CoordinateFolding {
+        //attempts to give each point in an image a single unique other point in the image, but one that is hard to predict
+        //this means the burnt pixels are evenly distributed across the image as noise, instead of being a line at the bottom
+        //this doesnt look as shuffled for different resolutions, and might not even work properly for non-square/non-power of 2
+        public static int foldingSteps = 16;
+
+        public static (int,int) UnfoldedCoordinates(int pos, int width, int height) {
+            return (pos%width, pos/width);
+        }
+
+        public static (int,int) MultiFoldCoordinates(int pos, int width, int height) {
+            return MultiFoldCoordinates(pos, width, height, foldingSteps);
+        }
+
+        public static (int,int) MultiFoldCoordinates(int pos, int width, int height, int count) {
+            if (foldingSteps == 0) {
+                return UnfoldedCoordinates(pos, width, height);
+            }
+            for (int i = 0; i < count; i++) {
+                pos = FoldIndex(FoldCoordinates(pos, width, height), width, height);
+            }
+            return FoldCoordinates(pos, width, height);
+        }
+
+        public static (int,int) FoldCoordinates(int pos, int width, int height) {
+            int x = (pos-(pos/height))%width;
+            int y = pos%height;
+            if (x <= width/2) x = (width/2)-x;
+            return (x, y);
+        }
+
+        public static int FoldIndex((int,int) c, int width, int height) {
+            return (c.Item1+(c.Item2*width))^53;
+        }
+    }
+
+
+
     public class Encoder {
         public Encoder(Texture2D texture) {
             tex = texture;
@@ -58,11 +96,12 @@ namespace ImageBurner {
         }
 
         protected void EncodeNibble(byte nibble, int pixelPos) {
-            Color color = tex.GetPixel(pixelPos%tex.width, pixelPos/tex.width);
+            (int,int) c = CoordinateFolding.MultiFoldCoordinates(pixelPos, tex.width, tex.height);
+            Color color = tex.GetPixel(c.Item1, c.Item2);
             color.r = BurnValue(color.r, nibble, 1, 0);
             color.g = BurnValue(color.g, nibble, 1, 1);
             color.b = BurnValue(color.b, nibble, 2, 2); 
-            tex.SetPixel(pixelPos%tex.width, pixelPos/tex.width, color);
+            tex.SetPixel(c.Item1, c.Item2, color);
         }
 
         protected float BurnValue(float f, int burnValue, int burnAmount, int shift) {
@@ -129,7 +168,8 @@ namespace ImageBurner {
         }
 
         protected byte DecodeNibble(int pixelPos) {
-            Color color = tex.GetPixel(pixelPos%tex.width, pixelPos/tex.width);
+            (int,int) c = CoordinateFolding.MultiFoldCoordinates(pixelPos, tex.width, tex.height);
+            Color color = tex.GetPixel(c.Item1, c.Item2);
             byte b = 0;
             b |= GetBurntValue(color.r, 1, 0);
             b |= GetBurntValue(color.g, 1, 1);
