@@ -6,26 +6,38 @@ using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour
 {
-    [SerializeField] private Camera photoCamera;
-    private RenderTexture renderTexture;
+    [SerializeField] protected Camera photoCamera;
+    protected RenderTexture renderTexture;
 
-    [SerializeField] private Gallery gallery;
+    [SerializeField] protected Gallery gallery;
 
-    private int count;
+    protected ImageMetadata currentMetadata;
 
-    private void Start() {
+    protected void Start() {
         renderTexture = photoCamera.targetTexture;
     }
 
-    void Update() {
+    protected void Update() {
         if (Input.GetKeyDown(KeyCode.R)) {
-            photoCamera.Render();
-            SaveRenderTexture(count.ToString());
-            count++;
+            TakePhoto();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F)) {
+            SaveLastPhoto();
         }
     }
 
-    void SaveRenderTexture(string name) {
+    protected void TakePhoto() {
+        photoCamera.Render();
+        currentMetadata = new ImageMetadata();
+    }
+
+    protected void SaveLastPhoto() {
+        if (currentMetadata == null) {
+            Debug.LogWarning("SaveLastPhoto() was called, but there is currently no unsaved photo!");
+            return;
+        }
+
         Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, false);
 
         RenderTexture previous = RenderTexture.active;
@@ -33,14 +45,7 @@ public class PhotoTaking : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         RenderTexture.active = previous;
 
-        ImageMetadata imageMetadata = new ImageMetadata();
-        imageMetadata.Encode((Encoder)tex);
-
-        byte[] bytes = tex.EncodeToPNG(); 
-        
-        string path = Application.persistentDataPath + "/" + name + ".png";
-        File.WriteAllBytes(path, bytes);
-
-        gallery.AddImage(tex);
+        gallery.SaveNewImage(tex, currentMetadata);
+        currentMetadata = null;
     }
 }

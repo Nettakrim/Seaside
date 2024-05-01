@@ -6,13 +6,17 @@ using UnityEngine.UI;
 
 public class GalleryPhoto : MonoBehaviour
 {
-    private ImageMetadata imageMetadata;
+    private ImageMetadata metadata;
 
     [SerializeField] private RawImage image;
 
-    public void Initialise(Texture2D tex) {
-        ImageMetadata imageMetadata = new ImageMetadata();
-        imageMetadata.Decode((Decoder)tex);
+    public void Initialise(Texture2D tex, ImageMetadata metadata) {
+        if (metadata == null) {
+            this.metadata = new ImageMetadata();
+            this.metadata.Decode((Decoder)tex);
+        } else {
+            this.metadata = metadata;
+        }
 
         image.texture = tex;
     }

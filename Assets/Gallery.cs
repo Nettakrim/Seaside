@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using ImageBurner;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
 {
@@ -23,13 +23,26 @@ public class Gallery : MonoBehaviour
             Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             ImageConversion.LoadImage(tex, bytes);
 
-            AddImage(tex);
+            AddImageToGallery(tex, null);
         }
     }
 
-    public void AddImage(Texture2D tex) {
+    protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata) {
         GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
-        galleryPhoto.Initialise(tex);
+        galleryPhoto.Initialise(tex, metadata);
         tex.Apply(false, true);
+
+        photos.Add(galleryPhoto);
+    }
+
+    public void SaveNewImage(Texture2D tex, ImageMetadata imageMetadata) {
+        imageMetadata.Encode((Encoder)tex);
+        File.WriteAllBytes(GetNextFilename(), tex.EncodeToPNG());
+
+        AddImageToGallery(tex, imageMetadata);
+    }
+
+    protected string GetNextFilename() {
+        return Application.persistentDataPath + "/" + photos.Count + ".png";
     }
 }
