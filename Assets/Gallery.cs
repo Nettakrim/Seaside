@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using ImageBurner;
 using UnityEngine;
 
@@ -44,8 +45,25 @@ public class Gallery : MonoBehaviour
 
         AddImageToGallery(tex, imageMetadata);
     }
-
+  
     protected string GetNextFilename() {
-        return Application.persistentDataPath + "/" + photos.Count + ".png";
+        int id;
+        
+        if (File.Exists(Application.persistentDataPath + "/" + (photos.Count+1).ToString() + ".png")) {
+            id = 0;
+            string[] files = Directory.GetFiles(Application.persistentDataPath, "*.png");
+            foreach (string file in files) {
+                string s = file[(Application.persistentDataPath.Length + 1)..^4];
+                if (int.TryParse(s, out int i)) {
+                    if (i > id) {
+                        id = i;
+                    }
+                }
+            }
+        } else {
+            id = photos.Count;
+        }
+
+        return Application.persistentDataPath + "/" + (id+1).ToString() + ".png";
     }
 }
