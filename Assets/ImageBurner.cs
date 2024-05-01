@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ImageBurner {
@@ -227,5 +228,29 @@ namespace ImageBurner {
         public static Vector3 DecodeVector3(Decoder decoder) {
             return new Vector3(DecodeFloat(decoder), DecodeFloat(decoder), DecodeFloat(decoder));
         }
+
+
+        public static void EncodeByteArrayListStart(Encoder encoder, int length, int size) {
+            encoder.EncodeBytes(BitConverter.GetBytes((ushort)length));
+            encoder.EncodeBytes(BitConverter.GetBytes((ushort)size));
+        }
+
+        public static void EncodeByteArrayList(Encoder encoder, List<byte[]> bytes) {
+            EncodeByteArrayListStart(encoder, bytes.Count, bytes[0].Length);
+            foreach (byte[] b in bytes) {
+                encoder.EncodeBytes(b);
+            }
+        }
+
+        public static List<byte[]> DecodeByteArrayList(Decoder decoder) {
+            ushort d0 = BitConverter.ToUInt16(decoder.DecodeBytes(2));
+            ushort d1 = BitConverter.ToUInt16(decoder.DecodeBytes(2));
+            List<byte[]> bytesList = new List<byte[]>(d0);
+            for (int i = 0; i < d0; i++) {
+                bytesList.Add(decoder.DecodeBytes(d1));
+            }
+
+            return bytesList;
+        }        
     }
 }
