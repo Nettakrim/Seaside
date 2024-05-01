@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ImageBurner {
-    public class Info {
+    public static class Info {
         public static int HEADER_SIZE = 5;
     }
 
@@ -19,8 +19,9 @@ namespace ImageBurner {
 
         public void Close() {
             int length = position-Info.HEADER_SIZE;
-            EncodeByte(0, 0);
-            EncodeInt32(length);
+            byte flags = 0;
+            EncodeByte(flags, 0);
+            DataTypes.EncodeInt32(this, length);
             //force error if you try to encode after finishing
             limit = -1;
         }
@@ -69,10 +70,6 @@ namespace ImageBurner {
         public int GetRemainingBytes() {
             return Mathf.Max(limit-position, 0);
         }
-
-        public void EncodeInt32(int value) {
-            EncodeBytes(BitConverter.GetBytes(value));
-        }
     }
 
 
@@ -88,7 +85,7 @@ namespace ImageBurner {
                 throw new Exception("Image has invalid flags ("+flags+")");
             }
 
-            limit = DecodeInt32()+Info.HEADER_SIZE;
+            limit = DataTypes.DecodeInt32(this)+Info.HEADER_SIZE;
         }
 
         public void Close() {
@@ -141,9 +138,47 @@ namespace ImageBurner {
         public int GetRemainingBytes() {
             return Mathf.Max(limit-position, 0);
         }
+    }
 
-        public int DecodeInt32() {
-            return BitConverter.ToInt32(DecodeBytes(4));
+
+
+    public static class DataTypes {
+        public static void EncodeInt32(Encoder encoder, int value) {
+            encoder.EncodeBytes(BitConverter.GetBytes(value));
+        }
+
+        public static int DecodeInt32(Decoder decoder) {
+            return BitConverter.ToInt32(decoder.DecodeBytes(4));
+        }
+
+        
+        public static void EncodeFloat(Encoder encoder, float value) {
+            encoder.EncodeBytes(BitConverter.GetBytes(value));
+        }
+
+        public static float DecodeFloat(Decoder decoder) {
+            return BitConverter.ToSingle(decoder.DecodeBytes(4));
+        }
+
+
+        public static void EncodeVector2(Encoder encoder, Vector2 v) {
+            EncodeFloat(encoder, v.x);
+            EncodeFloat(encoder, v.y);
+        }
+
+        public static Vector2 DecodeVector2(Decoder decoder) {
+            return new Vector2(DecodeFloat(decoder), DecodeFloat(decoder));
+        }
+
+
+        public static void EncodeVector3(Encoder encoder, Vector3 v) {
+            EncodeFloat(encoder, v.x);
+            EncodeFloat(encoder, v.y);
+            EncodeFloat(encoder, v.z);
+        }
+
+        public static Vector3 DecodeVector3(Decoder decoder) {
+            return new Vector3(DecodeFloat(decoder), DecodeFloat(decoder), DecodeFloat(decoder));
         }
     }
 }
