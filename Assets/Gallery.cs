@@ -32,7 +32,12 @@ public class Gallery : MonoBehaviour
 
     protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata) {
         GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
-        galleryPhoto.Initialise(tex, metadata);
+        bool success = galleryPhoto.Initialise(tex, metadata);
+        if (!success) {
+            Destroy(galleryPhoto.gameObject);
+            Destroy(tex);
+            return;
+        }
         tex.Apply(false, true);
 
         galleryPhoto.testButton.onClick.AddListener(delegate {galleryPhoto.Teleport(player);});

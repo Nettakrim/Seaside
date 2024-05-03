@@ -12,15 +12,21 @@ public class GalleryPhoto : MonoBehaviour
 
     public Button testButton;
 
-    public void Initialise(Texture2D tex, ImageMetadata metadata) {
+    public bool Initialise(Texture2D tex, ImageMetadata metadata) {
         if (metadata == null) {
             this.metadata = new ImageMetadata();
-            this.metadata.Decode((Decoder)tex);
+            Decoder decoder = (Decoder)tex;
+            if (decoder.isValid) {
+                this.metadata.Decode(decoder);
+            } else {
+                return false;
+            }
         } else {
             this.metadata = metadata;
         }
 
         image.texture = tex;
+        return true;
     }
 
     public void Teleport(PlayerController playerController) {

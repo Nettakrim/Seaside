@@ -128,11 +128,15 @@ namespace ImageBurner {
 
             int flags = DataTypes.DecodeInt32(this);
             int correctFlags = HeaderInfo.GetFlagInt(tex.width, tex.height);
-            if (flags != correctFlags) {
-                throw new Exception("Image has invalid flags so its probably just a regular image (found "+flags+", should be "+correctFlags+")");
+            isValid = flags == correctFlags;
+            
+            if (!isValid) {
+                Debug.LogWarning("Image has invalid flags so its probably just a regular image (found "+flags+", should be "+correctFlags+")");
+                Close();
+                return;
             }
 
-            limit = DataTypes.DecodeInt32(this)+HeaderInfo.size;
+            limit += DataTypes.DecodeInt32(this);
         }
 
         public void Close() {
@@ -145,6 +149,7 @@ namespace ImageBurner {
         protected Texture2D tex;
         protected int position;
         protected int limit;
+        public bool isValid {get; protected set;}
 
         public byte[] DecodeBytes(int length) {
             byte[] bytes = new byte[length];

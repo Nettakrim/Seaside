@@ -118,8 +118,8 @@ Material:
     - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _EnvironmentReflections: 1
-    - _FadeOffset: 2000
-    - _FadeScale: 1000
+    - _FadeOffset: 2500
+    - _FadeScale: 1500
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
     - _GlossMapScale: 0
