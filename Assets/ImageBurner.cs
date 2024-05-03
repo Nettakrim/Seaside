@@ -128,20 +128,29 @@ namespace ImageBurner {
 
             int flags = DataTypes.DecodeInt32(this);
             int correctFlags = HeaderInfo.GetFlagInt(tex.width, tex.height);
-            isValid = flags == correctFlags;
             
-            if (!isValid) {
+            if (flags != correctFlags) {
                 Debug.LogWarning("Image has invalid flags so its probably just a regular image (found "+flags+", should be "+correctFlags+")");
                 Close();
                 return;
             }
 
             limit += DataTypes.DecodeInt32(this);
+
+            int maxLimit = (tex.width*tex.height)/2;
+            if (limit > maxLimit || limit < 0) {
+                Debug.LogWarning("Stored length of "+limit+" is larger than maximum amount "+maxLimit+" that could theoretically be in the image");
+                Close();
+                return;
+            }
+
+            isValid = true;
         }
 
         public void Close() {
             //force error if you try to decode after finishing
-            limit = -1;   
+            limit = -1;
+            isValid = false;
         }
 
         public static explicit operator Decoder(Texture2D tex) => new(tex);
@@ -149,7 +158,7 @@ namespace ImageBurner {
         protected Texture2D tex;
         protected int position;
         protected int limit;
-        public bool isValid {get; protected set;}
+        protected bool isValid;
 
         public byte[] DecodeBytes(int length) {
             byte[] bytes = new byte[length];
@@ -190,6 +199,10 @@ namespace ImageBurner {
 
         public int GetRemainingBytes() {
             return Mathf.Max(limit-position, 0);
+        }
+
+        public bool IsValid() {
+            return isValid;
         }
     }
 

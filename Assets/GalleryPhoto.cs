@@ -16,7 +16,7 @@ public class GalleryPhoto : MonoBehaviour
         if (metadata == null) {
             this.metadata = new ImageMetadata();
             Decoder decoder = (Decoder)tex;
-            if (decoder.isValid) {
+            if (decoder.IsValid()) {
                 this.metadata.Decode(decoder);
             } else {
                 return false;
