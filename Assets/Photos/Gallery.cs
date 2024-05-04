@@ -17,6 +17,8 @@ public class Gallery : MonoBehaviour
         LoadFromFiles();
         if (photos.Count > 0) {
             photos[Random.Range(0, photos.Count)].Teleport(player);
+        } else {
+            player.TeleportToDefaultSpawnPosition();
         }
     }
 

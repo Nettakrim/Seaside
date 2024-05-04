@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,11 +31,13 @@ public class PlayerController : MonoBehaviour
 
     private void Awake() {
         characterController = GetComponent<CharacterController>();
-        Transform spawn = GameObject.FindGameObjectWithTag("PlayerSpawn").transform;
-        SetPositionAndRotation(spawn.transform.position, new Vector2(spawn.rotation.eulerAngles.x, spawn.rotation.eulerAngles.y));
     }
 
     private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            SceneManager.LoadScene("MainMenu");
+        }
+
         Vector3 movement = GetWalkingForce() * movementSpeed;
 
         movement += Vector3.down * downVelocity;
@@ -125,6 +128,16 @@ public class PlayerController : MonoBehaviour
         characterController.enabled = false;
         transform.localPosition = position;
         characterController.enabled = true;
+    }
+
+    public void TeleportToDefaultSpawnPosition() {
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
+        if (spawns.Length == 0) {
+            Debug.LogWarning("No objects with the PlayerSpawn tag found");
+            return;
+        }
+        Transform spawn = spawns[Random.Range(0, spawns.Length)].transform;
+        SetPositionAndRotation(spawn.position, new Vector2(spawn.rotation.eulerAngles.x, spawn.rotation.eulerAngles.y));
     }
 }
 
