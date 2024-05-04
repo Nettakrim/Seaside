@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour
 {
+    [SerializeField] protected PlayerController player;
+    
     [SerializeField] protected Camera photoCamera;
     protected RenderTexture renderTexture;
 
     [SerializeField] protected Gallery gallery;
 
     protected ImageMetadata currentMetadata;
-
-    [SerializeField] protected PlayerController player;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;

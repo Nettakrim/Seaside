@@ -1,0 +1,16 @@
+{
+    "name": "Photos",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7a536de21f3c22b4c825dffec75bb471"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

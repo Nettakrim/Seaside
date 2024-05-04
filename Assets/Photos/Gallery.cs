@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class Gallery : MonoBehaviour
 {
+    [SerializeField] private PlayerController player;
+
     private List<GalleryPhoto> photos;
 
     [SerializeField] private GalleryPhoto galleryPhotoPrefab;
     [SerializeField] private Transform photoLayoutParent;
-
-    [SerializeField] private PlayerController player;
 
     private void Start() {
         LoadFromFiles();
