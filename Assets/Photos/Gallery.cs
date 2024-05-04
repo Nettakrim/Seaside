@@ -15,17 +15,25 @@ public class Gallery : MonoBehaviour
 
     private void Start() {
         LoadFromFiles();
+        if (photos.Count > 0) {
+            photos[Random.Range(0, photos.Count)].Teleport(player);
+        }
     }
 
     public void LoadFromFiles() {
         photos = new List<GalleryPhoto>();
 
-        foreach (string name in Directory.GetFiles(Application.persistentDataPath, "*.png")) {
-            byte[] bytes = File.ReadAllBytes(name);
-            Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            ImageConversion.LoadImage(tex, bytes);
+        string directory = GetSaveDirectory();
+        if (Directory.Exists(directory)) {
+            foreach (string name in Directory.GetFiles(directory, "*.png")) {
+                byte[] bytes = File.ReadAllBytes(name);
+                Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                ImageConversion.LoadImage(tex, bytes);
 
-            AddImageToGallery(tex, null);
+                AddImageToGallery(tex, null);
+            }
+        } else {
+            Directory.CreateDirectory(directory);
         }
     }
 
@@ -53,11 +61,12 @@ public class Gallery : MonoBehaviour
     protected string GetNextFilename() {
         int id;
         
-        if (File.Exists(Application.persistentDataPath + "/" + (photos.Count+1).ToString() + ".png")) {
+        string path = GetSaveDirectory();
+        if (File.Exists(path + (photos.Count+1).ToString() + ".png")) {
             id = 0;
-            string[] files = Directory.GetFiles(Application.persistentDataPath, "*.png");
+            string[] files = Directory.GetFiles(path, "*.png");
             foreach (string file in files) {
-                string s = file[(Application.persistentDataPath.Length + 1)..^4];
+                string s = file[path.Length..^4];
                 if (int.TryParse(s, out int i)) {
                     if (i > id) {
                         id = i;
@@ -68,6 +77,10 @@ public class Gallery : MonoBehaviour
             id = photos.Count;
         }
 
-        return Application.persistentDataPath + "/" + (id+1).ToString() + ".png";
+        return GetSaveDirectory() + (id+1).ToString() + ".png";
+    }
+
+    public string GetSaveDirectory() {
+        return Application.persistentDataPath + "/1/";
     }
 }

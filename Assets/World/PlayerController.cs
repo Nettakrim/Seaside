@@ -28,13 +28,13 @@ public class PlayerController : MonoBehaviour
 
     private bool jumpBuffered;
 
-    private void Start()
-    {
+    private void Awake() {
         characterController = GetComponent<CharacterController>();
+        Transform spawn = GameObject.FindGameObjectWithTag("PlayerSpawn").transform;
+        SetPositionAndRotation(spawn.transform.position, new Vector2(spawn.rotation.eulerAngles.x, spawn.rotation.eulerAngles.y));
     }
 
-    private void Update()
-    {
+    private void Update() {
         Vector3 movement = GetWalkingForce() * movementSpeed;
 
         movement += Vector3.down * downVelocity;
