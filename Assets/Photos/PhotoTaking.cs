@@ -70,8 +70,9 @@ public class PhotoTaking : MonoBehaviour
             }
 
             if (Input.GetKeyDown(KeyCode.D)) {
-                SaveLastPhoto();
-                SetCameraMode(false);
+                if (SaveLastPhoto()) {
+                    SetCameraMode(false);
+                }
             }
         }
     }
@@ -98,10 +99,10 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata.rotation = player.GetRotation();
     }
 
-    protected void SaveLastPhoto() {
+    protected bool SaveLastPhoto() {
         if (currentMetadata == null) {
             Debug.LogWarning("SaveLastPhoto() was called, but there is currently no unsaved photo!");
-            return;
+            return false;
         }
 
         Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, false);
@@ -113,5 +114,6 @@ public class PhotoTaking : MonoBehaviour
 
         gallery.SaveNewImage(tex, currentMetadata);
         currentMetadata = null;
+        return true;
     }
 }
