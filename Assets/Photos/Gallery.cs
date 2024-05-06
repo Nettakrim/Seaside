@@ -85,4 +85,8 @@ public class Gallery : MonoBehaviour
     public string GetSaveDirectory() {
         return Application.persistentDataPath + "/1/";
     }
+
+    public void SetGalleryActive(bool active) {
+        photoLayoutParent.gameObject.SetActive(active);
+    }
 }

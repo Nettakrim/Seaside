@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     private bool jumpBuffered;
 
+    private bool movementLocked;
+
     private void Awake() {
         characterController = GetComponent<CharacterController>();
     }
@@ -38,7 +40,11 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("MainMenu");
         }
 
-        Vector3 movement = GetWalkingForce() * movementSpeed;
+        Vector3 movement = Vector3.zero;
+        
+        if (!movementLocked) {
+            movement += GetWalkingForce() * movementSpeed;
+        }
 
         movement += Vector3.down * downVelocity;
 
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
             airTime = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && downVelocity >= -0.1) {
+        if (Input.GetKeyDown(KeyCode.Space) && (downVelocity >= -0.1 || airTime == 0) && !movementLocked) {
             jumpBuffered |= true;
         }
 
@@ -138,6 +144,10 @@ public class PlayerController : MonoBehaviour
         }
         Transform spawn = spawns[Random.Range(0, spawns.Length)].transform;
         SetPositionAndRotation(spawn.position, new Vector2(spawn.rotation.eulerAngles.x, spawn.rotation.eulerAngles.y));
+    }
+
+    public void SetMovementLock(bool locked) {
+        movementLocked = locked;
     }
 }
 
