@@ -105,7 +105,7 @@ public class PhotoTaking : MonoBehaviour
             return false;
         }
 
-        Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, false);
+        Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, true);
 
         RenderTexture previous = RenderTexture.active;
         RenderTexture.active = renderTexture;

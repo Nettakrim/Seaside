@@ -29,7 +29,7 @@ public class Gallery : MonoBehaviour
         if (Directory.Exists(directory)) {
             foreach (string name in Directory.GetFiles(directory, "*.png")) {
                 byte[] bytes = File.ReadAllBytes(name);
-                Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false, true);
                 ImageConversion.LoadImage(tex, bytes);
 
                 AddImageToGallery(tex, null);
