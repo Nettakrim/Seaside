@@ -33,6 +33,10 @@ public class GalleryPhoto : MonoBehaviour
         playerController.SetPositionAndRotation(metadata.position, metadata.rotation);
     }
 
+    public float GetFov() {
+        return metadata.fov;
+    }
+
     public Texture GetTexture() {
         return image.texture;
     }

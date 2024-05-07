@@ -110,6 +110,12 @@ public class Gallery : MonoBehaviour
             SetCurrentPhoto(currentPhoto-1);
             UpdateGrid();
         }
+
+        if (manager.currentMode == PhotoManager.Mode.Gallery) {
+            if (Input.GetKey(KeyCode.Space)) {
+                TeleportToSelectedPhoto();
+            }
+        }
     }
 
     public void UpdateGrid() {
@@ -165,6 +171,7 @@ public class Gallery : MonoBehaviour
     public void TeleportToSelectedPhoto() {
         selectedPhoto.Teleport(manager.player);
         manager.SetMode(PhotoManager.Mode.Walking);
+        manager.photoTaking.SetFov(selectedPhoto.GetFov());
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name

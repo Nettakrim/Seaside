@@ -97,6 +97,7 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata = new ImageMetadata();
         currentMetadata.position = manager.player.GetPosition();
         currentMetadata.rotation = manager.player.GetRotation();
+        currentMetadata.fov = photoCamera.fieldOfView;
     }
 
     protected bool SaveLastPhoto() {
@@ -116,5 +117,9 @@ public class PhotoTaking : MonoBehaviour
         manager.gallery.SaveNewImage(tex, currentMetadata);
         currentMetadata = null;
         return true;
+    }
+
+    public void SetFov(float fov) {
+        UpdateFov(fov/normalFov);
     }
 }
