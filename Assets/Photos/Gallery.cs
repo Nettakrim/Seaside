@@ -20,11 +20,19 @@ public class Gallery : MonoBehaviour
     [SerializeField] private GameObject gallery;
 
     private GalleryPhoto selectedPhoto;
-    [SerializeField] private RawImage selectedImage;
 
     private int currentPhoto;
 
     [SerializeField] private RawImage loopImage;
+    [SerializeField] private Button loopButton;
+
+    [SerializeField] private RawImage selectedImage;
+    [SerializeField] private Button selectedImageButton;
+    [SerializeField] private RectTransform selectedImageRect;
+
+    private float teleportedAt;
+    [SerializeField] private AnimationCurve animationCurve;
+    [SerializeField] private float teleportTime;
 
     private void Awake() {
         LoadFromFiles();
@@ -33,6 +41,7 @@ public class Gallery : MonoBehaviour
         } else {
             manager.player.TeleportToDefaultSpawnPosition();
         }
+        teleportedAt = -1;
     }
 
     public void LoadFromFiles() {
@@ -116,6 +125,20 @@ public class Gallery : MonoBehaviour
                 TeleportToSelectedPhoto();
             }
         }
+
+        if (selectedPhoto != null && teleportedAt > 0) {
+            float teleportScale = (Time.time - teleportedAt)/teleportTime;
+            float size = Mathf.Lerp(202, 270, animationCurve.Evaluate(teleportScale));
+            selectedImageRect.sizeDelta = new Vector2(size, size);
+
+            if (teleportScale > 1) {
+                teleportedAt = -1;
+                selectedPhoto.Teleport(manager.player);
+                selectedImageButton.interactable = true;
+                manager.photoTaking.SetFov(selectedPhoto.GetFov());
+                manager.SetMode(PhotoManager.Mode.Walking);
+            }
+        }
     }
 
     public void UpdateGrid() {
@@ -135,9 +158,8 @@ public class Gallery : MonoBehaviour
             loopImage.gameObject.SetActive(true);
             GalleryPhoto galleryPhoto = photos[(currentPhoto+(photos.Count/2))%photos.Count];
             loopImage.texture = galleryPhoto.GetTexture();
-            Button button = loopImage.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
+            loopButton.onClick.RemoveAllListeners();
+            loopButton.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
             loopImage.transform.SetAsLastSibling();
         } else {
             loopImage.gameObject.SetActive(false);
@@ -151,6 +173,7 @@ public class Gallery : MonoBehaviour
     public void OpenGallery() {
         gallery.SetActive(true);
         selectedImage.gameObject.SetActive(false);
+        selectedImageRect.sizeDelta = new Vector2(202, 202);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
         UpdateGrid();
@@ -169,9 +192,9 @@ public class Gallery : MonoBehaviour
     }
 
     public void TeleportToSelectedPhoto() {
-        selectedPhoto.Teleport(manager.player);
-        manager.SetMode(PhotoManager.Mode.Walking);
-        manager.photoTaking.SetFov(selectedPhoto.GetFov());
+        teleportedAt = Time.time;
+        EventSystem.current.SetSelectedGameObject(null);
+        selectedImageButton.interactable = false;
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
