@@ -29,6 +29,8 @@ public class PhotoTaking : MonoBehaviour
     [SerializeField] protected float minFovScale = 0.25f;
     [SerializeField] protected float maxFovScale = 1.5f;
 
+    private bool canZoom;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
@@ -42,14 +44,18 @@ public class PhotoTaking : MonoBehaviour
         }
 
         if (inCameraMode) {
-            if (Input.GetKey(KeyCode.W)) {
-                targetFovScale -= fovChangeSpeed * Time.deltaTime;
-            }
+            if (canZoom) {
+                if (Input.GetKey(KeyCode.W)) {
+                    targetFovScale -= fovChangeSpeed * Time.deltaTime;
+                }
 
-            if (Input.GetKey(KeyCode.S)) {
-                targetFovScale += fovChangeSpeed * Time.deltaTime;
+                if (Input.GetKey(KeyCode.S)) {
+                    targetFovScale += fovChangeSpeed * Time.deltaTime;
+                }
+                targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
+            } else {
+                canZoom |= Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S);
             }
-            targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
 
             if (Input.GetKeyDown(KeyCode.Space)) {
                 TakePhoto();
@@ -77,6 +83,7 @@ public class PhotoTaking : MonoBehaviour
         gallery.SetGalleryActive(!inCameraMode);
         result.SetActive(false);
         targetFovScale = 1;
+        canZoom = false;
     }
 
     protected void UpdateFov(float newScale) {
