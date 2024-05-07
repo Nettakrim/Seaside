@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     private bool movementLocked;
 
+    private float rotationSpeedScale = 1;
+
     private void Awake() {
         characterController = GetComponent<CharacterController>();
     }
@@ -79,8 +81,8 @@ public class PlayerController : MonoBehaviour
         }
 
         // Player rotation - rotate the camera instead of the player themselves
-        pitch += Input.GetAxis("Pitch") * rotationSpeed * Time.deltaTime;
-        yaw += Input.GetAxis("Turn") * rotationSpeed * Time.deltaTime;
+        pitch += Input.GetAxis("Pitch") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
+        yaw += Input.GetAxis("Turn") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
@@ -148,6 +150,10 @@ public class PlayerController : MonoBehaviour
 
     public void SetMovementLock(bool locked) {
         movementLocked = locked;
+    }
+
+    public void SetRotationSpeed(float speed) {
+        rotationSpeedScale = speed;
     }
 }
 

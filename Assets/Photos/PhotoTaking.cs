@@ -22,18 +22,18 @@ public class PhotoTaking : MonoBehaviour
 
     protected float normalFov;
     protected float currentFovScale;
-    protected float fovVelocity;
-
-    [SerializeField] protected float fovVelocitySpeed;
+    protected float targetFovScale;
     [SerializeField] protected float fovChangeSpeed;
-    [SerializeField] protected float maxFovVelocity;
-    
+    [SerializeField] protected float fovLerpSpeed;
+
     [SerializeField] protected float minFovScale = 0.25f;
     [SerializeField] protected float maxFovScale = 1.5f;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
+        targetFovScale = 1;
+        currentFovScale = 1;
     }
 
     protected void Update() {
@@ -43,22 +43,13 @@ public class PhotoTaking : MonoBehaviour
 
         if (inCameraMode) {
             if (Input.GetKey(KeyCode.W)) {
-                if (fovVelocity > 0) fovVelocity = 0;
-                fovVelocity -= Time.deltaTime*fovVelocitySpeed;
-                UpdateFov(currentFovScale + fovVelocity*fovChangeSpeed*Time.deltaTime);
-            } else if (fovVelocity < 0) {
-                fovVelocity += Time.deltaTime*fovVelocitySpeed*4;
+                targetFovScale -= fovChangeSpeed * Time.deltaTime;
             }
 
             if (Input.GetKey(KeyCode.S)) {
-                if (fovVelocity < 0) fovVelocity = 0;
-                fovVelocity += Time.deltaTime*fovVelocitySpeed;
-                UpdateFov(currentFovScale + fovVelocity*fovChangeSpeed*Time.deltaTime);
-            } else if (fovVelocity > 0) {
-                fovVelocity -= Time.deltaTime*fovVelocitySpeed*4;
+                targetFovScale += fovChangeSpeed * Time.deltaTime;
             }
-
-            fovVelocity = Mathf.Clamp(fovVelocity, -maxFovVelocity, maxFovVelocity);
+            targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
 
             if (Input.GetKeyDown(KeyCode.Space)) {
                 TakePhoto();
@@ -75,6 +66,8 @@ public class PhotoTaking : MonoBehaviour
                 }
             }
         }
+
+        UpdateFov(Mathf.Lerp(currentFovScale, targetFovScale, Time.deltaTime * fovLerpSpeed));
     }
 
     protected void SetCameraMode(bool to) {
@@ -83,13 +76,14 @@ public class PhotoTaking : MonoBehaviour
         player.SetMovementLock(inCameraMode);
         gallery.SetGalleryActive(!inCameraMode);
         result.SetActive(false);
-        UpdateFov(1);
+        targetFovScale = 1;
     }
 
     protected void UpdateFov(float newScale) {
-        currentFovScale = Mathf.Clamp(newScale, minFovScale, maxFovScale);
+        currentFovScale = newScale;
         mainCamera.fieldOfView = normalFov*currentFovScale;
         photoCamera.fieldOfView = normalFov*currentFovScale;
+        player.SetRotationSpeed(currentFovScale);
     }
 
     protected void TakePhoto() {

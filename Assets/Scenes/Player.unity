@@ -315,9 +315,8 @@ MonoBehaviour:
   gallery: {fileID: 7686760413621140500}
   cameraOverlay: {fileID: 7600642889697250997}
   result: {fileID: 1206864772541679682}
-  fovVelocitySpeed: 0.5
   fovChangeSpeed: 0.5
-  maxFovVelocity: 0.75
+  fovLerpSpeed: 5
   minFovScale: 0.25
   maxFovScale: 1.5
 --- !u!1 &1718963388057283822
