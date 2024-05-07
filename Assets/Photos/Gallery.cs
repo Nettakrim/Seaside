@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using ImageBurner;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
 {
@@ -12,6 +15,15 @@ public class Gallery : MonoBehaviour
 
     [SerializeField] private GalleryPhoto galleryPhotoPrefab;
     [SerializeField] private Transform photoLayoutParent;
+
+    [SerializeField] private GameObject gallery;
+
+    private GalleryPhoto selectedPhoto;
+    [SerializeField] private RawImage selectedImage;
+
+    private int currentPhoto;
+
+    [SerializeField] private RawImage loopImage;
 
     private void Start() {
         LoadFromFiles();
@@ -27,9 +39,10 @@ public class Gallery : MonoBehaviour
 
         string directory = GetSaveDirectory();
         if (Directory.Exists(directory)) {
-            foreach (string name in Directory.GetFiles(directory, "*.png")) {
-                byte[] bytes = File.ReadAllBytes(name);
+            foreach (FileInfo file in GetFilesNumerically(new DirectoryInfo(directory), "*.png")) {
+                byte[] bytes = File.ReadAllBytes(file.FullName);
                 Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false, true);
+                tex.filterMode = FilterMode.Point;
                 ImageConversion.LoadImage(tex, bytes);
 
                 AddImageToGallery(tex, null);
@@ -49,7 +62,7 @@ public class Gallery : MonoBehaviour
         }
         tex.Apply(false, true);
 
-        galleryPhoto.testButton.onClick.AddListener(delegate {galleryPhoto.Teleport(player);});
+        galleryPhoto.testButton.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
         photos.Add(galleryPhoto);
     }
 
@@ -86,7 +99,72 @@ public class Gallery : MonoBehaviour
         return Application.persistentDataPath + "/1/";
     }
 
+    public void Update() {
+        if (Input.GetKeyDown(KeyCode.F)) {
+            SetGalleryActive(!gallery.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E)) {
+            currentPhoto++;
+            UpdateGrid();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            currentPhoto--;
+            UpdateGrid();
+        }
+    }
+
+    public void UpdateGrid() {
+        currentPhoto = (currentPhoto+photos.Count)%photos.Count;
+
+        for (int i = 0; i < photos.Count; i++) {
+            photos[i].transform.SetSiblingIndex(i);
+        }
+
+        for (int i = 0; i < (currentPhoto+((photos.Count+1)/2))%photos.Count; i++) {
+            photos[i].transform.SetAsLastSibling();
+        }
+
+        selectedPhoto = photos[currentPhoto];
+        selectedImage.texture = selectedPhoto.GetTexture();
+        selectedImage.gameObject.SetActive(true);
+
+        if (photos.Count%2 == 0) {
+            loopImage.gameObject.SetActive(true);
+            GalleryPhoto galleryPhoto = photos[(currentPhoto+(photos.Count/2))%photos.Count];
+            loopImage.texture = galleryPhoto.GetTexture();
+            Button button = loopImage.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
+            loopImage.transform.SetAsLastSibling();
+        } else {
+            loopImage.gameObject.SetActive(false);
+        }
+    }
+
     public void SetGalleryActive(bool active) {
-        photoLayoutParent.gameObject.SetActive(active);
+        gallery.SetActive(active);
+        selectedImage.gameObject.SetActive(false);
+        player.SetMovementLock(active);
+        if (active) {
+            UpdateGrid();
+        }
+    }
+
+    public void OnClickGalleryPhoto(GalleryPhoto galleryPhoto) {
+        currentPhoto = photos.IndexOf(galleryPhoto);
+        UpdateGrid();
+    }
+
+    public void OnClickSelectedPhoto() {
+        selectedPhoto.Teleport(player);
+    }
+
+    //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
+    public static FileInfo[] GetFilesNumerically(DirectoryInfo directory, string searchPattern, int numberPadding = 4) {
+        return directory.GetFiles(searchPattern).OrderBy(file =>
+            Regex.Replace(file.Name, @"\d+", match => match.Value.PadLeft(numberPadding, '0'))
+        ).ToArray();
     }
 }

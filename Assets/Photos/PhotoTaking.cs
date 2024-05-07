@@ -80,7 +80,9 @@ public class PhotoTaking : MonoBehaviour
         inCameraMode = to;
         cameraOverlay.SetActive(inCameraMode);
         player.SetMovementLock(inCameraMode);
-        gallery.SetGalleryActive(!inCameraMode);
+        if (inCameraMode) {
+            gallery.SetGalleryActive(false);
+        }
         result.SetActive(false);
         targetFovScale = 1;
         canZoom = false;
@@ -107,6 +109,7 @@ public class PhotoTaking : MonoBehaviour
         }
 
         Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, true);
+        tex.filterMode = FilterMode.Point;
 
         RenderTexture previous = RenderTexture.active;
         RenderTexture.active = renderTexture;

@@ -32,4 +32,8 @@ public class GalleryPhoto : MonoBehaviour
     public void Teleport(PlayerController playerController) {
         playerController.SetPositionAndRotation(metadata.position, metadata.rotation);
     }
+
+    public Texture GetTexture() {
+        return image.texture;
+    }
 }
