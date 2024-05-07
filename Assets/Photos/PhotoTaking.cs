@@ -5,18 +5,15 @@ using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour
 {
-    [SerializeField] protected PlayerController player;
-    
+    [SerializeField] protected PhotoManager manager;
+
     [SerializeField] protected Camera mainCamera;
     [SerializeField] protected Camera photoCamera;
     protected RenderTexture renderTexture;
 
-    [SerializeField] protected Gallery gallery;
-
     protected ImageMetadata currentMetadata;
 
     [SerializeField] protected GameObject cameraOverlay;
-    protected bool inCameraMode;
 
     [SerializeField] protected GameObject result;
 
@@ -39,11 +36,7 @@ public class PhotoTaking : MonoBehaviour
     }
 
     protected void Update() {
-        if (Input.GetKeyDown(KeyCode.R)) {
-            SetCameraMode(!inCameraMode);
-        }
-
-        if (inCameraMode) {
+        if (manager.currentMode == PhotoManager.Mode.PhotoTaking) {
             if (canZoom) {
                 if (Input.GetKey(KeyCode.W)) {
                     targetFovScale -= fovChangeSpeed * Time.deltaTime;
@@ -68,38 +61,42 @@ public class PhotoTaking : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D)) {
                 if (SaveLastPhoto()) {
-                    SetCameraMode(false);
+                    manager.gallery.SetCurrentPhoto(-1);
+                    manager.SetMode(PhotoManager.Mode.Gallery);
                 }
             }
         }
 
-        UpdateFov(Mathf.Lerp(currentFovScale, targetFovScale, Time.deltaTime * fovLerpSpeed));
+        if (manager.currentMode != PhotoManager.Mode.Gallery) {
+            UpdateFov(Mathf.Lerp(currentFovScale, targetFovScale, Time.deltaTime * fovLerpSpeed));
+        }
     }
 
-    protected void SetCameraMode(bool to) {
-        inCameraMode = to;
-        cameraOverlay.SetActive(inCameraMode);
-        player.SetMovementLock(inCameraMode);
-        if (inCameraMode) {
-            gallery.SetGalleryActive(false);
-        }
+    public void OpenCameraMode() {
+        cameraOverlay.SetActive(true);
+        manager.player.SetMovementLock(true);
         result.SetActive(false);
-        targetFovScale = 1;
         canZoom = false;
+    }
+
+    public void CloseCameraMode() {
+        cameraOverlay.SetActive(false);
+        manager.player.SetMovementLock(false);
+        targetFovScale = 1;
     }
 
     protected void UpdateFov(float newScale) {
         currentFovScale = newScale;
         mainCamera.fieldOfView = normalFov*currentFovScale;
         photoCamera.fieldOfView = normalFov*currentFovScale;
-        player.SetRotationSpeed(currentFovScale);
+        manager.player.SetRotationSpeed(currentFovScale);
     }
 
     protected void TakePhoto() {
         photoCamera.Render();
         currentMetadata = new ImageMetadata();
-        currentMetadata.position = player.GetPosition();
-        currentMetadata.rotation = player.GetRotation();
+        currentMetadata.position = manager.player.GetPosition();
+        currentMetadata.rotation = manager.player.GetRotation();
     }
 
     protected bool SaveLastPhoto() {
@@ -116,7 +113,7 @@ public class PhotoTaking : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         RenderTexture.active = previous;
 
-        gallery.SaveNewImage(tex, currentMetadata);
+        manager.gallery.SaveNewImage(tex, currentMetadata);
         currentMetadata = null;
         return true;
     }

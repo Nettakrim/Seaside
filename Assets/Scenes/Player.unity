@@ -460,9 +460,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7686760413621140500}
+      - m_Target: {fileID: 7686760413621140503}
         m_TargetAssemblyTypeName: Gallery, Photos
-        m_MethodName: OnClickSelectedPhoto
+        m_MethodName: TeleportToSelectedPhoto
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -511,6 +511,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3853848750323614862}
   - {fileID: 7854343175455933131}
   m_Father: {fileID: 8182374246615755373}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -676,28 +677,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1633175290445328892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7534821778653858334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66bfc456e9ea9c745b3379210a0bbc75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 2566283060108504391}
-  mainCamera: {fileID: 577380234946919991}
-  photoCamera: {fileID: 3385560470360931828}
-  gallery: {fileID: 7686760413621140500}
-  cameraOverlay: {fileID: 7600642889697250997}
-  result: {fileID: 1206864772541679682}
-  fovChangeSpeed: 0.5
-  fovLerpSpeed: 5
-  minFovScale: 0.25
-  maxFovScale: 1.5
 --- !u!1 &1718963388057283822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,12 +988,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206864772541679682}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8182374246615755373}
+  m_Father: {fileID: 231985034990342830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1159,8 +1138,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1292243099788897778}
-  - component: {fileID: 7686760413621140500}
-  - component: {fileID: 1633175290445328892}
+  - component: {fileID: 7686760413621140501}
+  - component: {fileID: 7686760413621140503}
+  - component: {fileID: 7686760413621140502}
   m_Layer: 0
   m_Name: PhotoManager
   m_TagString: Untagged
@@ -1178,13 +1158,49 @@ GameObject:
   m_Component:
   - component: {fileID: 231985034990342830}
   m_Layer: 5
-  m_Name: Overlay
+  m_Name: PhotoTaking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &7686760413621140500
+--- !u!114 &7686760413621140501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534821778653858334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6245626ed1e794698b63b8a944bd6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gallery: {fileID: 7686760413621140503}
+  photoTaking: {fileID: 7686760413621140502}
+  player: {fileID: 2566283060108504391}
+--- !u!114 &7686760413621140502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534821778653858334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bfc456e9ea9c745b3379210a0bbc75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 7686760413621140501}
+  mainCamera: {fileID: 577380234946919991}
+  photoCamera: {fileID: 3385560470360931828}
+  cameraOverlay: {fileID: 7600642889697250997}
+  result: {fileID: 1206864772541679682}
+  fovChangeSpeed: 0.5
+  fovLerpSpeed: 5
+  minFovScale: 0.15
+  maxFovScale: 1.5
+--- !u!114 &7686760413621140503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1196,7 +1212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57d602334b4dd7469d9e82f1081ce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2566283060108504391}
+  manager: {fileID: 7686760413621140501}
   galleryPhotoPrefab: {fileID: 5674516937585220827, guid: 54f5312b746cdf84e9d418e502d840ea,
     type: 3}
   photoLayoutParent: {fileID: 8702573354347473054}
@@ -1243,7 +1259,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1367411360}
-  - {fileID: 3853848750323614862}
   - {fileID: 231985034990342830}
   m_Father: {fileID: 1292243099788897778}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

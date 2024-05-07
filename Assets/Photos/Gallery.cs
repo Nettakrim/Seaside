@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ImageBurner;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
 {
-    [SerializeField] private PlayerController player;
+    [SerializeField] private PhotoManager manager;
 
     private List<GalleryPhoto> photos;
 
@@ -25,12 +26,12 @@ public class Gallery : MonoBehaviour
 
     [SerializeField] private RawImage loopImage;
 
-    private void Start() {
+    private void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
-            photos[Random.Range(0, photos.Count)].Teleport(player);
+            photos[Random.Range(0, photos.Count)].Teleport(manager.player);
         } else {
-            player.TeleportToDefaultSpawnPosition();
+            manager.player.TeleportToDefaultSpawnPosition();
         }
     }
 
@@ -100,24 +101,18 @@ public class Gallery : MonoBehaviour
     }
 
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.F)) {
-            SetGalleryActive(!gallery.activeSelf);
-        }
-
         if (Input.GetKeyDown(KeyCode.E)) {
-            currentPhoto++;
+            SetCurrentPhoto(currentPhoto+1);
             UpdateGrid();
         }
 
         if (Input.GetKeyDown(KeyCode.Q)) {
-            currentPhoto--;
+            SetCurrentPhoto(currentPhoto-1);
             UpdateGrid();
         }
     }
 
     public void UpdateGrid() {
-        currentPhoto = (currentPhoto+photos.Count)%photos.Count;
-
         for (int i = 0; i < photos.Count; i++) {
             photos[i].transform.SetSiblingIndex(i);
         }
@@ -143,22 +138,33 @@ public class Gallery : MonoBehaviour
         }
     }
 
-    public void SetGalleryActive(bool active) {
-        gallery.SetActive(active);
+    public void SetCurrentPhoto(int to) {
+        currentPhoto = (to+photos.Count)%photos.Count;
+    }
+
+    public void OpenGallery() {
+        gallery.SetActive(true);
         selectedImage.gameObject.SetActive(false);
-        player.SetMovementLock(active);
-        if (active) {
-            UpdateGrid();
-        }
+        manager.player.SetMovementLock(true);
+        manager.player.SetRotationSpeed(0);
+        UpdateGrid();
+    }
+
+    public void CloseGallery() {
+        gallery.SetActive(false);
+        manager.player.SetMovementLock(false);
+        manager.player.SetRotationSpeed(1);
     }
 
     public void OnClickGalleryPhoto(GalleryPhoto galleryPhoto) {
         currentPhoto = photos.IndexOf(galleryPhoto);
         UpdateGrid();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
-    public void OnClickSelectedPhoto() {
-        selectedPhoto.Teleport(player);
+    public void TeleportToSelectedPhoto() {
+        selectedPhoto.Teleport(manager.player);
+        manager.SetMode(PhotoManager.Mode.Walking);
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
