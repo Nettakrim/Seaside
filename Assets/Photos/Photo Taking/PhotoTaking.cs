@@ -93,10 +93,12 @@ public class PhotoTaking : MonoBehaviour
 
     protected void TakePhoto() {
         photoCamera.Render();
+
         currentMetadata = new ImageMetadata();
         currentMetadata.position = manager.player.GetPosition();
         currentMetadata.rotation = manager.player.GetRotation();
         currentMetadata.fov = photoCamera.fieldOfView;
+        currentMetadata.targets = GetVisibleCameraTargets();
     }
 
     protected bool SaveLastPhoto() {
@@ -120,5 +122,21 @@ public class PhotoTaking : MonoBehaviour
 
     public void SetFov(float fov) {
         UpdateFov(fov/normalFov);
+    }
+
+    protected List<CameraTargetData.Wrapper> GetVisibleCameraTargets() {
+        List<CameraTargetData.Wrapper> targets = new List<CameraTargetData.Wrapper>();
+        Plane[] planes = new Plane[6];
+
+        foreach (CameraTarget cameraTarget in TargetManager.instance.cameraTargets) {
+            if (cameraTarget.IsVisible()) {
+                GeometryUtility.CalculateFrustumPlanes(photoCamera, planes);
+                if (GeometryUtility.TestPlanesAABB(planes, cameraTarget.GetBounds())) {
+                    targets.Add(cameraTarget.GetCameraTargetData(photoCamera));
+                }
+            }
+        }
+
+        return targets;
     }
 }

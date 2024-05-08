@@ -260,15 +260,50 @@ namespace ImageBurner {
             }
         }
 
-        public static List<byte[]> DecodeByteArrayList(Decoder decoder) {
+
+        public static (int,int) DecodeByteArrayListStart(Decoder decoder) {
             ushort d0 = BitConverter.ToUInt16(decoder.DecodeBytes(2));
-            ushort d1 = BitConverter.ToUInt16(decoder.DecodeBytes(2));
+            ushort d1 = BitConverter.ToUInt16(decoder.DecodeBytes(2));     
+            return (d0, d1);       
+        }
+
+        public static List<byte[]> DecodeByteArrayList(Decoder decoder) {
+            (int d0, int d1) = DecodeByteArrayListStart(decoder);
             List<byte[]> bytesList = new List<byte[]>(d0);
             for (int i = 0; i < d0; i++) {
                 bytesList.Add(decoder.DecodeBytes(d1));
             }
 
             return bytesList;
-        }        
+        }
+
+
+        public static void EncodeFixedLengthString(Encoder encoder, string value, int length) {
+            if (value.Length > length) {
+                value = value.Substring(0, length);
+            } else if (value.Length < length) {
+                value.PadRight(length, (char)0);
+            }
+
+            foreach (char c in value) {
+                encoder.EncodeBytes(BitConverter.GetBytes(c));
+            }
+        }
+
+        public static string DecodeFixedLengthString(Decoder decoder, int length) {
+            string s = "";
+            byte[] bytes = decoder.DecodeBytes(length*2);
+            byte[] carBytes = new byte[2];
+            for (int i = 0; i < length; i++) {
+                carBytes[0] = bytes[i*2];
+                carBytes[1] = bytes[(i*2)+1];
+                char c = BitConverter.ToChar(carBytes);
+                if (c == (char)0) {
+                    return s;
+                }
+                s += c;
+            }
+            return s;
+        }
     }
 }
