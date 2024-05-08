@@ -27,12 +27,8 @@ public class Gallery : MonoBehaviour
     [SerializeField] private Button loopButton;
 
     [SerializeField] private RawImage selectedImage;
-    [SerializeField] private Button selectedImageButton;
-    [SerializeField] private RectTransform selectedImageRect;
 
-    private float teleportedAt;
-    [SerializeField] private AnimationCurve animationCurve;
-    [SerializeField] private float teleportTime;
+    public Animator teleportAnimation;
 
     private void Awake() {
         LoadFromFiles();
@@ -41,7 +37,6 @@ public class Gallery : MonoBehaviour
         } else {
             manager.player.TeleportToDefaultSpawnPosition();
         }
-        teleportedAt = -1;
     }
 
     public void LoadFromFiles() {
@@ -122,21 +117,7 @@ public class Gallery : MonoBehaviour
 
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
             if (Input.GetKey(KeyCode.Space)) {
-                TeleportToSelectedPhoto();
-            }
-        }
-
-        if (selectedPhoto != null && teleportedAt > 0) {
-            float teleportScale = (Time.time - teleportedAt)/teleportTime;
-            float size = Mathf.Lerp(202, 270, animationCurve.Evaluate(teleportScale));
-            selectedImageRect.sizeDelta = new Vector2(size, size);
-
-            if (teleportScale > 1) {
-                teleportedAt = -1;
-                selectedPhoto.Teleport(manager.player);
-                selectedImageButton.interactable = true;
-                manager.photoTaking.SetFov(selectedPhoto.GetFov());
-                manager.SetMode(PhotoManager.Mode.Walking);
+                TeleportStart();
             }
         }
     }
@@ -173,7 +154,6 @@ public class Gallery : MonoBehaviour
     public void OpenGallery() {
         gallery.SetActive(true);
         selectedImage.gameObject.SetActive(false);
-        selectedImageRect.sizeDelta = new Vector2(202, 202);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
         UpdateGrid();
@@ -191,10 +171,18 @@ public class Gallery : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
     }
 
-    public void TeleportToSelectedPhoto() {
-        teleportedAt = Time.time;
+    public void TeleportStart() {
         EventSystem.current.SetSelectedGameObject(null);
-        selectedImageButton.interactable = false;
+        teleportAnimation.Play("TeleportEnter");
+    }
+
+    public void Teleport() {
+        selectedPhoto.Teleport(manager.player);
+        manager.photoTaking.SetFov(selectedPhoto.GetFov());
+    }
+
+    public void TeleportEnd() {
+        manager.SetMode(PhotoManager.Mode.Walking);
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name

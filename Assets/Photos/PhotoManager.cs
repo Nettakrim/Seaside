@@ -11,6 +11,12 @@ public class PhotoManager : MonoBehaviour
     public PhotoTaking photoTaking;
     public PlayerController player;
 
+    public static PhotoManager instance;
+
+    public void Awake() {
+        instance = this;
+    }
+
     public void SetMode(Mode mode) {
         if (currentMode == Mode.Gallery) {
             gallery.CloseGallery();
