@@ -8,6 +8,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CameraTargetData : ScriptableObject {
     public string id;
+    public byte idByte;
     public string displayName;
 
     private void OnValidate() {
@@ -25,17 +26,20 @@ public class CameraTargetData : ScriptableObject {
 
         public void Encode(Encoder encoder) {
             DataTypes.EncodeFixedLengthString(encoder, cameraTargetData.id, idLength);
+            encoder.EncodeByte(cameraTargetData.idByte);
             DataTypes.EncodeFloat(encoder, viewProportion);
             return ;
         }
 
         public void Decode(Decoder decoder) {
-            cameraTargetData = TargetManager.instance.GetCameraTargetData(DataTypes.DecodeFixedLengthString(decoder, idLength));
+            string s = DataTypes.DecodeFixedLengthString(decoder, idLength);
+            byte b = decoder.DecodeByte();
+            cameraTargetData = TargetManager.instance.GetCameraTargetData(s, b);
             viewProportion = DataTypes.DecodeFloat(decoder);
         }
 
         public static int GetByteLength() {
-            return 8;
+            return 9;
         }
     }
 }

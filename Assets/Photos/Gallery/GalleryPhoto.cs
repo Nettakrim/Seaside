@@ -10,8 +10,6 @@ public class GalleryPhoto : MonoBehaviour
 
     [SerializeField] private RawImage image;
 
-    public Button testButton;
-
     public bool Initialise(Texture2D tex, ImageMetadata metadata) {
         if (metadata == null) {
             this.metadata = new ImageMetadata();
@@ -39,5 +37,18 @@ public class GalleryPhoto : MonoBehaviour
 
     public Texture GetTexture() {
         return image.texture;
+    }
+
+    public bool ContainsTarget(CameraTargetData cameraTargetData) {
+        foreach (CameraTargetData.Wrapper wrapper in metadata.targets) {
+            if (wrapper.cameraTargetData == cameraTargetData) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void OnClick() {
+        PhotoManager.instance.gallery.OnClickGalleryPhoto(this);
     }
 }

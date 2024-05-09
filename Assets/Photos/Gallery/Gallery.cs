@@ -30,12 +30,23 @@ public class Gallery : MonoBehaviour
 
     public Animator teleportAnimation;
 
+    [SerializeField] private Transform todoList;
+    [SerializeField] private TodoItem todoItemPrefab;
+
+    [SerializeField] private List<TodoItem> todoItems;
+
     private void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
             photos[Random.Range(0, photos.Count)].Teleport(manager.player);
         } else {
             manager.player.TeleportToDefaultSpawnPosition();
+        }
+        
+        foreach (CameraTargetData target in TargetManager.instance.GetCameraTargetDatas()) {
+            TodoItem todoItem = Instantiate(todoItemPrefab, todoList);
+            todoItem.SetTargetData(target);
+            todoItems.Add(todoItem);
         }
     }
 
@@ -66,8 +77,7 @@ public class Gallery : MonoBehaviour
             return;
         }
         tex.Apply(false, true);
-
-        galleryPhoto.testButton.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
+        
         photos.Add(galleryPhoto);
     }
 
@@ -105,17 +115,17 @@ public class Gallery : MonoBehaviour
     }
 
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.E)) {
-            SetCurrentPhoto(currentPhoto+1);
-            UpdateGrid();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            SetCurrentPhoto(currentPhoto-1);
-            UpdateGrid();
-        }
-
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
+            if (Input.GetKeyDown(KeyCode.E)) {
+                SetCurrentPhoto(currentPhoto+1);
+                UpdateGrid();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q)) {
+                SetCurrentPhoto(currentPhoto-1);
+                UpdateGrid();
+            }
+
             if (Input.GetKey(KeyCode.Space)) {
                 TeleportStart();
             }
@@ -123,6 +133,15 @@ public class Gallery : MonoBehaviour
     }
 
     public void UpdateGrid() {
+        foreach (TodoItem todoItem in todoItems) {
+            todoItem.TestPhotos(photos);
+        }
+
+        if (photos.Count == 0) {
+            loopImage.gameObject.SetActive(false);
+            return;
+        }
+
         for (int i = 0; i < photos.Count; i++) {
             photos[i].transform.SetSiblingIndex(i);
         }
@@ -148,6 +167,7 @@ public class Gallery : MonoBehaviour
     }
 
     public void SetCurrentPhoto(int to) {
+        if (photos.Count == 0) return;
         currentPhoto = (to+photos.Count)%photos.Count;
     }
 

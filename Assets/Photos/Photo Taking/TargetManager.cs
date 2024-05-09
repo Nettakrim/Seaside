@@ -15,10 +15,14 @@ public class TargetManager : MonoBehaviour
         instance = this;
     }
 
-    public CameraTargetData GetCameraTargetData(string id) {
+    public CameraTargetData GetCameraTargetData(string id, byte b) {
         foreach (CameraTargetData target in targets) {
-            if (target.id == id) return target;
+            if (target.id == id && target.idByte == b) return target;
         }
         return null;
+    }
+
+    public List<CameraTargetData> GetCameraTargetDatas() {
+        return targets;
     }
 }

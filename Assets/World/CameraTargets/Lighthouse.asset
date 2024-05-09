@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Lighthouse
   m_EditorClassIdentifier: 
   id: lh
+  idByte: 0
   displayName: the Lighthouse
