@@ -248,9 +248,18 @@ namespace ImageBurner {
         }
 
 
+        public static void EncodeUInt16(Encoder encoder, ushort value) {
+            encoder.EncodeBytes(BitConverter.GetBytes(value));
+        }
+
+        public static ushort DecodeUInt16(Decoder decoder) {
+            return BitConverter.ToUInt16(decoder.DecodeBytes(2));
+        }
+
+
         public static void EncodeByteArrayListStart(Encoder encoder, int length, int size) {
-            encoder.EncodeBytes(BitConverter.GetBytes((ushort)length));
-            encoder.EncodeBytes(BitConverter.GetBytes((ushort)size));
+            EncodeUInt16(encoder, (ushort)length);
+            EncodeUInt16(encoder, (ushort)size);
         }
 
         public static void EncodeByteArrayList(Encoder encoder, List<byte[]> bytes) {
@@ -262,8 +271,8 @@ namespace ImageBurner {
 
 
         public static (int,int) DecodeByteArrayListStart(Decoder decoder) {
-            ushort d0 = BitConverter.ToUInt16(decoder.DecodeBytes(2));
-            ushort d1 = BitConverter.ToUInt16(decoder.DecodeBytes(2));     
+            ushort d0 = DecodeUInt16(decoder);
+            ushort d1 = DecodeUInt16(decoder);
             return (d0, d1);       
         }
 
@@ -304,6 +313,17 @@ namespace ImageBurner {
                 s += c;
             }
             return s;
+        }
+
+
+        public static void EncodeVariableLengthString(Encoder encoder, string value) {
+            EncodeUInt16(encoder, (ushort)value.Length);
+            EncodeFixedLengthString(encoder, value, value.Length);
+        }
+
+        public static string DecodeVariableLengthString(Decoder decoder) {
+            int length = DecodeUInt16(decoder);
+            return DecodeFixedLengthString(decoder, length);
         }
     }
 }
