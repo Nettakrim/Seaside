@@ -297,11 +297,13 @@ namespace ImageBurner {
         }
 
 
+        private static char terminatingChar = (char)0;
+
         public static void EncodeFixedLengthString(Encoder encoder, string value, int length) {
             if (value.Length > length) {
                 value = value.Substring(0, length);
             } else if (value.Length < length) {
-                value.PadRight(length, (char)0);
+                value.PadRight(length, terminatingChar);
             }
 
             foreach (char c in value) {
@@ -313,7 +315,10 @@ namespace ImageBurner {
             string s = "";
             for (int i = 0; i < length; i++) {
                 char c = DecodeChar(decoder);
-                if (c == (char)0) {
+                if (c == terminatingChar) {
+                    if (i < length-1) {
+                        decoder.DecodeBytes(((length-i)-1)*2);
+                    }
                     return s;
                 }
                 s += c;
