@@ -6,9 +6,11 @@ using UnityEngine.UI;
 
 public class GalleryPhoto : MonoBehaviour
 {
-    private ImageMetadata metadata;
+    protected ImageMetadata metadata;
 
-    [SerializeField] private RawImage image;
+    [SerializeField] protected RawImage image;
+
+    [SerializeField] protected GameObject goalMarker;
 
     public bool Initialise(Texture2D tex, ImageMetadata metadata) {
         if (metadata == null) {
@@ -24,6 +26,13 @@ public class GalleryPhoto : MonoBehaviour
         }
 
         image.texture = tex;
+
+        foreach (CameraTargetData.Wrapper wrapper in this.metadata.targets) {
+            if (TargetManager.instance.GetCameraTargetDatas().Contains(wrapper.cameraTargetData)) {
+                goalMarker.SetActive(true);
+                break;
+            }
+        }
         return true;
     }
 
