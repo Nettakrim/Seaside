@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5a13537dffe50408b1e46bd6061f4c, type: 3}
   m_Name: Lighthouse
   m_EditorClassIdentifier: 
-  id: lh
+  idChar: 76
   idByte: 0
   displayName: the Lighthouse

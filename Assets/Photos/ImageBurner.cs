@@ -287,6 +287,16 @@ namespace ImageBurner {
         }
 
 
+        public static void EncodeChar(Encoder encoder, char value) {
+            encoder.EncodeBytes(BitConverter.GetBytes(value));
+        }
+
+
+        public static char DecodeChar(Decoder decoder) {
+            return BitConverter.ToChar(decoder.DecodeBytes(2));
+        }
+
+
         public static void EncodeFixedLengthString(Encoder encoder, string value, int length) {
             if (value.Length > length) {
                 value = value.Substring(0, length);
@@ -295,18 +305,14 @@ namespace ImageBurner {
             }
 
             foreach (char c in value) {
-                encoder.EncodeBytes(BitConverter.GetBytes(c));
+                EncodeChar(encoder, c);
             }
         }
 
         public static string DecodeFixedLengthString(Decoder decoder, int length) {
             string s = "";
-            byte[] bytes = decoder.DecodeBytes(length*2);
-            byte[] carBytes = new byte[2];
             for (int i = 0; i < length; i++) {
-                carBytes[0] = bytes[i*2];
-                carBytes[1] = bytes[(i*2)+1];
-                char c = BitConverter.ToChar(carBytes);
+                char c = DecodeChar(decoder);
                 if (c == (char)0) {
                     return s;
                 }
