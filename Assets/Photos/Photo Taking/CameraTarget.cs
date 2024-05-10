@@ -9,6 +9,8 @@ public class CameraTarget : MonoBehaviour
     protected Renderer r;
 
     [SerializeField] protected CameraTargetData cameraTargetData;
+
+    [SerializeField] protected Collider alternateBounds;
     
     protected void Awake() {
         r = GetComponent<Renderer>();
@@ -40,6 +42,9 @@ public class CameraTarget : MonoBehaviour
     }
 
     public Bounds GetBounds() {
+        if (alternateBounds != null) {
+            return alternateBounds.bounds;
+        }
         return r.bounds;
     }
 

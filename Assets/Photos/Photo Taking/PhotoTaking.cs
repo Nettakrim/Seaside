@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PhotoTaking : MonoBehaviour
@@ -25,7 +26,9 @@ public class PhotoTaking : MonoBehaviour
     [SerializeField] protected float minFovScale = 0.25f;
     [SerializeField] protected float maxFovScale = 1.5f;
 
-    private bool canZoom;
+    protected bool canZoom;
+
+    [SerializeField] protected TextMeshProUGUI info;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
@@ -75,6 +78,7 @@ public class PhotoTaking : MonoBehaviour
         cameraOverlay.SetActive(true);
         manager.player.SetMovementLock(true);
         result.SetActive(false);
+        info.text = "";
         canZoom = false;
     }
 
@@ -99,6 +103,7 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata.rotation = manager.player.GetRotation();
         currentMetadata.fov = photoCamera.fieldOfView;
         currentMetadata.targets = GetVisibleCameraTargets();
+        info.text = currentMetadata.GetInfoText();
     }
 
     protected bool SaveLastPhoto() {

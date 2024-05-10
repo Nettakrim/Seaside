@@ -72,10 +72,6 @@ public class GalleryPhoto : MonoBehaviour
     }
 
     public string GetInfoText() {
-        string s = "";
-        foreach (CameraTargetData.Wrapper wrapper in metadata.targets) {
-            s += wrapper.cameraTargetData.displayName+"\n";
-        }
-        return s;
+        return metadata.GetInfoText();
     }
 }

@@ -43,4 +43,12 @@ public class ImageMetadata {
 
         decoder.Close();
     }
+
+    public string GetInfoText() {
+        string s = "";
+        foreach (CameraTargetData.Wrapper wrapper in targets) {
+            s += wrapper.cameraTargetData.displayName+" "+wrapper.viewProportion+"\n";
+        }
+        return s;
+    }
 }
