@@ -2742,6 +2742,8 @@ MonoBehaviour:
   minFovScale: 0.15
   maxFovScale: 1.5
   info: {fileID: 1606522412}
+  depthMaterial: {fileID: 2100000, guid: 5c02ed993dade06479a6896ecc1b5086, type: 2}
+  depthRenderTex: {fileID: 8600000, guid: b6d78e888bcefe34fa60954469355a58, type: 2}
 --- !u!114 &7686760413621140503
 MonoBehaviour:
   m_ObjectHideFlags: 0

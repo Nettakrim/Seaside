@@ -30,11 +30,17 @@ public class PhotoTaking : MonoBehaviour
 
     [SerializeField] protected TextMeshProUGUI info;
 
+    [SerializeField] protected Material depthMaterial;
+    protected Texture2D depthTex;
+    [SerializeField] protected RenderTexture depthRenderTex;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
         targetFovScale = 1;
         currentFovScale = 1;
+        depthTex = new Texture2D(depthRenderTex.width, depthRenderTex.height);
+        photoCamera.depthTextureMode = DepthTextureMode.Depth;
     }
 
     protected void Update() {
@@ -98,6 +104,8 @@ public class PhotoTaking : MonoBehaviour
     protected void TakePhoto() {
         photoCamera.Render();
 
+        RenderDepth();
+
         currentMetadata = new ImageMetadata();
         currentMetadata.position = manager.player.GetPosition();
         currentMetadata.rotation = manager.player.GetRotation();
@@ -106,6 +114,12 @@ public class PhotoTaking : MonoBehaviour
         info.text = currentMetadata.GetInfoText();
     }
 
+    protected void RenderDepth() {
+        depthMaterial.SetFloat("_AspectRatio", Screen.height / (float)Screen.width);
+        Graphics.Blit(depthTex, depthRenderTex, depthMaterial);
+        ReadPixels(depthRenderTex, depthTex);
+    }
+    
     protected bool SaveLastPhoto() {
         if (currentMetadata == null) {
             Debug.LogWarning("SaveLastPhoto() was called, but there is currently no unsaved photo!");
@@ -115,14 +129,18 @@ public class PhotoTaking : MonoBehaviour
         Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, true);
         tex.filterMode = FilterMode.Point;
 
-        RenderTexture previous = RenderTexture.active;
-        RenderTexture.active = renderTexture;
-        tex.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
-        RenderTexture.active = previous;
+        ReadPixels(renderTexture, tex);
 
         manager.gallery.SaveNewImage(tex, currentMetadata);
         currentMetadata = null;
         return true;
+    }
+
+    protected void ReadPixels(RenderTexture rt, Texture2D tex) {
+        RenderTexture previous = RenderTexture.active;
+        RenderTexture.active = rt;
+        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        RenderTexture.active = previous;
     }
 
     public void SetFov(float fov) {
@@ -154,6 +172,16 @@ public class PhotoTaking : MonoBehaviour
         if (wrapper.viewProportion < wrapper.cameraTargetData.viewProportionThreshold) {
             return false;
         }
+
+        //check depth
+
         return true;
     }
+
+    protected float LineariseDepth(float depth) {
+        float near = photoCamera.nearClipPlane;
+        float far = photoCamera.farClipPlane;
+        return far * near / ((near - far) * depth + far);
+    }
+
 }
