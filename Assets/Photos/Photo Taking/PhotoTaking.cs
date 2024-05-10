@@ -142,6 +142,8 @@ public class PhotoTaking : MonoBehaviour
             }
         }
 
+        targets.Sort((x, y) => y.viewProportion.CompareTo(x.viewProportion));
+
         return targets;
     }
 }
