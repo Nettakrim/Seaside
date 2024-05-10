@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using ImageBurner;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,9 @@ public class GalleryPhoto : MonoBehaviour
 
     [SerializeField] protected GameObject goalMarker;
 
-    public bool Initialise(Texture2D tex, ImageMetadata metadata) {
+    protected FileInfo file;
+
+    public bool Initialise(Texture2D tex, ImageMetadata metadata, FileInfo file) {
         if (metadata == null) {
             this.metadata = new ImageMetadata();
             Decoder decoder = (Decoder)tex;
@@ -26,6 +29,7 @@ public class GalleryPhoto : MonoBehaviour
         }
 
         image.texture = tex;
+        this.file = file;
 
         foreach (CameraTargetData.Wrapper wrapper in this.metadata.targets) {
             if (TargetManager.instance.GetCameraTargetDatas().Contains(wrapper.cameraTargetData)) {
@@ -59,5 +63,19 @@ public class GalleryPhoto : MonoBehaviour
 
     public void OnClick() {
         PhotoManager.instance.gallery.OnClickGalleryPhoto(this);
+    }
+
+    public void Destroy() {
+        Destroy(image.texture);
+        Destroy(gameObject);
+        file.Delete();
+    }
+
+    public string GetInfoText() {
+        string s = "";
+        foreach (CameraTargetData.Wrapper wrapper in metadata.targets) {
+            s += wrapper.cameraTargetData.displayName+"\n";
+        }
+        return s;
     }
 }

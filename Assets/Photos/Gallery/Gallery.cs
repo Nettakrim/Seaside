@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ImageBurner;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -35,6 +36,9 @@ public class Gallery : MonoBehaviour
 
     [SerializeField] private List<TodoItem> todoItems;
 
+    [SerializeField] private GameObject selectedInfo;
+    [SerializeField] private TextMeshProUGUI selectedGoals;
+
     private void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
@@ -61,31 +65,33 @@ public class Gallery : MonoBehaviour
                 tex.filterMode = FilterMode.Point;
                 ImageConversion.LoadImage(tex, bytes);
 
-                AddImageToGallery(tex, null);
+                AddImageToGallery(tex, null, file);
             }
         } else {
             Directory.CreateDirectory(directory);
         }
     }
 
-    protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata) {
+    protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata, FileInfo file) {
         GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
-        bool success = galleryPhoto.Initialise(tex, metadata);
+        bool success = galleryPhoto.Initialise(tex, metadata, file);
         if (!success) {
             Destroy(galleryPhoto.gameObject);
             Destroy(tex);
             return;
         }
         tex.Apply(false, true);
-        
+
         photos.Add(galleryPhoto);
     }
 
     public void SaveNewImage(Texture2D tex, ImageMetadata imageMetadata) {
         imageMetadata.Encode((Encoder)tex);
-        File.WriteAllBytes(GetNextFilename(), tex.EncodeToPNG());
 
-        AddImageToGallery(tex, imageMetadata);
+        string file = GetNextFilename();
+        File.WriteAllBytes(file, tex.EncodeToPNG());
+
+        AddImageToGallery(tex, imageMetadata, new FileInfo(file));
     }
   
     protected string GetNextFilename() {
@@ -153,6 +159,8 @@ public class Gallery : MonoBehaviour
         selectedPhoto = photos[currentPhoto];
         selectedImage.texture = selectedPhoto.GetTexture();
         selectedImage.gameObject.SetActive(true);
+        selectedInfo.SetActive(true);
+        selectedGoals.text = selectedPhoto.GetInfoText();
 
         if (photos.Count%2 == 0) {
             loopImage.gameObject.SetActive(true);
@@ -160,6 +168,7 @@ public class Gallery : MonoBehaviour
             loopImage.texture = galleryPhoto.GetTexture();
             loopButton.onClick.RemoveAllListeners();
             loopButton.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
+            loopImage.transform.GetChild(0).gameObject.SetActive(galleryPhoto.transform.GetChild(0).gameObject.activeSelf);
             loopImage.transform.SetAsLastSibling();
         } else {
             loopImage.gameObject.SetActive(false);
@@ -167,13 +176,17 @@ public class Gallery : MonoBehaviour
     }
 
     public void SetCurrentPhoto(int to) {
-        if (photos.Count == 0) return;
+        if (photos.Count == 0) {
+            currentPhoto = 0;
+            return;
+        }
         currentPhoto = (to+photos.Count)%photos.Count;
     }
 
     public void OpenGallery() {
         gallery.SetActive(true);
         selectedImage.gameObject.SetActive(false);
+        selectedInfo.SetActive(false);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
         UpdateGrid();
@@ -203,6 +216,14 @@ public class Gallery : MonoBehaviour
 
     public void TeleportEnd() {
         manager.SetMode(PhotoManager.Mode.Walking);
+    }
+
+    public void DeleteSelected() {
+        GalleryPhoto photo = photos[currentPhoto];
+        photos.Remove(photo);
+        photo.Destroy();
+        SetCurrentPhoto(currentPhoto-1);
+        UpdateGrid();
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
