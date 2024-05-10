@@ -11,6 +11,8 @@ public class CameraTargetData : ScriptableObject {
     public byte idByte;
     public string displayName;
 
+    public float viewProportionThreshold = 0.1f;
+
     public class Wrapper {
         public CameraTargetData cameraTargetData;
         public float viewProportion;
@@ -25,7 +27,7 @@ public class CameraTargetData : ScriptableObject {
         public void Decode(Decoder decoder) {
             char c = DataTypes.DecodeChar(decoder);
             byte b = decoder.DecodeByte();
-            cameraTargetData = TargetManager.instance.GetCameraTargetData(c, b);
+            cameraTargetData = TargetManager.instance.GetCameraTargetDataFromID(c, b);
             viewProportion = DataTypes.DecodeFloat(decoder);
         }
 

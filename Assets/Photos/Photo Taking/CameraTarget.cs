@@ -15,7 +15,7 @@ public class CameraTarget : MonoBehaviour
     protected void Awake() {
         r = GetComponent<Renderer>();
         if (TargetManager.instance != null) {
-            TargetManager.instance.cameraTargets.Add(this);
+            TargetManager.instance.targetsInWorld.Add(this);
 
             if (cameraTargetData == null) {
                 Debug.LogWarning("Camera Target "+name+" has no CameraTargetData assigned");
@@ -27,7 +27,7 @@ public class CameraTarget : MonoBehaviour
 
     protected void OnDestroy() {
         if (TargetManager.instance != null) {
-            TargetManager.instance.cameraTargets.Remove(this);
+            TargetManager.instance.targetsInWorld.Remove(this);
         }
     }
 

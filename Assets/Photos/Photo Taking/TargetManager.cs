@@ -7,22 +7,22 @@ public class TargetManager : MonoBehaviour
 {
     public static TargetManager instance;
 
-    [SerializeField] protected List<CameraTargetData> targets;
+    [SerializeField] protected List<CameraTargetData> targetDatas;
 
-    [NonSerialized] public List<CameraTarget> cameraTargets = new List<CameraTarget>();
+    [NonSerialized] public List<CameraTarget> targetsInWorld = new List<CameraTarget>();
 
     public void Awake() {
         instance = this;
     }
 
-    public CameraTargetData GetCameraTargetData(char c, byte b) {
-        foreach (CameraTargetData target in targets) {
+    public CameraTargetData GetCameraTargetDataFromID(char c, byte b) {
+        foreach (CameraTargetData target in targetDatas) {
             if (target.idChar == c && target.idByte == b) return target;
         }
         return null;
     }
 
     public List<CameraTargetData> GetCameraTargetDatas() {
-        return targets;
+        return targetDatas;
     }
 }

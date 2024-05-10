@@ -133,11 +133,14 @@ public class PhotoTaking : MonoBehaviour
         List<CameraTargetData.Wrapper> targets = new List<CameraTargetData.Wrapper>();
         Plane[] planes = new Plane[6];
 
-        foreach (CameraTarget cameraTarget in TargetManager.instance.cameraTargets) {
+        foreach (CameraTarget cameraTarget in TargetManager.instance.targetsInWorld) {
             if (cameraTarget.IsVisible()) {
                 GeometryUtility.CalculateFrustumPlanes(photoCamera, planes);
                 if (GeometryUtility.TestPlanesAABB(planes, cameraTarget.GetBounds())) {
-                    targets.Add(cameraTarget.GetCameraTargetData(photoCamera));
+                    CameraTargetData.Wrapper wrapper = cameraTarget.GetCameraTargetData(photoCamera);
+                    if (IsVisible(cameraTarget, wrapper)) {
+                        targets.Add(wrapper);
+                    }
                 }
             }
         }
@@ -145,5 +148,12 @@ public class PhotoTaking : MonoBehaviour
         targets.Sort((x, y) => y.viewProportion.CompareTo(x.viewProportion));
 
         return targets;
+    }
+
+    protected bool IsVisible(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper) {
+        if (wrapper.viewProportion < wrapper.cameraTargetData.viewProportionThreshold) {
+            return false;
+        }
+        return true;
     }
 }
