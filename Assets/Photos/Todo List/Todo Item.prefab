@@ -127,8 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 4273995237998911235}
   image: {fileID: 6072981837054459207}
-  incomplete: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  complete: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  incomplete: {fileID: 21300000, guid: 4397d3efcb16cef479d1813e1af0d1f8, type: 3}
+  complete: {fileID: 21300000, guid: 12be815d1c61d5c4fb2afeffcff73d6b, type: 3}
 --- !u!1 &5204634525563114068
 GameObject:
   m_ObjectHideFlags: 0
