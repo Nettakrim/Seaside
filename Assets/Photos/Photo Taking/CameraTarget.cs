@@ -16,10 +16,12 @@ public class CameraTarget : MonoBehaviour
         r = GetComponent<Renderer>();
         if (TargetManager.instance != null) {
             TargetManager.instance.cameraTargets.Add(this);
-        }
 
-        if (cameraTargetData == null) {
-            Debug.LogWarning("Camera Target "+name+" has no CameraTargetData assigned");
+            if (cameraTargetData == null) {
+                Debug.LogWarning("Camera Target "+name+" has no CameraTargetData assigned");
+            } else if (!TargetManager.instance.GetCameraTargetDatas().Contains(cameraTargetData)) {
+                Debug.LogWarning("Target Manager does not inculde "+cameraTargetData+" but "+name+" uses it");
+            }
         }
     }
 
