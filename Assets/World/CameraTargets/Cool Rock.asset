@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5a13537dffe50408b1e46bd6061f4c, type: 3}
   m_Name: Cool Rock
   m_EditorClassIdentifier: 
-  idChar: 76
+  idChar: 82
   idByte: 0
   displayName: a cool rock
-  viewProportionThreshold: 0.1
+  visibilityThreshold: 0.1
