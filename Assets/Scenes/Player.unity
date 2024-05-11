@@ -187,8 +187,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -657,8 +657,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80.11688, y: -71}
-  m_SizeDelta: {x: 160.23376, y: 142}
+  m_AnchoredPosition: {x: 80.11688, y: -56}
+  m_SizeDelta: {x: 152.23376, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &718738614
 MonoBehaviour:
@@ -764,7 +764,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 4, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -2, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -815,8 +815,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80.11688, y: -158}
-  m_SizeDelta: {x: 160.23376, y: 32}
+  m_AnchoredPosition: {x: 80.11688, y: -139}
+  m_SizeDelta: {x: 152.23376, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &819502113
 MonoBehaviour:
@@ -834,7 +834,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 32
+  m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -857,7 +857,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -867,10 +867,11 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 7885c8ddbcf1a5d4a94cc77dbe4e875f, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -914,8 +915,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 910176f33cd54014290e0058f1493fad, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7885c8ddbcf1a5d4a94cc77dbe4e875f, type: 3}
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -999,8 +1000,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1317,8 +1318,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80.11688, y: -190}
-  m_SizeDelta: {x: 160.23376, y: 32}
+  m_AnchoredPosition: {x: 80.11688, y: -186}
+  m_SizeDelta: {x: 152.23376, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1541844981
 MonoBehaviour:
@@ -1336,7 +1337,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 32
+  m_PreferredHeight: 40
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -1359,7 +1360,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1369,10 +1370,11 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed,
+      type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 31852ca76fab75244bb2d4520516f3ed, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 7885c8ddbcf1a5d4a94cc77dbe4e875f, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -1416,8 +1418,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 910176f33cd54014290e0058f1493fad, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 7885c8ddbcf1a5d4a94cc77dbe4e875f, type: 3}
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1486,12 +1488,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 4
+    m_Right: 4
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 6
-  m_Spacing: 0
+  m_Spacing: 7
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -2269,7 +2271,7 @@ PrefabInstance:
     - target: {fileID: 4273995237998911235, guid: 3b8be9f9d8cd2304da2329bd69009274,
         type: 3}
       propertyPath: m_text
-      value: Take a Picture!
+      value: Take a Photo!
       objectReference: {fileID: 0}
     - target: {fileID: 4985020923514945498, guid: 3b8be9f9d8cd2304da2329bd69009274,
         type: 3}
@@ -2465,7 +2467,7 @@ GameObject:
   - component: {fileID: 9000049559415699600}
   - component: {fileID: 2487946124353247235}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
