@@ -50,10 +50,10 @@ public class CameraTarget : MonoBehaviour
         return r.bounds;
     }
 
-    public CameraTargetData.Wrapper GetCameraTargetData(Camera photoCamera) {
+    public CameraTargetData.Wrapper GetCameraTargetData() {
         CameraTargetData.Wrapper wrapper = new CameraTargetData.Wrapper();
         wrapper.cameraTargetData = cameraTargetData;
-        wrapper.viewProportion = Mathf.Atan((GetBounds().extents.magnitude*2)/Vector3.Distance(photoCamera.transform.position, transform.position))/(photoCamera.fieldOfView*Mathf.Deg2Rad);
+        wrapper.visibility = 1;
         return wrapper;
     }
 }

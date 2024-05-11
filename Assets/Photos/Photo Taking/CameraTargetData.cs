@@ -11,16 +11,16 @@ public class CameraTargetData : ScriptableObject {
     public byte idByte;
     public string displayName;
 
-    public float viewProportionThreshold = 0.1f;
+    public float visibilityThreshold = 0.1f;
 
     public class Wrapper {
         public CameraTargetData cameraTargetData;
-        public float viewProportion;
+        public float visibility;
 
         public void Encode(Encoder encoder) {
             DataTypes.EncodeChar(encoder, cameraTargetData.idChar);
             encoder.EncodeByte(cameraTargetData.idByte);
-            DataTypes.EncodeFloat(encoder, viewProportion);
+            DataTypes.EncodeFloat(encoder, visibility);
             return ;
         }
 
@@ -28,11 +28,19 @@ public class CameraTargetData : ScriptableObject {
             char c = DataTypes.DecodeChar(decoder);
             byte b = decoder.DecodeByte();
             cameraTargetData = TargetManager.instance.GetCameraTargetDataFromID(c, b);
-            viewProportion = DataTypes.DecodeFloat(decoder);
+            visibility = DataTypes.DecodeFloat(decoder);
         }
 
         public static int GetByteLength() {
             return 7;
+        }
+
+        public bool PassesVisibilityCheck() {
+            return visibility > cameraTargetData.visibilityThreshold;
+        }
+
+        public void MultiplyVisibility(float multiplier) {
+            visibility *= multiplier;
         }
     }
 }

@@ -47,7 +47,7 @@ public class ImageMetadata {
     public string GetInfoText() {
         string s = "";
         foreach (CameraTargetData.Wrapper wrapper in targets) {
-            s += wrapper.cameraTargetData.displayName+" "+wrapper.viewProportion+"\n";
+            s += wrapper.cameraTargetData.displayName+" "+wrapper.visibility+"\n";
         }
         return s;
     }

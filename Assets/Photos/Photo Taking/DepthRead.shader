@@ -46,12 +46,12 @@ Shader "Custom/DepthRead"
 
             float _AspectRatio;
             
-            fixed4 frag (v2f i) : SV_Target
+            float frag (v2f i) : SV_Target
             {
                 float2 uv = i.uv;
                 uv.x = ((uv.x-0.5)*_AspectRatio)+0.5;
-                fixed4 col = tex2D(_CameraDepthTexture, uv);
-                return col;
+                float4 col = tex2D(_CameraDepthTexture, uv);
+                return Linear01Depth(col.r);
             }
             ENDCG
         }

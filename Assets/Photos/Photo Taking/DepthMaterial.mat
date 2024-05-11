@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DepthMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 1b076396a705c7043b5ddeacdee612d4,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: 6a11cbaaa3af1a84b8357a4e6ef69926, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -84,7 +83,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AspectRatio: 0.5677656
+    - _AspectRatio: 0.56707317
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1

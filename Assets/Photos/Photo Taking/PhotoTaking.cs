@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PhotoTaking : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class PhotoTaking : MonoBehaviour
         normalFov = mainCamera.fieldOfView;
         targetFovScale = 1;
         currentFovScale = 1;
-        depthTex = new Texture2D(depthRenderTex.width, depthRenderTex.height);
+        depthTex = new Texture2D(depthRenderTex.width, depthRenderTex.height, TextureFormat.RFloat, false);
         photoCamera.depthTextureMode = DepthTextureMode.Depth;
     }
 
@@ -155,33 +156,68 @@ public class PhotoTaking : MonoBehaviour
             if (cameraTarget.IsVisible()) {
                 GeometryUtility.CalculateFrustumPlanes(photoCamera, planes);
                 if (GeometryUtility.TestPlanesAABB(planes, cameraTarget.GetBounds())) {
-                    CameraTargetData.Wrapper wrapper = cameraTarget.GetCameraTargetData(photoCamera);
-                    if (IsVisible(cameraTarget, wrapper)) {
+                    CameraTargetData.Wrapper wrapper = cameraTarget.GetCameraTargetData();
+                    if (CalculateVisibility(cameraTarget, wrapper)) {
                         targets.Add(wrapper);
                     }
                 }
             }
         }
 
-        targets.Sort((x, y) => y.viewProportion.CompareTo(x.viewProportion));
+        targets.Sort((x, y) => y.visibility.CompareTo(x.visibility));
 
         return targets;
     }
 
-    protected bool IsVisible(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper) {
-        if (wrapper.viewProportion < wrapper.cameraTargetData.viewProportionThreshold) {
+    protected bool CalculateVisibility(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper) {
+        Bounds bounds = cameraTarget.GetBounds();
+        float viewProportion = Mathf.Atan((bounds.extents.magnitude*2)/Vector3.Distance(photoCamera.transform.position, cameraTarget.transform.position))/(photoCamera.fieldOfView*Mathf.Deg2Rad);
+
+        wrapper.MultiplyVisibility(viewProportion);
+        if (!wrapper.PassesVisibilityCheck()) {
             return false;
         }
 
-        //check depth
+        //check if object is occluded by another
+        float minX = 1;
+        float maxX = 0;
+        float minY = 1;
+        float maxY = 0;
+        float depth = 0;
 
-        return true;
+        //find 8 corners of bounding cube, then project them to get 4 corners of a viewport square that encloses the 8 corners
+        for (int i = 0; i < 8; i++) {
+            Vector3 pos = photoCamera.WorldToViewportPoint(bounds.center + new Vector3(bounds.extents.x*((i&1)-0.5f)*2, bounds.extents.y*((i&2)-1), bounds.extents.z*((i&4)-2f)/2));
+            minX = Mathf.Min(minX, pos.x);
+            maxX = Mathf.Max(maxX, pos.x);
+            minY = Mathf.Min(minY, pos.y);
+            maxY = Mathf.Max(maxY, pos.y);
+            depth += pos.z/8;
+        }
+
+        int minXi = minX < 0 ? 0   : Mathf.RoundToInt(minX*256);
+        int maxXi = maxX > 1 ? 256 : Mathf.RoundToInt(maxX*256);
+        int minYi = minY < 0 ? 0   : Mathf.RoundToInt(minY*256);
+        int maxYi = maxY > 1 ? 256 : Mathf.RoundToInt(maxY*256);
+
+        //get the ratio of covered pixels to pixels that are on the object
+        int onObject = 0;
+        int covered = 0;
+
+        for (int x = minXi; x <= maxXi; x++) {
+            for (int y = minYi; y <= maxYi; y++) {
+                Color depthAtPos = depthTex.GetPixel(x, y); 
+                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/depth;
+                if (Mathf.Abs(difference) < 0.5) onObject++;
+                if (difference > 0.5) covered++;
+            }
+        }
+
+        if (covered > 0) {
+            float covering = Mathf.Clamp01(onObject/(float)covered);
+            wrapper.MultiplyVisibility(covering*covering);
+        }
+        
+        return wrapper.PassesVisibilityCheck();
     }
-
-    protected float LineariseDepth(float depth) {
-        float near = photoCamera.nearClipPlane;
-        float far = photoCamera.farClipPlane;
-        return far * near / ((near - far) * depth + far);
-    }
-
 }
