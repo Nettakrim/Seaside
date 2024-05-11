@@ -35,6 +35,8 @@ public class PhotoTaking : MonoBehaviour
     protected Texture2D depthTex;
     [SerializeField] protected RenderTexture depthRenderTex;
 
+    protected bool depthRendered;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
@@ -65,7 +67,7 @@ public class PhotoTaking : MonoBehaviour
             }
 
             if (Input.GetKeyDown(KeyCode.A)) {
-                result.SetActive(false);
+                ClearTakenPhoto();
             }
 
             if (Input.GetKeyDown(KeyCode.D)) {
@@ -84,8 +86,7 @@ public class PhotoTaking : MonoBehaviour
     public void OpenCameraMode() {
         cameraOverlay.SetActive(true);
         manager.player.SetMovementLock(true);
-        result.SetActive(false);
-        info.text = "";
+        ClearTakenPhoto();
         canZoom = false;
     }
 
@@ -93,6 +94,10 @@ public class PhotoTaking : MonoBehaviour
         cameraOverlay.SetActive(false);
         manager.player.SetMovementLock(false);
         targetFovScale = 1;
+    }
+
+    public void SetFov(float fov) {
+        UpdateFov(fov/normalFov);
     }
 
     protected void UpdateFov(float newScale) {
@@ -105,7 +110,7 @@ public class PhotoTaking : MonoBehaviour
     protected void TakePhoto() {
         photoCamera.Render();
 
-        RenderDepth();
+        depthRendered = false;
 
         currentMetadata = new ImageMetadata();
         currentMetadata.position = manager.player.GetPosition();
@@ -115,10 +120,10 @@ public class PhotoTaking : MonoBehaviour
         info.text = currentMetadata.GetInfoText();
     }
 
-    protected void RenderDepth() {
-        depthMaterial.SetFloat("_AspectRatio", Screen.height / (float)Screen.width);
-        Graphics.Blit(depthTex, depthRenderTex, depthMaterial);
-        ReadPixels(depthRenderTex, depthTex);
+    protected void ClearTakenPhoto() {
+        result.SetActive(false);
+        info.text = "";
+        currentMetadata = null;
     }
     
     protected bool SaveLastPhoto() {
@@ -142,10 +147,6 @@ public class PhotoTaking : MonoBehaviour
         RenderTexture.active = rt;
         tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         RenderTexture.active = previous;
-    }
-
-    public void SetFov(float fov) {
-        UpdateFov(fov/normalFov);
     }
 
     protected List<CameraTargetData.Wrapper> GetVisibleCameraTargets() {
@@ -178,14 +179,14 @@ public class PhotoTaking : MonoBehaviour
             return false;
         }
 
-        //check if object is occluded by another
+        //check if object is occluded by another by looking at the depth map
         float minX = 1;
         float maxX = 0;
         float minY = 1;
         float maxY = 0;
         float depth = 0;
 
-        //find 8 corners of bounding cube, then project them to get 4 corners of a viewport square that encloses the 8 corners
+        //find 8 corners of bounding cube, then figure out the 4 corners of a viewport square that encloses the 8 corners
         for (int i = 0; i < 8; i++) {
             Vector3 pos = photoCamera.WorldToViewportPoint(bounds.center + new Vector3(bounds.extents.x*((i&1)-0.5f)*2, bounds.extents.y*((i&2)-1), bounds.extents.z*((i&4)-2f)/2));
             minX = Mathf.Min(minX, pos.x);
@@ -194,11 +195,30 @@ public class PhotoTaking : MonoBehaviour
             maxY = Mathf.Max(maxY, pos.y);
             depth += pos.z/8;
         }
+        //averaged depth of the 8 points is along the middle of the object, however usually the visible surface will be a little infront
+        depth -= new Vector2(bounds.extents.x, bounds.extents.z).magnitude/2;
+
+        float outOfFrame = 1;
+        if (minX < 0) outOfFrame -= minX;
+        if (maxX > 1) outOfFrame += maxX-1;
+        if (minY < 0) outOfFrame -= minY;
+        if (maxY > 1) outOfFrame += maxY-1;
+
+        wrapper.MultiplyVisibility(1/outOfFrame);
+        if (!wrapper.PassesVisibilityCheck()) {
+            return false;
+        }
 
         int minXi = minX < 0 ? 0   : Mathf.RoundToInt(minX*256);
         int maxXi = maxX > 1 ? 256 : Mathf.RoundToInt(maxX*256);
         int minYi = minY < 0 ? 0   : Mathf.RoundToInt(minY*256);
         int maxYi = maxY > 1 ? 256 : Mathf.RoundToInt(maxY*256);
+
+        //only render depth now since it might not have been needed, if a previous object in the photo already rendered it dont rerender
+        if (!depthRendered) {
+            RenderDepth();
+            depthRendered = true;
+        }
 
         //get the ratio of covered pixels to pixels that are on the object
         int onObject = 0;
@@ -207,9 +227,9 @@ public class PhotoTaking : MonoBehaviour
         for (int x = minXi; x <= maxXi; x++) {
             for (int y = minYi; y <= maxYi; y++) {
                 Color depthAtPos = depthTex.GetPixel(x, y); 
-                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/depth;
-                if (Mathf.Abs(difference) < 0.5) onObject++;
-                if (difference > 0.5) covered++;
+                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/((depth+1)/2);
+                if (Mathf.Abs(difference) < 0.333) onObject++;
+                if (difference >= 0.333) covered++;
             }
         }
 
@@ -219,5 +239,11 @@ public class PhotoTaking : MonoBehaviour
         }
         
         return wrapper.PassesVisibilityCheck();
+    }
+
+    protected void RenderDepth() {
+        depthMaterial.SetFloat("_AspectRatio", Screen.height / (float)Screen.width);
+        Graphics.Blit(depthTex, depthRenderTex, depthMaterial);
+        ReadPixels(depthRenderTex, depthTex);
     }
 }
