@@ -210,7 +210,7 @@ public class PhotoTaking : MonoBehaviour
         if (minY < 0) outOfFrame *= 1-((- minY)/(maxY-minY));
         if (maxY > 1) outOfFrame *= 1-((maxY-1)/(maxY-minY));
 
-        wrapper.MultiplyVisibility(outOfFrame*outOfFrame);
+        wrapper.MultiplyVisibility(outOfFrame);
         if (!wrapper.PassesVisibilityCheck()) {
             return false;
         }
