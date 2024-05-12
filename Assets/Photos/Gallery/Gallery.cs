@@ -11,35 +11,37 @@ using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
 {
-    [SerializeField] private PhotoManager manager;
+    [SerializeField] protected PhotoManager manager;
 
-    private List<GalleryPhoto> photos;
+    protected List<GalleryPhoto> photos;
 
-    [SerializeField] private GalleryPhoto galleryPhotoPrefab;
-    [SerializeField] private Transform photoLayoutParent;
+    [SerializeField] protected GalleryPhoto galleryPhotoPrefab;
+    [SerializeField] protected Transform photoLayoutParent;
 
-    [SerializeField] private GameObject gallery;
+    [SerializeField] protected GameObject gallery;
 
-    private GalleryPhoto selectedPhoto;
+    protected GalleryPhoto selectedPhoto;
 
-    private int currentPhoto;
+    protected int currentPhoto;
 
-    [SerializeField] private RawImage loopImage;
-    [SerializeField] private Button loopButton;
+    [SerializeField] protected RawImage loopImage;
+    [SerializeField] protected Button loopButton;
 
-    [SerializeField] private RawImage selectedImage;
+    [SerializeField] protected RawImage selectedImage;
 
-    public Animator teleportAnimation;
+    [SerializeField] protected Animator teleportAnimation;
 
-    [SerializeField] private Transform todoList;
-    [SerializeField] private TodoItem todoItemPrefab;
+    [SerializeField] protected Transform todoList;
+    [SerializeField] protected TodoItem todoItemPrefab;
 
-    [SerializeField] private List<TodoItem> todoItems;
+    [SerializeField] protected List<TodoItem> todoItems;
 
-    [SerializeField] private GameObject selectedInfo;
-    [SerializeField] private TextMeshProUGUI selectedGoals;
+    [SerializeField] protected GameObject selectedInfo;
+    [SerializeField] protected TextMeshProUGUI selectedGoals;
 
-    private void Awake() {
+    [SerializeField] protected GameObject cameraPrompt;
+
+    protected void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
             photos[Random.Range(0, photos.Count)].Teleport(manager.player);
@@ -145,7 +147,12 @@ public class Gallery : MonoBehaviour
 
         if (photos.Count == 0) {
             loopImage.gameObject.SetActive(false);
+            selectedImage.gameObject.SetActive(false);
+            selectedInfo.SetActive(false);
+            cameraPrompt.SetActive(true);
             return;
+        } else {
+            cameraPrompt.SetActive(false);
         }
 
         for (int i = 0; i < photos.Count; i++) {
@@ -185,8 +192,6 @@ public class Gallery : MonoBehaviour
 
     public void OpenGallery() {
         gallery.SetActive(true);
-        selectedImage.gameObject.SetActive(false);
-        selectedInfo.SetActive(false);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
         UpdateGrid();
@@ -205,6 +210,7 @@ public class Gallery : MonoBehaviour
     }
 
     public void TeleportStart() {
+        if (selectedPhoto == null) return;
         EventSystem.current.SetSelectedGameObject(null);
         teleportAnimation.Play("TeleportEnter");
     }
@@ -219,6 +225,7 @@ public class Gallery : MonoBehaviour
     }
 
     public void DeleteSelected() {
+        EventSystem.current.SetSelectedGameObject(null);
         GalleryPhoto photo = photos[currentPhoto];
         photos.Remove(photo);
         photo.Destroy();
@@ -231,5 +238,9 @@ public class Gallery : MonoBehaviour
         return directory.GetFiles(searchPattern).OrderBy(file =>
             Regex.Replace(file.Name, @"\d+", match => match.Value.PadLeft(numberPadding, '0'))
         ).ToArray();
+    }
+
+    public int PhotoCount() {
+        return photos.Count;
     }
 }

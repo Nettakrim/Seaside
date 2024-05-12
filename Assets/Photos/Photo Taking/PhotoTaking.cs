@@ -37,6 +37,8 @@ public class PhotoTaking : MonoBehaviour
 
     protected bool depthRendered;
 
+    [SerializeField] protected GameObject prompt;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
@@ -88,6 +90,7 @@ public class PhotoTaking : MonoBehaviour
         manager.player.SetMovementLock(true);
         ClearTakenPhoto();
         canZoom = false;
+        prompt.SetActive(manager.gallery.PhotoCount() == 0);
     }
 
     public void CloseCameraMode() {
