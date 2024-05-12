@@ -199,12 +199,12 @@ public class PhotoTaking : MonoBehaviour
         depth -= new Vector2(bounds.extents.x, bounds.extents.z).magnitude/2;
 
         float outOfFrame = 1;
-        if (minX < 0) outOfFrame -= minX;
-        if (maxX > 1) outOfFrame += maxX-1;
-        if (minY < 0) outOfFrame -= minY;
-        if (maxY > 1) outOfFrame += maxY-1;
+        if (minX < 0) outOfFrame += (- minX)/(maxX-minX);
+        if (maxX > 1) outOfFrame += (maxX-1)/(maxX-minX);
+        if (minY < 0) outOfFrame += (- minY)/(maxY-minY);
+        if (maxY > 1) outOfFrame += (maxY-1)/(maxY-minY);
 
-        wrapper.MultiplyVisibility(1/outOfFrame);
+        wrapper.MultiplyVisibility(1/(outOfFrame*outOfFrame));
         if (!wrapper.PassesVisibilityCheck()) {
             return false;
         }
