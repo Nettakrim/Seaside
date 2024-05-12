@@ -11,7 +11,7 @@ public class CameraTargetData : ScriptableObject {
     public byte idByte;
     public string displayName;
 
-    public float visibilityThreshold = 0.1f;
+    public float visibilityThreshold = 0.25f;
 
     public class Wrapper {
         public CameraTargetData cameraTargetData;

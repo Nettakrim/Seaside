@@ -170,11 +170,17 @@ public class PhotoTaking : MonoBehaviour
         return targets;
     }
 
+    protected float Smooth(float t) {
+        t = Mathf.Clamp01(t);
+        return -2*t*t*t + 3*t*t;
+    }
+
     protected bool CalculateVisibility(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper) {
         Bounds bounds = cameraTarget.GetBounds();
         float viewProportion = Mathf.Atan((bounds.extents.magnitude*2)/Vector3.Distance(photoCamera.transform.position, cameraTarget.transform.position))/(photoCamera.fieldOfView*Mathf.Deg2Rad);
 
-        wrapper.MultiplyVisibility(viewProportion);
+        float v = Smooth(Smooth(Mathf.Sqrt(viewProportion)));
+        wrapper.MultiplyVisibility(v);
         if (!wrapper.PassesVisibilityCheck()) {
             return false;
         }
@@ -199,12 +205,12 @@ public class PhotoTaking : MonoBehaviour
         depth -= new Vector2(bounds.extents.x, bounds.extents.z).magnitude/2;
 
         float outOfFrame = 1;
-        if (minX < 0) outOfFrame += (- minX)/(maxX-minX);
-        if (maxX > 1) outOfFrame += (maxX-1)/(maxX-minX);
-        if (minY < 0) outOfFrame += (- minY)/(maxY-minY);
-        if (maxY > 1) outOfFrame += (maxY-1)/(maxY-minY);
+        if (minX < 0) outOfFrame *= 1-((- minX)/(maxX-minX));
+        if (maxX > 1) outOfFrame *= 1-((maxX-1)/(maxX-minX));
+        if (minY < 0) outOfFrame *= 1-((- minY)/(maxY-minY));
+        if (maxY > 1) outOfFrame *= 1-((maxY-1)/(maxY-minY));
 
-        wrapper.MultiplyVisibility(1/(outOfFrame*outOfFrame));
+        wrapper.MultiplyVisibility(outOfFrame*outOfFrame);
         if (!wrapper.PassesVisibilityCheck()) {
             return false;
         }
