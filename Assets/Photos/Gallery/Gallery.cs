@@ -218,10 +218,12 @@ public class Gallery : MonoBehaviour
     public void Teleport() {
         selectedPhoto.Teleport(manager.player);
         manager.photoTaking.SetFov(selectedPhoto.GetFov());
+        manager.player.SetRotationSpeed(0);
     }
 
     public void TeleportEnd() {
         manager.SetMode(PhotoManager.Mode.Walking);
+        manager.player.SetRotationSpeed(1);
     }
 
     public void DeleteSelected() {

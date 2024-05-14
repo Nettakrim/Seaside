@@ -81,8 +81,8 @@ public class PlayerController : MonoBehaviour
         }
 
         // Player rotation - rotate the camera instead of the player themselves
-        pitch += Input.GetAxis("Pitch") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
-        yaw += Input.GetAxis("Turn") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
+        pitch += -Input.GetAxis("Mouse Y") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
+        yaw += Input.GetAxis("Mouse X") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
