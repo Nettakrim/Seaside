@@ -90,7 +90,7 @@ public class PhotoTaking : MonoBehaviour
         manager.player.SetMovementLock(true);
         ClearTakenPhoto();
         canZoom = false;
-        prompt.SetActive(manager.gallery.PhotoCount() == 0);
+        prompt.SetActive(manager.gallery.PhotoCount() <= 1);
     }
 
     public void CloseCameraMode() {

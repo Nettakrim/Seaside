@@ -40,6 +40,8 @@ public class Gallery : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI selectedGoals;
 
     [SerializeField] protected GameObject cameraPrompt;
+    [SerializeField] protected GameObject exitPrompt;
+    [SerializeField] protected GameObject cyclePrompt;
 
     protected void Awake() {
         LoadFromFiles();
@@ -47,6 +49,7 @@ public class Gallery : MonoBehaviour
             photos[Random.Range(0, photos.Count)].Teleport(manager.player);
         } else {
             manager.player.TeleportToDefaultSpawnPosition();
+            manager.NextTutorialStep();
         }
         
         foreach (CameraTargetData target in TargetManager.instance.GetCameraTargetDatas()) {
@@ -153,6 +156,8 @@ public class Gallery : MonoBehaviour
             return;
         } else {
             cameraPrompt.SetActive(false);
+            exitPrompt.SetActive(photos.Count == 1);
+            cyclePrompt.SetActive(photos.Count == 2 || photos.Count == 3);
         }
 
         for (int i = 0; i < photos.Count; i++) {

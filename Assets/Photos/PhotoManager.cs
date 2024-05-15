@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class PhotoManager : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class PhotoManager : MonoBehaviour
     public PlayerController player;
 
     public static PhotoManager instance;
+
+    [SerializeField] protected TextMeshProUGUI tutorial;
+    protected int tutorialStep;
+    protected Vector3 startPosition;
+    [SerializeField] protected float tutorialWalkDistance;
 
     public enum Mode {
         Walking,
@@ -45,6 +51,10 @@ public class PhotoManager : MonoBehaviour
         if (currentMode == Mode.PhotoTaking) {
             photoTaking.OpenCameraMode();
         }
+
+        if (tutorialStep > 0) {
+            tutorial.gameObject.SetActive(currentMode == Mode.Walking);
+        }
     }
 
     protected void Update() {
@@ -55,6 +65,8 @@ public class PhotoManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
             SetMode(currentMode == Mode.Walking ? Mode.Gallery : Mode.Walking);
         }
+
+        UpdateTutorial();
     }
 
     public bool MouseOnUI() {
@@ -78,5 +90,53 @@ public class PhotoManager : MonoBehaviour
         List<RaycastResult> raysastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raysastResults);
         return raysastResults;
+    }
+
+    protected void UpdateTutorial() {
+        if (tutorialStep == 0) {
+            if (gallery.PhotoCount() == 0) {
+                tutorialStep = 1;
+                NextTutorialStep();
+            }
+        } else if (tutorialStep == 1) {
+            if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance) {
+                NextTutorialStep();
+            }
+        } else if (tutorialStep == 2) {
+            if (gallery.PhotoCount() > 0) {
+                NextTutorialStep();
+            }
+        } else if (tutorialStep >= 3) {
+            if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
+                if (tutorialStep == 4) {
+                    EndTutorial();
+                } else {
+                    NextTutorialStep();
+                }
+            }
+        }
+    }
+
+    public void NextTutorialStep() {
+        tutorialStep++;
+        tutorial.gameObject.SetActive(currentMode == Mode.Walking);
+        
+        if (tutorialStep == 1) {
+            tutorial.text = "Use the Mouse to look around and WASD/Space to move!";
+            startPosition = player.transform.position;
+        }
+
+        if (tutorialStep == 2) {
+            tutorial.text = "Press the Left Mouse Button to start taking pictures";
+        }
+
+        if (tutorialStep >= 3) {
+            tutorial.text = "Press the Right Mouse Button to see your photos and to-do list";
+        }
+    }
+
+    public void EndTutorial() {
+        tutorialStep = 0;
+        tutorial.gameObject.SetActive(false);
     }
 }
