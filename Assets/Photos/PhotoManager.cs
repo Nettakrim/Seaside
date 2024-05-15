@@ -49,11 +49,11 @@ public class PhotoManager : MonoBehaviour
 
     protected void Update() {
         if (Input.GetKeyDown(KeyCode.Mouse0) && !MouseOnUI()) {
-            SetMode(currentMode == Mode.PhotoTaking ? Mode.Walking : Mode.PhotoTaking);
+            SetMode(currentMode == Mode.Walking ? Mode.PhotoTaking : Mode.Walking);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
-            SetMode(currentMode == Mode.Gallery ? Mode.Walking : Mode.Gallery);
+            SetMode(currentMode == Mode.Walking ? Mode.Gallery : Mode.Walking);
         }
     }
 
