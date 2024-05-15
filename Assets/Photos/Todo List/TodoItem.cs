@@ -23,17 +23,17 @@ public class TodoItem : MonoBehaviour
         image.sprite = isComplete ? complete : incomplete;
     }
 
-    public void TestPhotos(List<GalleryPhoto> photos) {
-        if (cameraTargetData == null) {
-            SetComplete(photos.Count > 0);
-            return;
-        }
+    public bool CheckComplete(List<GalleryPhoto> photos) {
         SetComplete(false);
+        if (cameraTargetData == null) {
+            return true;
+        }
         foreach (GalleryPhoto photo in photos) {
             if (photo.ContainsTarget(cameraTargetData)) {
                 SetComplete(true);
-                return;
+                return true;
             }
         }
+        return false;
     }
 }

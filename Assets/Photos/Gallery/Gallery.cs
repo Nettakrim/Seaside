@@ -144,9 +144,18 @@ public class Gallery : MonoBehaviour
     }
 
     public void UpdateGrid() {
+        int c = 0;
         foreach (TodoItem todoItem in todoItems) {
-            todoItem.TestPhotos(photos);
+            if (todoItem.CheckComplete(photos)) {
+                c++;
+            }
         }
+        if (c == todoItems.Count) {
+            foreach (TodoItem todoItem in todoItems) {
+                todoItem.SetComplete(true);
+            }
+        }
+
 
         if (photos.Count == 0) {
             loopImage.gameObject.SetActive(false);
