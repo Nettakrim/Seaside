@@ -236,7 +236,7 @@ public class PhotoTaking : MonoBehaviour
         for (int x = minXi; x <= maxXi; x++) {
             for (int y = minYi; y <= maxYi; y++) {
                 Color depthAtPos = depthTex.GetPixel(x, y); 
-                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/((depth+1)/2);
+                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/((depth+50)/50);
                 if (Mathf.Abs(difference) < 0.333) onObject++;
                 if (difference >= 0.333) covered++;
             }
