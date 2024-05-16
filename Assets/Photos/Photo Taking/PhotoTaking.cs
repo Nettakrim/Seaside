@@ -135,14 +135,33 @@ public class PhotoTaking : MonoBehaviour
             return false;
         }
 
-        Texture2D tex = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, true);
-        tex.filterMode = FilterMode.Point;
-
-        ReadPixels(renderTexture, tex);
+        Texture2D tex = GetTextureFromHDR(renderTexture);
 
         manager.gallery.SaveNewImage(tex, currentMetadata);
         currentMetadata = null;
         return true;
+    }
+
+    protected Texture2D GetTextureFromHDR(RenderTexture rt) {
+        Texture2D readTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBAHalf, false, false);
+
+        ReadPixels(rt, readTex);
+
+        Color[] colors = readTex.GetPixels();
+        Destroy(readTex);
+        for (int i = 0; i < colors.Length; i++) {
+            Color color = colors[i];
+            color.r = Mathf.LinearToGammaSpace(color.r);
+            color.g = Mathf.LinearToGammaSpace(color.g);
+            color.b = Mathf.LinearToGammaSpace(color.b);
+            colors[i] = color;
+        }
+
+        Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.SetPixels(colors);
+        tex.Apply();
+        return tex;
     }
 
     protected void ReadPixels(RenderTexture rt, Texture2D tex) {

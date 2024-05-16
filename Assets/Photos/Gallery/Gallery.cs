@@ -66,7 +66,7 @@ public class Gallery : MonoBehaviour
         if (Directory.Exists(directory)) {
             foreach (FileInfo file in GetFilesNumerically(new DirectoryInfo(directory), "*.png")) {
                 byte[] bytes = File.ReadAllBytes(file.FullName);
-                Texture2D tex = new Texture2D(1, 1, TextureFormat.ARGB32, false, true);
+                Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
                 tex.filterMode = FilterMode.Point;
                 ImageConversion.LoadImage(tex, bytes);
 
