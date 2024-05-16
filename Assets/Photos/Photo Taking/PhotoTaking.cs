@@ -224,8 +224,10 @@ public class PhotoTaking : MonoBehaviour
             depth += pos.z/8;
         }
         //averaged depth of the 8 points is along the middle of the object, however usually the visible surface will be a little infront
-        depth -= new Vector2(bounds.extents.x, bounds.extents.z).magnitude/2;
+        bounds.IntersectRay(new Ray(bounds.center, photoCamera.transform.rotation*Vector3.forward), out float intersectDistance);
+        depth += intersectDistance;
 
+        //reduce visibility the more of the object is out of frame
         float outOfFrame = 1;
         if (minX < 0) outOfFrame *= 1-((- minX)/(maxX-minX));
         if (maxX > 1) outOfFrame *= 1-((maxX-1)/(maxX-minX));
@@ -254,10 +256,16 @@ public class PhotoTaking : MonoBehaviour
 
         for (int x = minXi; x <= maxXi; x++) {
             for (int y = minYi; y <= maxYi; y++) {
-                Color depthAtPos = depthTex.GetPixel(x, y); 
-                float difference = (depth - depthAtPos.r*photoCamera.farClipPlane)/((depth+50)/50);
-                if (Mathf.Abs(difference) < 0.333) onObject++;
-                if (difference >= 0.333) covered++;
+                float depthAtPos = depthTex.GetPixel(x, y).r*photoCamera.farClipPlane;
+                
+                Vector3 worldPos = photoCamera.ViewportToWorldPoint(new Vector3(x/256f, y/256f, depthAtPos));
+                float distance = Vector3.Distance(bounds.ClosestPoint(worldPos), worldPos);
+
+                if (distance <= 0.5f) {
+                    onObject++;
+                } else if (depthAtPos < depth) {
+                    covered++;
+                }
             }
         }
 
