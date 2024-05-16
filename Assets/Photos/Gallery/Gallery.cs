@@ -127,12 +127,12 @@ public class Gallery : MonoBehaviour
 
     public void Update() {
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
-            if (Input.GetKeyDown(KeyCode.E)) {
+            if (Input.GetKeyDown(KeyCode.D)) {
                 SetCurrentPhoto(currentPhoto+1);
                 UpdateGrid();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (Input.GetKeyDown(KeyCode.A)) {
                 SetCurrentPhoto(currentPhoto-1);
                 UpdateGrid();
             }
