@@ -139,7 +139,7 @@ Material:
     - _MaxAltitudeLerp: 0
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseScale: 500
+    - _NoiseScale: 400
     - _NormalMapKwToggle: 0
     - _Occlusion: 7.5
     - _OcclusionStrength: 1
