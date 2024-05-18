@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6765507277050851439}
@@ -54,12 +54,12 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 0
+  m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 16
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &6549396419144788610
 MonoBehaviour:
@@ -73,8 +73,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff799d7d67c16b4094e989a4939f96d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkForce: 1
-  turnForce: 0.1
+  walkForce: 15
+  turnForce: 30
+  deadzone: 5
+  slowdownDistance: 10
+  minWanderTime: 10
+  maxWanderTime: 20
+  maxWanderDistance: 30
+  maxSpeed: 8
+  scareRadius: 10
+  scareWalkDistance: 20
 --- !u!1001 &6514826814631892868
 PrefabInstance:
   m_ObjectHideFlags: 0
