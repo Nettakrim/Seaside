@@ -31,6 +31,10 @@ public class Sheep : MonoBehaviour
     [SerializeField] protected float scareRadius;
     [SerializeField] protected float scareWalkDistance;
 
+    [SerializeField] protected Animator animator;
+
+    [SerializeField] protected float animationSpeed;
+
     protected void Start() {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -42,7 +46,7 @@ public class Sheep : MonoBehaviour
     }
 
     protected void Update() {
-
+        animator.SetFloat("WalkSpeed", rb.velocity.magnitude*animationSpeed);
     }
 
     protected void FixedUpdate() {
