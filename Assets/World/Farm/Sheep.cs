@@ -37,6 +37,8 @@ public class Sheep : MonoBehaviour
 
     [SerializeField] protected SheepHome sheepHome;
 
+    protected Vector3 stuckPos;
+
     protected void Start() {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -96,15 +98,18 @@ public class Sheep : MonoBehaviour
         Vector2 offset = Vector2.zero;
 
         float timeDiff = Time.time - nextTargetAt;
+        float speed = rb.velocity.magnitude;
 
         bool someTimePassed = timeDiff > -minWanderTime/2;
-        bool stuck = someTimePassed && rb.velocity.magnitude < 0.1f && targetOffset.magnitude > deadzone+slowdownDistance/2;
+        bool stuck = someTimePassed && speed < 0.1f && targetOffset.magnitude > deadzone+slowdownDistance/2;
+        bool farFromHome = Vector3.Distance(transform.position, sheepHome.home.position) > sheepHome.homeThreshold;
+        bool scared = Vector3.Distance(transform.position, player.position) < scareRadius;
 
-        if (someTimePassed && Vector3.Distance(transform.position, sheepHome.home.position) > sheepHome.homeThreshold) {
+        if ((scared || someTimePassed) && farFromHome) {
             offset = new Vector2(sheepHome.home.position.x - transform.position.x, sheepHome.home.position.z - transform.position.z) + (Random.insideUnitCircle * sheepHome.homeThreshold/2);
-        } else if (Vector3.Distance(transform.position, player.position) < scareRadius) {
+        } else if (scared) {
             offset = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z).normalized * scareWalkDistance;
-        } else if (timeDiff > 0 || stuck) {
+        } else if (timeDiff > 0 || stuck || (walkForce < 0 && Vector3.Distance(stuckPos, transform.position) > maxWanderDistance)) {
             offset = Random.insideUnitCircle * maxWanderDistance;
         }
 
@@ -119,7 +124,8 @@ public class Sheep : MonoBehaviour
             }
 
             walkForce = Mathf.Abs(walkForce);
-            if (stuck && Random.Range(0, 5) < 4) {
+            if (stuck && someTimePassed && Random.Range(0, 5) < 4) {
+                stuckPos = transform.position;
                 walkForce = -walkForce;
             }
 
