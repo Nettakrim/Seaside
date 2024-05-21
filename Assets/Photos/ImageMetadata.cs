@@ -7,8 +7,7 @@ public class ImageMetadata {
     public Vector3 position;
     public Vector2 rotation;
     public float fov;
-    public List<CameraTargetData.Wrapper> targets;
-    public Dictionary<int, int> targetCounts;
+    public Dictionary<int, List<CameraTargetData.Wrapper>> targets;
  
     public void Encode(Encoder encoder) {
         encoder.EncodeByte(version);
@@ -17,8 +16,14 @@ public class ImageMetadata {
         DataTypes.EncodeVector2(encoder, rotation);
         DataTypes.EncodeFloat(encoder, fov);
         
-        DataTypes.EncodeByteArrayListStart(encoder, targets.Count, CameraTargetData.Wrapper.GetByteLength());
-        foreach (CameraTargetData.Wrapper wrapper in targets) {
+
+        List<CameraTargetData.Wrapper> targetsList = new List<CameraTargetData.Wrapper>();
+        foreach (int id in targets.Keys) {
+            targetsList.AddRange(targets[id]);
+        }
+
+        DataTypes.EncodeByteArrayListStart(encoder, targetsList.Count, CameraTargetData.Wrapper.GetByteLength());
+        foreach (CameraTargetData.Wrapper wrapper in targetsList) {
             wrapper.Encode(encoder);
         }
 
@@ -33,39 +38,46 @@ public class ImageMetadata {
         fov = DataTypes.DecodeFloat(decoder);
 
         (int length, int size) = DataTypes.DecodeByteArrayListStart(decoder);
-        targets = new List<CameraTargetData.Wrapper>(length);
+        List<CameraTargetData.Wrapper> targetsList = new List<CameraTargetData.Wrapper>(length);
         for (int x = 0; x < length; x++) {
             CameraTargetData.Wrapper wrapper = new CameraTargetData.Wrapper();
             wrapper.Decode(decoder);
             if (wrapper.cameraTargetData != null) {
-                targets.Add(wrapper);
+                targetsList.Add(wrapper);
             }
         }
+        SetTargets(targetsList);
 
         decoder.Close();
     }
 
-    public void Apply() {
-        targetCounts = new Dictionary<int, int>();
-        targets.Sort();
-        targets.Reverse();
+    public void SetTargets(List<CameraTargetData.Wrapper> targetsList) {
+        targets = new Dictionary<int, List<CameraTargetData.Wrapper>>();
+
+        targetsList.Sort();
+        targetsList.Reverse();
 
         int currentId = -1;
-        foreach (CameraTargetData.Wrapper wrapper in targets) {
+        foreach (CameraTargetData.Wrapper wrapper in targetsList) {
             int newId = wrapper.cameraTargetData.GetCombinedID();
             if (newId != currentId) {
                 currentId = newId;
-                targetCounts[currentId] = 1;
+                targets[currentId] = new List<CameraTargetData.Wrapper>() {wrapper};
             } else {
-                targetCounts[currentId]++;
+                targets[currentId].Add(wrapper);
             }
         }
     }
 
+    public bool PassesCountRequirement(int id) {
+        return targets.TryGetValue(id, out var result) && result.Count >= result[0].cameraTargetData.requiredCount;
+    }
+
     public string GetInfoText() {
         string s = "";
-        foreach (CameraTargetData.Wrapper wrapper in targets) {
-            s += wrapper.cameraTargetData.displayName.Replace("#", "1")+" "+wrapper.visibility+"\n";
+        foreach (int i in targets.Keys) {
+            List<CameraTargetData.Wrapper> list = targets[i];
+            s += list[0].cameraTargetData.displayName.Replace("#", list.Count.ToString())+"\n";
         }
         return s;
     }

@@ -21,7 +21,6 @@ public class GalleryPhoto : MonoBehaviour
             Decoder decoder = (Decoder)tex;
             if (decoder.IsValid()) {
                 this.metadata.Decode(decoder);
-                this.metadata.Apply();
             } else {
                 return false;
             }
@@ -32,8 +31,8 @@ public class GalleryPhoto : MonoBehaviour
         image.texture = tex;
         this.file = file;
 
-        foreach (CameraTargetData.Wrapper wrapper in this.metadata.targets) {
-            if (this.metadata.targetCounts.TryGetValue(wrapper.cameraTargetData.GetCombinedID(), out int count) && count >= wrapper.cameraTargetData.requiredCount) {
+        foreach (int id in this.metadata.targets.Keys) {
+            if (this.metadata.PassesCountRequirement(id)) {
                 goalMarker.SetActive(true);
                 break;
             }
@@ -54,10 +53,7 @@ public class GalleryPhoto : MonoBehaviour
     }
 
     public bool ContainsTarget(CameraTargetData cameraTargetData) {
-        if (metadata.targetCounts.TryGetValue(cameraTargetData.GetCombinedID(), out int count) && count >= cameraTargetData.requiredCount) {
-            return true;
-        }
-        return false;
+        return metadata.PassesCountRequirement(cameraTargetData.GetCombinedID());
     }
 
     public void OnClick() {

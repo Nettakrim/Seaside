@@ -119,8 +119,7 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata.position = manager.player.GetPosition();
         currentMetadata.rotation = manager.player.GetRotation();
         currentMetadata.fov = photoCamera.fieldOfView;
-        currentMetadata.targets = GetVisibleCameraTargets();
-        currentMetadata.Apply();
+        currentMetadata.SetTargets(GetVisibleCameraTargets());
         info.text = currentMetadata.GetInfoText();
     }
 

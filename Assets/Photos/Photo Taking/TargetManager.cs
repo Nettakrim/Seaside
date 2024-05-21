@@ -22,6 +22,10 @@ public class TargetManager : MonoBehaviour
         return null;
     }
 
+    public CameraTargetData GetCameraTargetDataFromCombinedID(int id) {
+        return GetCameraTargetDataFromID((char)(id>>8), (byte)(id&255));
+    }
+
     public List<CameraTargetData> GetCameraTargetDatas() {
         return targetDatas;
     }
