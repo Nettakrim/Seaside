@@ -8,6 +8,7 @@ public class ImageMetadata {
     public Vector2 rotation;
     public float fov;
     public List<CameraTargetData.Wrapper> targets;
+    public Dictionary<int, int> targetCounts;
  
     public void Encode(Encoder encoder) {
         encoder.EncodeByte(version);
@@ -44,10 +45,27 @@ public class ImageMetadata {
         decoder.Close();
     }
 
+    public void Apply() {
+        targetCounts = new Dictionary<int, int>();
+        targets.Sort();
+        targets.Reverse();
+
+        int currentId = -1;
+        foreach (CameraTargetData.Wrapper wrapper in targets) {
+            int newId = wrapper.cameraTargetData.GetCombinedID();
+            if (newId != currentId) {
+                currentId = newId;
+                targetCounts[currentId] = 1;
+            } else {
+                targetCounts[currentId]++;
+            }
+        }
+    }
+
     public string GetInfoText() {
         string s = "";
         foreach (CameraTargetData.Wrapper wrapper in targets) {
-            s += wrapper.cameraTargetData.displayName+" "+wrapper.visibility+"\n";
+            s += wrapper.cameraTargetData.displayName.Replace("#", "1")+" "+wrapper.visibility+"\n";
         }
         return s;
     }

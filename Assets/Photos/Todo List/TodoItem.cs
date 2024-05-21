@@ -16,7 +16,7 @@ public class TodoItem : MonoBehaviour
 
     public void SetTargetData(CameraTargetData data) {
         cameraTargetData = data;
-        text.text = data.displayName;
+        text.text = data.displayName.Replace("#", cameraTargetData.requiredCount.ToString());
     }
 
     public void SetComplete(bool isComplete) {

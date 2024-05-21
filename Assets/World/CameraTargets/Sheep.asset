@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idChar: 83
   idByte: 0
-  displayName: a Sheep
-  visibilityThreshold: 0.25
+  displayName: '# Sheep'
+  visibilityThreshold: 0.1
+  requiredCount: 5

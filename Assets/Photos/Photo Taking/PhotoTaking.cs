@@ -120,6 +120,7 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata.rotation = manager.player.GetRotation();
         currentMetadata.fov = photoCamera.fieldOfView;
         currentMetadata.targets = GetVisibleCameraTargets();
+        currentMetadata.Apply();
         info.text = currentMetadata.GetInfoText();
     }
 
@@ -186,8 +187,6 @@ public class PhotoTaking : MonoBehaviour
                 }
             }
         }
-
-        targets.Sort((x, y) => y.visibility.CompareTo(x.visibility));
 
         return targets;
     }
