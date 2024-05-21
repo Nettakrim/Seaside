@@ -45,6 +45,9 @@ public class Sheep : MonoBehaviour
         targetZ = transform.position.z;
 
         nextTargetAt = Random.value*minWanderTime;
+
+        transform.rotation = Quaternion.Euler(0, Random.value*360, 0);
+        CalculatePitch();
     }
 
     protected void Update() {
