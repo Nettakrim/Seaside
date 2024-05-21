@@ -35,6 +35,8 @@ public class Sheep : MonoBehaviour
 
     [SerializeField] protected float animationSpeed;
 
+    [SerializeField] protected SheepHome sheepHome;
+
     protected void Start() {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -90,14 +92,38 @@ public class Sheep : MonoBehaviour
     protected void UpdateTarget() {
         Vector2 offset = Vector2.zero;
 
-        if (Vector3.Distance(transform.position, player.position) < scareRadius) {
-            offset = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z) * scareWalkDistance;
-        } else if (Time.time > nextTargetAt || (rb.velocity.magnitude < 0.1f && targetOffset.magnitude > deadzone+slowdownDistance/2)) {
+        float timeDiff = Time.time - nextTargetAt;
+
+        bool someTimePassed = timeDiff > -minWanderTime/2;
+        bool stuck = someTimePassed && rb.velocity.magnitude < 0.1f && targetOffset.magnitude > deadzone+slowdownDistance/2;
+
+        if (someTimePassed && Vector3.Distance(transform.position, sheepHome.home.position) > sheepHome.homeThreshold) {
+            offset = new Vector2(sheepHome.home.position.x - transform.position.x, sheepHome.home.position.z - transform.position.z) + (Random.insideUnitCircle * sheepHome.homeThreshold/2);
+        } else if (Vector3.Distance(transform.position, player.position) < scareRadius) {
+            offset = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z).normalized * scareWalkDistance;
+        } else if (timeDiff > 0 || stuck) {
             offset = Random.insideUnitCircle * maxWanderDistance;
         }
 
         if (offset.magnitude > deadzone) {
-            nextTargetAt = Time.time + Random.Range(minWanderTime, maxWanderTime);
+            if (!stuck) {
+                foreach (Transform obstacle in sheepHome.obstacles) {
+                    if (Vector3.Distance(obstacle.position, transform.position) < sheepHome.obstacleSize) {
+                        stuck = true;
+                        break;
+                    }
+                }
+            }
+
+            walkForce = Mathf.Abs(walkForce);
+            if (stuck && Random.Range(0, 5) < 4) {
+                walkForce = -walkForce;
+            }
+
+            
+            nextTargetAt = Random.Range(minWanderTime, maxWanderTime);
+            if (walkForce < 0) nextTargetAt /= 2;
+            nextTargetAt += Time.time;
             targetX = transform.position.x + offset.x;
             targetZ = transform.position.z + offset.y;
         }

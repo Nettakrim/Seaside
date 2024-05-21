@@ -82,10 +82,11 @@ MonoBehaviour:
   maxWanderTime: 20
   maxWanderDistance: 30
   maxSpeed: 8
-  scareRadius: 10
+  scareRadius: 15
   scareWalkDistance: 20
   animator: {fileID: 6828210313832686411}
   animationSpeed: 0.3333333
+  sheepHome: {fileID: 0}
 --- !u!95 &6828210313832686411
 Animator:
   serializedVersion: 7
@@ -193,7 +194,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3927059424528928473}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4d23f9b50078ded479a1dcced7416a86, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
