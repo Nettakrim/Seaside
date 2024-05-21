@@ -13,6 +13,7 @@ public class TodoItem : MonoBehaviour
     [SerializeField] protected Sprite complete;
 
     protected CameraTargetData cameraTargetData;
+    protected bool isComplete = false;
 
     public void SetTargetData(CameraTargetData data) {
         cameraTargetData = data;
@@ -20,10 +21,15 @@ public class TodoItem : MonoBehaviour
     }
 
     public void SetComplete(bool isComplete) {
+        this.isComplete = isComplete;
         image.sprite = isComplete ? complete : incomplete;
     }
 
-    public bool CheckComplete(List<GalleryPhoto> photos) {
+    public bool IsComplete() {
+        return isComplete;
+    }
+
+    public bool UpdateComplete(List<GalleryPhoto> photos) {
         SetComplete(false);
         if (cameraTargetData == null) {
             return true;
@@ -35,5 +41,9 @@ public class TodoItem : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public bool IsType(CameraTargetData cameraTargetData) {
+        return this.cameraTargetData == cameraTargetData;
     }
 }

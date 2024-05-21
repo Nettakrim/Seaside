@@ -146,7 +146,7 @@ public class Gallery : MonoBehaviour
     public void UpdateGrid() {
         int c = 0;
         foreach (TodoItem todoItem in todoItems) {
-            if (todoItem.CheckComplete(photos)) {
+            if (todoItem.UpdateComplete(photos)) {
                 c++;
             }
         }
@@ -258,5 +258,14 @@ public class Gallery : MonoBehaviour
 
     public int PhotoCount() {
         return photos.Count;
+    }
+
+    public bool TodoIsComplete(CameraTargetData cameraTargetData) {
+        foreach (TodoItem todo in todoItems) {
+            if (todo.IsType(cameraTargetData)) {
+                return todo.IsComplete();
+            }
+        }
+        return false;
     }
 }

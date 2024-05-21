@@ -74,11 +74,23 @@ public class ImageMetadata {
     }
 
     public string GetInfoText() {
-        string s = "";
+        string info = "";
         foreach (int i in targets.Keys) {
             List<CameraTargetData.Wrapper> list = targets[i];
-            s += list[0].cameraTargetData.displayName.Replace("#", list.Count.ToString())+"\n";
+            CameraTargetData cameraTargetData = list[0].cameraTargetData;
+            bool isNew = list.Count >= cameraTargetData.requiredCount && !PhotoManager.instance.gallery.TodoIsComplete(cameraTargetData);
+
+            string s = cameraTargetData.displayName.Replace("#", list.Count.ToString());
+
+            if (isNew) {
+                info += "<i>"+s+"!</i>";
+            } else {
+                info += s;
+            }
+
+            info += "\n";
+
         }
-        return s;
+        return info;
     }
 }
