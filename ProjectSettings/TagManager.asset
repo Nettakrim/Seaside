@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerSpawn
   - IgnoreUI
+  - Interactable
   layers:
   - Default
   - TransparentFX
