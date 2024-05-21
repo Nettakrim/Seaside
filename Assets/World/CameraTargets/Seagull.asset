@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a5a13537dffe50408b1e46bd6061f4c, type: 3}
-  m_Name: Cool Rock
+  m_Name: Seagull
   m_EditorClassIdentifier: 
-  idChar: 82
-  idByte: 0
-  displayName: a Cool Rock
-  visibilityThreshold: 0.25
+  idChar: 83
+  idByte: 1
+  displayName: a Seagull
+  visibilityThreshold: 0.2
   requiredCount: 1
