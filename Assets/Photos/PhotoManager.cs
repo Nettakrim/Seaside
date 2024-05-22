@@ -99,17 +99,23 @@ public class PhotoManager : MonoBehaviour
                 tutorialStep = 1;
                 NextTutorialStep();
             }
-        } else if (tutorialStep == 1) {
-            if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance) {
-                NextTutorialStep();
+        } else {
+            if (tutorialStep == 1) {
+                if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance) {
+                    NextTutorialStep();
+                }
+            } else if (tutorialStep == 2) {
+                if (gallery.PhotoCount() > 0) {
+                    NextTutorialStep();
+                }
+            } else if (tutorialStep >= 3) {
+                if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
+                    EndTutorial();
+                }
             }
-        } else if (tutorialStep == 2) {
-            if (gallery.PhotoCount() > 0) {
-                NextTutorialStep();
-            }
-        } else if (tutorialStep >= 3) {
-            if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
-                EndTutorial();
+
+            if (currentMode == Mode.Walking) {
+                tutorial.gameObject.SetActive(!interactor.HasInteractionPrompt());
             }
         }
     }

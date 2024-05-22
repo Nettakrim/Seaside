@@ -14,6 +14,7 @@ public class Interactor : MonoBehaviour
         if (current != null && canInteract && current.InView(this) && current.CanInteract(this)) {
             UpdateInteractable();
             prompt.gameObject.SetActive(true);
+            prompt.text = current.GetPrompt();
         } else {
             prompt.gameObject.SetActive(false);
         }
@@ -27,9 +28,7 @@ public class Interactor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Interactable")) {
-            if (other.TryGetComponent(out current)) {
-                prompt.text = current.GetPrompt();
-            } else {
+            if (!other.TryGetComponent(out current)) {
                 Debug.Log(other.transform+" has Interactable tag but no interactable script");
             }
         }
@@ -44,5 +43,9 @@ public class Interactor : MonoBehaviour
 
     public void SetCanInteract(bool to) {
         canInteract = to;
+    }
+
+    public bool HasInteractionPrompt() {
+        return prompt.gameObject.activeSelf;
     }
 }

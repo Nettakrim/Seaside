@@ -38,10 +38,12 @@ public class Campfire : Interactable
     }
 
     public override string GetPrompt() {
-        return "Press Q/E to light the campfire using a random photo!";
+        return PhotoManager.instance.gallery.PhotoCount() == 0 ? "Take a photo to use it as fuel!" : "Press Q/E to light the campfire using a random photo!";
     }
 
     public override void OnInteract(Interactor interactor) {
+        if (PhotoManager.instance.gallery.PhotoCount() == 0) return;
+
         Gallery gallery = PhotoManager.instance.gallery;
         gallery.SelectRandom();
         StartBurningImage(gallery.DeleteSelected(false));
