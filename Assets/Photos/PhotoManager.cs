@@ -12,6 +12,7 @@ public class PhotoManager : MonoBehaviour
     public Gallery gallery;
     public PhotoTaking photoTaking;
     public PlayerController player;
+    public Interactor interactor;
 
     public static PhotoManager instance;
 

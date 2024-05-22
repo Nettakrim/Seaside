@@ -208,6 +208,7 @@ public class Gallery : MonoBehaviour
         gallery.SetActive(true);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
+        manager.interactor.SetCanInteract(false);
         UpdateGrid();
     }
 
@@ -215,6 +216,7 @@ public class Gallery : MonoBehaviour
         gallery.SetActive(false);
         manager.player.SetMovementLock(false);
         manager.player.SetRotationSpeed(1);
+        manager.interactor.SetCanInteract(true);
     }
 
     public void OnClickGalleryPhoto(GalleryPhoto galleryPhoto) {

@@ -6,24 +6,37 @@ using TMPro;
 public class Interactor : MonoBehaviour
 {
     private Interactable current;
-    private bool canInteract;
+    private bool canInteract = true;
     [SerializeField] private TextMeshProUGUI prompt;
+    public Transform facing;
 
     private void Update() {
-        if (current != null && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) && current.CanInteract()) {
-            current.OnInteract();
+        if (current != null && canInteract && current.InView(this) && current.CanInteract(this)) {
+            UpdateInteractable();
+            prompt.gameObject.SetActive(true);
+        } else {
+            prompt.gameObject.SetActive(false);
+        }
+    }
+
+    private void UpdateInteractable() {
+        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) {
+            current.OnInteract(this);
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Interactable")) {
-            current = other.GetComponent<Interactable>();
-            prompt.text = current.GetPrompt();
+            if (other.TryGetComponent(out current)) {
+                prompt.text = current.GetPrompt();
+            } else {
+                Debug.Log(other.transform+" has Interactable tag but no interactable script");
+            }
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.transform == current.transform) {
+        if (current != null && other.transform == current.transform) {
             current = null;
             prompt.text = "";
         }
@@ -31,6 +44,5 @@ public class Interactor : MonoBehaviour
 
     public void SetCanInteract(bool to) {
         canInteract = to;
-        prompt.gameObject.SetActive(to);
     }
 }

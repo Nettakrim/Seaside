@@ -88,6 +88,7 @@ public class PhotoTaking : MonoBehaviour
     public void OpenCameraMode() {
         cameraOverlay.SetActive(true);
         manager.player.SetMovementLock(true);
+        manager.interactor.SetCanInteract(false);
         ClearTakenPhoto();
         canZoom = false;
         prompt.SetActive(manager.gallery.PhotoCount() <= 1);
@@ -96,6 +97,7 @@ public class PhotoTaking : MonoBehaviour
     public void CloseCameraMode() {
         cameraOverlay.SetActive(false);
         manager.player.SetMovementLock(false);
+        manager.interactor.SetCanInteract(true);
         targetFovScale = 1;
     }
 
