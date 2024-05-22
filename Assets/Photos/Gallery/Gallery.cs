@@ -46,7 +46,8 @@ public class Gallery : MonoBehaviour
     protected void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
-            photos[Random.Range(0, photos.Count)].Teleport(manager.player);
+            SelectRandom();
+            photos[currentPhoto].Teleport(manager.player);
         } else {
             manager.player.TeleportToDefaultSpawnPosition();
             manager.NextTutorialStep();
@@ -243,12 +244,24 @@ public class Gallery : MonoBehaviour
     }
 
     public void DeleteSelected() {
+        DeleteSelected(true);
+    }
+
+    public Texture DeleteSelected(bool destroyTexture) {
         EventSystem.current.SetSelectedGameObject(null);
+        if (photos.Count == 0) return null;
         GalleryPhoto photo = photos[currentPhoto];
         photos.Remove(photo);
-        photo.Destroy();
+        Texture texture = photo.Destroy();
+        if (destroyTexture) Destroy(texture);
+
         SetCurrentPhoto(currentPhoto-1);
         UpdateGrid();
+        return destroyTexture ? null : texture;
+    }
+
+    public void SelectRandom() {
+        SetCurrentPhoto(Random.Range(0, photos.Count));
     }
 
     //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name

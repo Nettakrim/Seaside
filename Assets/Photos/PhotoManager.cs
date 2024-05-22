@@ -109,11 +109,7 @@ public class PhotoManager : MonoBehaviour
             }
         } else if (tutorialStep >= 3) {
             if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
-                if (tutorialStep == 4) {
-                    EndTutorial();
-                } else {
-                    NextTutorialStep();
-                }
+                EndTutorial();
             }
         }
     }

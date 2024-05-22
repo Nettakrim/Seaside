@@ -60,10 +60,10 @@ public class GalleryPhoto : MonoBehaviour
         PhotoManager.instance.gallery.OnClickGalleryPhoto(this);
     }
 
-    public void Destroy() {
-        Destroy(image.texture);
+    public Texture Destroy() {
         Destroy(gameObject);
         file.Delete();
+        return image.texture;
     }
 
     public string GetInfoText() {
