@@ -2666,7 +2666,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2978,6 +2978,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 476306736}
     m_Modifications:
+    - target: {fileID: 1025486112398213072, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1025486112398213072, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 1735412971805249171, guid: 3b8be9f9d8cd2304da2329bd69009274,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3083,10 +3093,30 @@ PrefabInstance:
       propertyPath: m_text
       value: Take a Photo!
       objectReference: {fileID: 0}
+    - target: {fileID: 4273995237998911235, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4273995237998911235, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4985020923514945498, guid: 3b8be9f9d8cd2304da2329bd69009274,
         type: 3}
       propertyPath: m_Name
       value: Todo Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884178566021324453, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884178566021324453, guid: 3b8be9f9d8cd2304da2329bd69009274,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
