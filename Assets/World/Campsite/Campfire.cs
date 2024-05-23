@@ -11,7 +11,10 @@ public class Campfire : Interactable
     protected Material material;
 
     [SerializeField] protected float burnTime;
+    [SerializeField] protected float margin;
     protected float burntAt;
+
+    [SerializeField] protected ParticleSystem particle;
 
     protected void Start() {
         material = image.GetComponent<Renderer>().material;
@@ -24,13 +27,15 @@ public class Campfire : Interactable
     }
 
     protected void UpdateBurn() {
-        float t = (Time.time-burntAt)/burnTime;
-        if (t >= 1) {
-            FinishBurningImage();
-            t = 0;
+        float t = (Time.time-burntAt);
+        if (t >= burnTime) {
+            StopFire();
+            if (t >= burnTime+margin) {
+                FinishBurningImage();
+            }
         }
 
-        material.SetFloat("_Progress", t);
+        material.SetFloat("_Progress", t/(burnTime+margin));
     }
 
     public override bool CanInteract(Interactor interactor) {
@@ -54,7 +59,12 @@ public class Campfire : Interactable
         
         material.SetTexture("_MainTex", texture);
         image.SetActive(true);
+        particle.Play();
         burntAt = Time.time;
+    }
+
+    public void StopFire() {
+        particle.Stop();
     }
 
     public void FinishBurningImage() {
