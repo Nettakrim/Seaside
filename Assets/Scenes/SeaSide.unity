@@ -753,8 +753,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2769833859441987959, guid: b68c6c1e4e4033c47991950999cd1812,
         type: 3}
+      propertyPath: speed
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769833859441987959, guid: b68c6c1e4e4033c47991950999cd1812,
+        type: 3}
       propertyPath: distance
-      value: 75
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 7315358585614974673, guid: b68c6c1e4e4033c47991950999cd1812,
         type: 3}
