@@ -13,7 +13,8 @@ public class TrainSpawner : MonoBehaviour
 
     public TrainElement trainElementTemp;
 
-    public float trainSpeed;
+    public float movementSpeed;
+    public float rotationSpeed;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.V)) {

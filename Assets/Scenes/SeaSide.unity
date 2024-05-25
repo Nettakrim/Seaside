@@ -2484,7 +2484,8 @@ MonoBehaviour:
   - {fileID: 1429789310}
   trainElementTemp: {fileID: 1875256969267540063, guid: 9eb501093fbed5d468d37cdbc57ed699,
     type: 3}
-  trainSpeed: 10
+  movementSpeed: 10
+  rotationSpeed: 10
 --- !u!1001 &1958678794
 PrefabInstance:
   m_ObjectHideFlags: 0
