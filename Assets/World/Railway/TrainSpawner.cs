@@ -9,32 +9,27 @@ public class TrainSpawner : MonoBehaviour
 
     [SerializeField] private int minutes = 10;
 
-    public Transform[] tracks;
+    public TrainType[] trainTypes;
 
-    public TrainElement trainElementTemp;
-
-    public float movementSpeed;
-    public float rotationSpeed;
+    public TrackData[] tracks;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.V)) {
-            SpawnTrain();
+            SpawnRandomTrain();
         }
 
         DateTime time = DateTime.Now;
         if (time.Minute%minutes == 0) {
             if (spawnReady) {
                 spawnReady = false;
-                SpawnTrain();
+                SpawnRandomTrain();
             }
         } else {
             spawnReady = true;
         }
     }
 
-    void SpawnTrain() {
-        TrainElement trainElement = Instantiate(trainElementTemp);
-        trainElement.trainSpawner = this;
-        trainElement.transform.position = tracks[0].transform.position;
+    void SpawnRandomTrain() {
+        tracks[UnityEngine.Random.Range(0, tracks.Length)].SpawnTrain(trainTypes[UnityEngine.Random.Range(0, trainTypes.Length)]);
     }
 }

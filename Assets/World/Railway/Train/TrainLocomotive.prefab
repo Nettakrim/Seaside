@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomHue: {fileID: 468247042987838671}
   wheelAnimator: {fileID: 6291313419638156981}
+  boundsCollider: {fileID: 8616751978661824293}
 --- !u!1001 &1278487475094310987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,6 +119,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6291313419638156981}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6b7d914a6b2dbc4aa9784dc65df5070,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8616751978661824293}
   m_SourcePrefab: {fileID: 100100000, guid: c6b7d914a6b2dbc4aa9784dc65df5070, type: 3}
 --- !u!23 &468247042987838671 stripped
 MeshRenderer:
@@ -159,3 +164,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!64 &8616751978661824293
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125540988092247322}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7904610056416861863, guid: c6b7d914a6b2dbc4aa9784dc65df5070, type: 3}
