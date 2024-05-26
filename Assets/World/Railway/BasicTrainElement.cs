@@ -15,6 +15,8 @@ public class BasicTrainElement : TrainElement
 
     [SerializeField] private Collider boundsCollider;
 
+    [SerializeField] private float lengthPadding;
+
     void Start() {
         float hue = UnityEngine.Random.value;
         foreach (Material material in randomHue.materials) {
@@ -45,6 +47,6 @@ public class BasicTrainElement : TrainElement
     }
 
     public override float GetLength() {
-        return boundsCollider.bounds.extents.z*2;
+        return (boundsCollider.bounds.extents.z*2)+lengthPadding;
     }
 }

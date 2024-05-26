@@ -2472,6 +2472,7 @@ MonoBehaviour:
   minutes: 10
   trainTypes:
   - {fileID: 11400000, guid: 133cab258033a5d4fafc2016a8d58954, type: 2}
+  - {fileID: 11400000, guid: ad8cef789db9bfc4a9bc22431a869a70, type: 2}
   tracks:
   - {fileID: 1948898428}
 --- !u!114 &1948898428
