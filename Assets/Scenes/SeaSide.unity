@@ -2500,7 +2500,7 @@ MonoBehaviour:
   - {fileID: 4154535350906603164}
   - {fileID: 4154535350906603163}
   - {fileID: 1429789310}
-  movementSpeed: 10
+  movementSpeed: 15
   rotationSpeed: 10
 --- !u!1001 &1958678794
 PrefabInstance:

@@ -38,8 +38,8 @@ public class BasicTrainElement : TrainElement
             next = trackData.trackPoints[index];
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, next.position, trackData.movementSpeed*Time.deltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.position-next.position), trackData.rotationSpeed*Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, next.position, trackData.movementSpeed*Time.deltaTime);
     }
 
     public override void SetTrackData(TrackData trackData) {

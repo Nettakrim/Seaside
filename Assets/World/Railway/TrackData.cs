@@ -18,7 +18,7 @@ public class TrackData : MonoBehaviour
         foreach (TrainSection section in trainType.sections) {
             int count = Random.Range(section.minLength, section.maxLength);
             for (int i = 0; i < count; i++) {
-                TrainElement trainElement = Instantiate(section.elements[Random.Range(0, section.elements.Length)]);
+                TrainElement trainElement = Instantiate(section.elements[Random.Range(0, section.elements.Length)], transform);
                 trainElement.SetTrackData(this);
                 
                 length += prevLength/2;
