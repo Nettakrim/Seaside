@@ -43,6 +43,8 @@ public class Gallery : MonoBehaviour
     [SerializeField] protected GameObject exitPrompt;
     [SerializeField] protected GameObject cyclePrompt;
 
+    protected bool ready;
+
     protected void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
@@ -128,19 +130,23 @@ public class Gallery : MonoBehaviour
 
     public void Update() {
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
-            if (Input.GetKeyDown(KeyCode.D)) {
-                SetCurrentPhoto(currentPhoto+1);
-                UpdateGrid();
-            }
+            if (ready) {
+                if (Input.GetKeyDown(KeyCode.D)) {
+                    SetCurrentPhoto(currentPhoto+1);
+                    UpdateGrid();
+                }
 
-            if (Input.GetKeyDown(KeyCode.A)) {
-                SetCurrentPhoto(currentPhoto-1);
-                UpdateGrid();
+                if (Input.GetKeyDown(KeyCode.A)) {
+                    SetCurrentPhoto(currentPhoto-1);
+                    UpdateGrid();
+                }
             }
 
             if (Input.GetKey(KeyCode.Space)) {
                 TeleportStart();
             }
+
+            ready = true;
         }
     }
 
@@ -206,6 +212,7 @@ public class Gallery : MonoBehaviour
     }
 
     public void OpenGallery() {
+        ready = false;
         gallery.SetActive(true);
         manager.player.SetMovementLock(true);
         manager.player.SetRotationSpeed(0);
