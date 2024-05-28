@@ -44,6 +44,7 @@ public class Gallery : MonoBehaviour
     [SerializeField] protected GameObject cyclePrompt;
 
     protected bool ready;
+    protected bool teleporting;
 
     protected void Awake() {
         LoadFromFiles();
@@ -60,6 +61,9 @@ public class Gallery : MonoBehaviour
             todoItem.SetTargetData(target);
             todoItems.Add(todoItem);
         }
+
+        ready = true;
+        teleporting = false;
     }
 
     public void LoadFromFiles() {
@@ -146,7 +150,7 @@ public class Gallery : MonoBehaviour
                 TeleportStart();
             }
 
-            ready = true;
+            ready = !teleporting;
         }
     }
 
@@ -243,11 +247,13 @@ public class Gallery : MonoBehaviour
         selectedPhoto.Teleport(manager.player);
         manager.photoTaking.SetFov(selectedPhoto.GetFov());
         manager.player.SetRotationSpeed(0);
+        teleporting = true;
     }
 
     public void TeleportEnd() {
         manager.SetMode(PhotoManager.Mode.Walking);
         manager.player.SetRotationSpeed(1);
+        teleporting = false;
     }
 
     public void DeleteSelected() {
