@@ -113,6 +113,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FrieghtPlatform
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 963db91209f38bf439d4b42bdc0a56b2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Train
+      objectReference: {fileID: 0}
     - target: {fileID: 3123332266134359265, guid: 963db91209f38bf439d4b42bdc0a56b2,
         type: 3}
       propertyPath: m_Name

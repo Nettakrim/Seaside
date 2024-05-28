@@ -3265,6 +3265,8 @@ MonoBehaviour:
   oceanDamp: 20
   oceanWalkSpeedMultiplier: 0.666
   cameras: {fileID: 1413125600590183078}
+  rideTime: 1
+  floorDistance: 2
 --- !u!4 &2608545873972229921
 Transform:
   m_ObjectHideFlags: 0

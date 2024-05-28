@@ -4960,6 +4960,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrainLocomotive
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c6b7d914a6b2dbc4aa9784dc65df5070,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -33,8 +33,16 @@ public class PlayerController : MonoBehaviour
 
     private float rotationSpeedScale = 1;
 
+    private float ridingSpeed;
+    private Transform ridingTransform;
+    [SerializeField] private float rideTime;
+    private float ridingAt;
+    
+    [SerializeField] private float floorDistance;
+
     private void Awake() {
         characterController = GetComponent<CharacterController>();
+        ridingAt = -rideTime;
     }
 
     private void Update() {
@@ -51,6 +59,21 @@ public class PlayerController : MonoBehaviour
         movement += Vector3.down * downVelocity;
 
         movement += GetInwardsWindForce() * windForce;
+
+        if (Physics.Raycast(new Ray(transform.position, Vector3.down), out RaycastHit hit, floorDistance, int.MaxValue, QueryTriggerInteraction.Ignore)) {
+            if (hit.transform == ridingTransform) {
+                ridingAt = Time.time;
+            } else if (hit.transform.CompareTag("Train")) {
+                ridingTransform = hit.transform;
+                ridingAt = Time.time;
+                ridingSpeed = 15;
+            }
+        }
+
+        float t = (Time.time - ridingAt)/rideTime;
+        if (ridingTransform != null && t < 1) {
+            movement += ridingTransform.forward * ridingSpeed * (1-t);
+        }
 
         movement *= Time.deltaTime;
 
@@ -156,5 +179,3 @@ public class PlayerController : MonoBehaviour
         rotationSpeedScale = speed;
     }
 }
-
-
