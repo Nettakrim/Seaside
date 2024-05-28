@@ -205,6 +205,8 @@ public class Gallery : MonoBehaviour
         } else {
             loopImage.gameObject.SetActive(false);
         }
+
+        teleporting = false;
     }
 
     public void SetCurrentPhoto(int to) {
