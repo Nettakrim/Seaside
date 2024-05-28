@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b59999962125eba4dba9c6b9a34f8a66
+guid: 775139f23c262d14ea3c0a02af5285f4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Bark
-    second: {fileID: 2100000, guid: 4e4dc01abc416b442b448f13efd5fb6b, type: 2}
+      name: Blade
+    second: {fileID: 2100000, guid: b6aba7cfd7d1acb4d9bc7a01b25abf7f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -17,8 +17,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: 3f38cf22afca89b4d88303305897b75a, type: 2}
+      name: Hole
+    second: {fileID: 2100000, guid: e65cdf5d90e150c40af4a3c7ee05b051, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
