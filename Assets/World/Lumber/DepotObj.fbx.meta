@@ -12,13 +12,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color
+    second: {fileID: 2100000, guid: 3f38cf22afca89b4d88303305897b75a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Frame
     second: {fileID: 2100000, guid: 3f38cf22afca89b4d88303305897b75a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Gray
+    second: {fileID: 2100000, guid: b6aba7cfd7d1acb4d9bc7a01b25abf7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Material
     second: {fileID: 2100000, guid: 3f38cf22afca89b4d88303305897b75a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White
+    second: {fileID: 2100000, guid: 9d9aa650261003c4c9742c77f8e7641e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
