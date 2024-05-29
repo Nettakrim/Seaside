@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour
         Vector3 forward = new Vector3(Mathf.Sin(r), 0, Mathf.Cos(r));
 
         Vector3 movement = (forward*Input.GetAxis("Vertical")) + (new Vector3(forward.z, 0, -forward.x)*Input.GetAxis("Horizontal"));
+        if (movement.magnitude > 1) movement.Normalize();
 
         if (transform.localPosition.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;
 

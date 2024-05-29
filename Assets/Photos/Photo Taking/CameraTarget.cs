@@ -40,7 +40,7 @@ public class CameraTarget : MonoBehaviour
     }
 
     public bool IsVisible() {
-        return visible;
+        return visible || (r == null && gameObject.activeInHierarchy);
     }
 
     public Bounds GetBounds() {

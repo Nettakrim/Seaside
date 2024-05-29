@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5a13537dffe50408b1e46bd6061f4c, type: 3}
   m_Name: Lumber
   m_EditorClassIdentifier: 
-  idChar: 48
-  idByte: 0
-  displayName: something lumber
+  idChar: 76
+  idByte: 1
+  displayName: a Log being Cut
   visibilityThreshold: 0.25
   requiredCount: 1
