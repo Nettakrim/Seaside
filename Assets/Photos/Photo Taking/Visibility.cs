@@ -13,7 +13,17 @@ public class Visibility {
                 GeometryUtility.CalculateFrustumPlanes(photoCamera, planes);
                 if (GeometryUtility.TestPlanesAABB(planes, cameraTarget.GetBounds())) {
                     CameraTargetData.Wrapper wrapper = cameraTarget.GetCameraTargetData();
-                    CalculateVisibility(cameraTarget, wrapper, photoCamera, photoTaking);
+
+                    //half the amount of depth checks if something of the same type has already succeeded
+                    bool exists = false;
+                    foreach (CameraTargetData.Wrapper existing in visibilityResult.visible) {
+                        if (existing.cameraTargetData == wrapper.cameraTargetData) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    CalculateVisibility(cameraTarget, wrapper, photoCamera, photoTaking, exists ? 2 : 1);
                     if (wrapper.PassesVisibilityCheck()) {
                         visibilityResult.visible.Add(wrapper);
                     } else if (wrapper.PassesNearMissCheck()) {
@@ -31,13 +41,15 @@ public class Visibility {
         return -2*t*t*t + 3*t*t;
     }
 
-    protected static void CalculateVisibility(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper, Camera photoCamera, PhotoTaking photoTaking) {
+    protected static void CalculateVisibility(CameraTarget cameraTarget, CameraTargetData.Wrapper wrapper, Camera photoCamera, PhotoTaking photoTaking, int depthSampleReduction) {
         Bounds bounds = cameraTarget.GetBounds();
         float viewProportion = Mathf.Atan((bounds.extents.magnitude*2)/Vector3.Distance(photoCamera.transform.position, cameraTarget.transform.position))/(photoCamera.fieldOfView*Mathf.Deg2Rad);
 
         float v = Smooth(Smooth(Mathf.Sqrt(viewProportion)));
         wrapper.MultiplyVisibility(v);
-        if (!wrapper.PassesVisibilityCheck()) {
+
+        // only exit if it doesnt even qualify for a miss, since later multipliers may disqualify it for that too
+        if (!wrapper.PassesNearMissCheck()) {
             return;
         }
 
@@ -69,7 +81,7 @@ public class Visibility {
         if (maxY > 1) outOfFrame *= 1-((maxY-1)/(maxY-minY));
 
         wrapper.MultiplyVisibility(outOfFrame);
-        if (!wrapper.PassesVisibilityCheck()) {
+        if (!wrapper.PassesNearMissCheck()) {
             return;
         }
 
@@ -78,6 +90,14 @@ public class Visibility {
         int minYi = minY < 0 ? 0   : Mathf.RoundToInt(minY*256);
         int maxYi = maxY > 1 ? 256 : Mathf.RoundToInt(maxY*256);
 
+        // spend half as much time checking depth if it wont be accepted anyway
+        if (!wrapper.PassesVisibilityCheck()) {
+            depthSampleReduction *= 2;
+        }
+        if ((maxXi-minXi)*(maxYi-minYi) < 8192) {
+            depthSampleReduction += 1;
+        }
+
         // only render depth now since it might not have been needed, if a previous object in the photo already rendered it doesnt rerender
         Texture2D depthTex = photoTaking.RenderDepth();
 
@@ -85,8 +105,13 @@ public class Visibility {
         int onObject = 0;
         int covered = 0;
 
+        int reductionScale = Mathf.FloorToInt(Mathf.Sqrt(depthSampleReduction));
         for (int x = minXi; x <= maxXi; x++) {
             for (int y = minYi; y <= maxYi; y++) {
+                if ((x*reductionScale + y)%depthSampleReduction > 0) {
+                    continue;
+                }
+
                 float depthAtPos = depthTex.GetPixel(x, y).r*photoCamera.farClipPlane;
                 
                 Vector3 worldPos = photoCamera.ViewportToWorldPoint(new Vector3(x/256f, y/256f, depthAtPos));
