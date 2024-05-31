@@ -3274,6 +3274,9 @@ MonoBehaviour:
   cameras: {fileID: 1413125600590183078}
   rideTime: 1
   floorDistance: 2
+  flyingAcceleration: 30
+  topFlyingSpeed: 25
+  flyingDecay: 2
 --- !u!4 &2608545873972229921
 Transform:
   m_ObjectHideFlags: 0

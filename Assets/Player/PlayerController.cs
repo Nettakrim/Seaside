@@ -1,3 +1,4 @@
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,10 +36,18 @@ public class PlayerController : MonoBehaviour
 
     private float ridingSpeed;
     private Transform ridingTransform;
+    private Vector3 ridingDirection;
     [SerializeField] private float rideTime;
     private float ridingAt;
     
     [SerializeField] private float floorDistance;
+
+    private bool canFly;
+    private bool flying;
+    private Vector3 flyingVelocity;
+    [SerializeField] private float flyingAcceleration;
+    [SerializeField] private float topFlyingSpeed;
+    [SerializeField] private float flyingDecay;
 
     private void Awake() {
         characterController = GetComponent<CharacterController>();
@@ -50,39 +59,74 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("MainMenu");
         }
 
+        Vector3 movement;
+
+        if (flying) {
+            movement = CalculateFlyingForce();
+            if (Input.GetKeyDown(KeyCode.Space) || !canFly) {
+                flying = false;
+                ridingAt = Time.time;
+                Vector3 horizontalFlying = new Vector3(flyingVelocity.x, 0, flyingVelocity.z);
+                ridingSpeed = horizontalFlying.magnitude;
+                ridingDirection = horizontalFlying.normalized;
+                downVelocity = -flyingVelocity.y;
+            }
+        } else {
+            movement = CalculateHorizontalForce();
+            movement += CalculateVerticalForce();
+
+            if (canFly && Input.GetKeyDown(KeyCode.Space) && airTime > coyoteTime) {
+                flying = true;
+                flyingVelocity = new Vector3(movement.x, -downVelocity, movement.z);
+                jumpBuffered = false;
+            }
+        }
+
+        movement *= Time.deltaTime;
+
+        characterController.Move(movement);
+
+        // Player rotation - rotate the camera instead of the player themselves
+        float rotation = rotationSpeed * rotationSpeedScale;
+        pitch += -Input.GetAxis("Mouse Y") * rotation;
+        yaw   +=  Input.GetAxis("Mouse X") * rotation;
+        cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
+    }
+
+    private Vector3 CalculateHorizontalForce() {
         Vector3 movement = Vector3.zero;
-        
+
         if (!movementLocked) {
             movement += GetWalkingForce() * movementSpeed;
         }
-
-        movement += Vector3.down * downVelocity;
 
         movement += GetInwardsWindForce() * windForce;
 
         if (Physics.Raycast(new Ray(transform.localPosition, Vector3.down), out RaycastHit hit, floorDistance, int.MaxValue, QueryTriggerInteraction.Ignore)) {
             if (hit.transform == ridingTransform) {
                 ridingAt = Time.time;
+                ridingDirection = ridingTransform.forward;
             } else if (hit.transform.CompareTag("Train")) {
                 ridingTransform = hit.transform;
+                ridingDirection = ridingTransform.forward;
                 ridingAt = Time.time;
                 ridingSpeed = 15;
             }
         }
 
         float t = (Time.time - ridingAt)/rideTime;
-        if (ridingTransform != null && t < 1) {
-            movement += ridingTransform.forward * ridingSpeed * (1-t);
+        if (t < 1) {
+            movement += ridingDirection * ridingSpeed * (1-t);
         }
 
-        movement *= Time.deltaTime;
+        return movement;
+    }
 
-        characterController.Move(movement);
-        
+    private Vector3 CalculateVerticalForce() {
         if (!characterController.isGrounded) {
             if (transform.localPosition.y > oceanHeight) {
                 downVelocity += gravity*Time.deltaTime;
-                airTime++;     
+                airTime++;
             } else {
                 if (downVelocity > 0) downVelocity /= 1+(Time.deltaTime*oceanDamp);
                 downVelocity -= (oceanHeight-transform.localPosition.y)*oceanForce*Time.deltaTime;
@@ -103,11 +147,7 @@ public class PlayerController : MonoBehaviour
             jumpBuffered = false;
         }
 
-        // Player rotation - rotate the camera instead of the player themselves
-        float rotation = rotationSpeed * rotationSpeedScale;
-        pitch += -Input.GetAxis("Mouse Y") * rotation;
-        yaw   +=  Input.GetAxis("Mouse X") * rotation;
-        cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
+        return Vector3.down * downVelocity;
     }
 
     private Vector3 GetWalkingForce() {
@@ -179,5 +219,52 @@ public class PlayerController : MonoBehaviour
 
     public void SetRotationSpeed(float speed) {
         rotationSpeedScale = speed;
+    }
+
+    public Vector3 CalculateFlyingForce() {
+        Vector3 input = Get3DMovement();
+        flyingVelocity += input * (flyingAcceleration * Time.deltaTime);
+
+        Vector3 damped = flyingVelocity * Mathf.Exp(-flyingDecay*Time.deltaTime);
+        
+        float cosSimilarity = 0;
+        if (input.magnitude > 0) {
+            cosSimilarity = Vector3.Dot(input.normalized, flyingVelocity.normalized);
+        }
+
+        flyingVelocity = Vector3.Lerp(damped, flyingVelocity, ((cosSimilarity+1)/2)*input.magnitude);
+
+        float magnitude = flyingVelocity.magnitude;
+        if (magnitude > topFlyingSpeed) {
+            flyingVelocity *= topFlyingSpeed/magnitude;
+        }
+
+        Vector3 movement = flyingVelocity;
+        
+        return movement;
+    }
+
+    public Vector3 Get3DMovement() {
+        Vector3 movement = Vector3.zero;
+
+        if (!movementLocked) {
+            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
+
+            Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            if (input.magnitude > 1) input.Normalize();
+
+            movement += rotation * Vector3.forward * input.y;
+            movement += rotation * Vector3.right * input.x;
+        }
+
+        return movement;
+    }
+
+    public void SetCanFly(bool to) {
+        canFly = to;
+    }
+
+    public bool IsFlying() {
+        return flying;
     }
 }

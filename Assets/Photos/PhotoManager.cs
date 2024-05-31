@@ -21,6 +21,8 @@ public class PhotoManager : MonoBehaviour
     protected Vector3 startPosition;
     [SerializeField] protected float tutorialWalkDistance;
 
+    public bool isComplete;
+
     public enum Mode {
         Walking,
         Gallery,
@@ -67,6 +69,20 @@ public class PhotoManager : MonoBehaviour
             SetMode(currentMode == Mode.Walking ? Mode.Gallery : Mode.Walking);
         }
 
+        if (!isComplete) {
+            if (gallery.AllGoalsComplete()) {
+                isComplete = true;
+                tutorialStep = 3;
+                player.SetCanFly(true);
+                NextTutorialStep();
+            }
+        } else {
+            if (gallery.PhotoCount() == 0) {
+                isComplete = false;
+                player.SetCanFly(false);
+            }
+        }
+
         UpdateTutorial();
     }
 
@@ -97,9 +113,15 @@ public class PhotoManager : MonoBehaviour
         if (tutorialStep == 0) {
             if (gallery.PhotoCount() == 0) {
                 tutorialStep = 1;
+                isComplete = false;
+                player.SetCanFly(false);
                 NextTutorialStep();
             }
         } else {
+            if (currentMode == Mode.Walking) {
+                tutorial.gameObject.SetActive(!interactor.HasInteractionPrompt());
+            }
+
             if (tutorialStep == 1) {
                 if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance) {
                     NextTutorialStep();
@@ -108,14 +130,20 @@ public class PhotoManager : MonoBehaviour
                 if (gallery.PhotoCount() > 0) {
                     NextTutorialStep();
                 }
-            } else if (tutorialStep >= 3) {
+            } else if (tutorialStep == 3) {
                 if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
                     EndTutorial();
                 }
-            }
-
-            if (currentMode == Mode.Walking) {
-                tutorial.gameObject.SetActive(!interactor.HasInteractionPrompt());
+            } else {
+                if (player.IsFlying()) {
+                    tutorialStep |= 8;
+                }
+                if (Input.GetKey(KeyCode.T)) {
+                    tutorialStep |= 16;
+                }
+                if (tutorialStep >= 28) {
+                    EndTutorial();
+                }
             }
         }
     }
@@ -133,8 +161,12 @@ public class PhotoManager : MonoBehaviour
             tutorial.text = "Press the Left Mouse Button to start taking pictures";
         }
 
-        if (tutorialStep >= 3) {
+        if (tutorialStep == 3) {
             tutorial.text = "Press the Right Mouse Button to see your photos and to-do list";
+        }
+
+        if (tutorialStep >= 4) {
+            tutorial.text = "Game Complete! Press Space while in the air to fly, Press T to spawn a train, or delete all your photos to start over!";
         }
     }
 

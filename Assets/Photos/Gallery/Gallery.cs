@@ -61,6 +61,7 @@ public class Gallery : MonoBehaviour
             todoItem.SetTargetData(target);
             todoItems.Add(todoItem);
         }
+        UpdateTodoList();
 
         ready = true;
         teleporting = false;
@@ -155,18 +156,7 @@ public class Gallery : MonoBehaviour
     }
 
     public void UpdateGrid() {
-        int c = 0;
-        foreach (TodoItem todoItem in todoItems) {
-            if (todoItem.UpdateComplete(photos)) {
-                c++;
-            }
-        }
-        if (c == todoItems.Count) {
-            foreach (TodoItem todoItem in todoItems) {
-                todoItem.SetComplete(true);
-            }
-        }
-
+        UpdateTodoList();
 
         if (photos.Count == 0) {
             loopImage.gameObject.SetActive(false);
@@ -290,6 +280,20 @@ public class Gallery : MonoBehaviour
         return photos.Count;
     }
 
+    protected void UpdateTodoList() {
+        int c = 0;
+        foreach (TodoItem todoItem in todoItems) {
+            if (todoItem.UpdateComplete(photos)) {
+                c++;
+            }
+        }
+        if (c == todoItems.Count) {
+            foreach (TodoItem todoItem in todoItems) {
+                todoItem.SetComplete(true);
+            }
+        }
+    }
+
     public bool TodoIsComplete(CameraTargetData cameraTargetData) {
         foreach (TodoItem todo in todoItems) {
             if (todo.IsType(cameraTargetData)) {
@@ -297,5 +301,14 @@ public class Gallery : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public bool AllGoalsComplete() {
+        foreach (TodoItem todo in todoItems) {
+            if (!todo.IsComplete()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
