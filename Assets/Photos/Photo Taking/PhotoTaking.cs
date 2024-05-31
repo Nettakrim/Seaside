@@ -39,6 +39,8 @@ public class PhotoTaking : MonoBehaviour
 
     [SerializeField] protected GameObject prompt;
 
+    protected bool showControls;
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
@@ -46,6 +48,7 @@ public class PhotoTaking : MonoBehaviour
         currentFovScale = 1;
         depthTex = new Texture2D(depthRenderTex.width, depthRenderTex.height, TextureFormat.RFloat, false);
         photoCamera.depthTextureMode = DepthTextureMode.Depth;
+        showControls = true;
     }
 
     protected void Update() {
@@ -78,6 +81,11 @@ public class PhotoTaking : MonoBehaviour
                     manager.SetMode(PhotoManager.Mode.Gallery);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) {
+                showControls = !showControls;
+                prompt.SetActive(showControls);
+            }
         }
 
         if (manager.currentMode != PhotoManager.Mode.Gallery) {
@@ -91,7 +99,7 @@ public class PhotoTaking : MonoBehaviour
         manager.interactor.SetCanInteract(false);
         ClearTakenPhoto();
         canZoom = false;
-        prompt.SetActive(manager.gallery.PhotoCount() <= 1);
+        prompt.SetActive(showControls);
     }
 
     public void CloseCameraMode() {

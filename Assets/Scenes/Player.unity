@@ -1585,7 +1585,14 @@ MonoBehaviour:
 
 
     LMB:
-    Exit'
+    Exit
+
+    RMB: Todo List
+
+
+    Q/E:
+
+    Hide controls'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c55d0660d2deba84d873d0a2e64c25fb, type: 2}
   m_sharedMaterial: {fileID: -6603308641556153849, guid: c55d0660d2deba84d873d0a2e64c25fb,
