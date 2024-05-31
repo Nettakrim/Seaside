@@ -13,8 +13,10 @@ public class TrainSpawner : MonoBehaviour
 
     public TrackData[] tracks;
 
+    public float blockUntil;
+
     void Update() {
-        if (Input.GetKeyDown(KeyCode.V)) {
+        if (Input.GetKeyDown(KeyCode.T)) {
             SpawnRandomTrain();
         }
 
@@ -30,6 +32,12 @@ public class TrainSpawner : MonoBehaviour
     }
 
     void SpawnRandomTrain() {
-        tracks[UnityEngine.Random.Range(0, tracks.Length)].SpawnTrain(trainTypes[UnityEngine.Random.Range(0, trainTypes.Length)]);
+        if (Time.time < blockUntil) return;
+
+        TrackData trackData = tracks[UnityEngine.Random.Range(0, tracks.Length)];
+        TrainType trainType = trainTypes[UnityEngine.Random.Range(0, trainTypes.Length)];
+        
+        float length = trackData.SpawnTrain(trainType);
+        blockUntil = Time.time + length/trackData.movementSpeed;
     }
 }
