@@ -16,4 +16,5 @@ MonoBehaviour:
   idByte: 0
   displayName: a Burning Campfire
   visibilityThreshold: 0.25
+  nearMissThreshold: 0.1
   requiredCount: 1

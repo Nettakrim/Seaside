@@ -8,6 +8,7 @@ public class ImageMetadata {
     public Vector2 rotation;
     public float fov;
     public Dictionary<int, List<CameraTargetData.Wrapper>> targets;
+    bool moreToSee;
  
     public void Encode(Encoder encoder) {
         encoder.EncodeByte(version);
@@ -51,6 +52,17 @@ public class ImageMetadata {
         decoder.Close();
     }
 
+    public void SetTargetVisibility(Visibility.VisibilityResult visibilityResult) {
+        SetTargets(visibilityResult.visible);
+
+        foreach (CameraTargetData.Wrapper wrapper in visibilityResult.misses) {
+            if (!PassesCountRequirement(wrapper.cameraTargetData.GetCombinedID())) {
+                moreToSee = true;
+                return;
+            }
+        }
+    }
+
     public void SetTargets(List<CameraTargetData.Wrapper> targetsList) {
         targets = new Dictionary<int, List<CameraTargetData.Wrapper>>();
 
@@ -91,6 +103,16 @@ public class ImageMetadata {
             info += "\n";
 
         }
+        if (moreToSee) {
+            info += "Get a clear view...";
+            if (targets.Count == 0) {
+                info += "\n- Zoom in\n- Move closer";
+            }
+        }
         return info;
+    }
+
+    public void OnSave() {
+        moreToSee = false;
     }
 }

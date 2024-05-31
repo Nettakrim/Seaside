@@ -16,4 +16,5 @@ MonoBehaviour:
   idByte: 1
   displayName: a Log being Cut
   visibilityThreshold: 0.25
+  nearMissThreshold: 0.1
   requiredCount: 1

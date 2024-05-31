@@ -16,4 +16,5 @@ MonoBehaviour:
   idByte: 0
   displayName: a Train
   visibilityThreshold: 0.15
+  nearMissThreshold: 0.05
   requiredCount: 1

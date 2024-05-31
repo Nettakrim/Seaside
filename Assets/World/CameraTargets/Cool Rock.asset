@@ -16,4 +16,5 @@ MonoBehaviour:
   idByte: 0
   displayName: a Cool Rock
   visibilityThreshold: 0.25
+  nearMissThreshold: 0.2
   requiredCount: 1

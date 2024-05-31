@@ -12,6 +12,7 @@ public class CameraTargetData : ScriptableObject {
     public string displayName;
 
     public float visibilityThreshold = 0.25f;
+    public float nearMissThreshold = 0.15f;
     public int requiredCount = 1;
 
     public int GetCombinedID() {
@@ -41,6 +42,10 @@ public class CameraTargetData : ScriptableObject {
 
         public bool PassesVisibilityCheck() {
             return visibility > cameraTargetData.visibilityThreshold;
+        }
+
+        public bool PassesNearMissCheck() {
+            return visibility > cameraTargetData.nearMissThreshold;
         }
 
         public void MultiplyVisibility(float multiplier) {

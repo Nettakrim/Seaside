@@ -15,24 +15,25 @@ public class GalleryPhoto : MonoBehaviour
 
     protected FileInfo file;
 
-    public bool Initialise(Texture2D tex, ImageMetadata metadata, FileInfo file) {
-        if (metadata == null) {
-            this.metadata = new ImageMetadata();
+    public bool Initialise(Texture2D tex, ImageMetadata potentialMetadata, FileInfo file) {
+        if (potentialMetadata == null) {
+            metadata = new ImageMetadata();
             Decoder decoder = (Decoder)tex;
             if (decoder.IsValid()) {
-                this.metadata.Decode(decoder);
+                metadata.Decode(decoder);
             } else {
                 return false;
             }
         } else {
-            this.metadata = metadata;
+            metadata = potentialMetadata;
+            metadata.OnSave();
         }
 
         image.texture = tex;
         this.file = file;
 
-        foreach (int id in this.metadata.targets.Keys) {
-            if (this.metadata.PassesCountRequirement(id)) {
+        foreach (int id in metadata.targets.Keys) {
+            if (metadata.PassesCountRequirement(id)) {
                 goalMarker.SetActive(true);
                 break;
             }

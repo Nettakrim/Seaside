@@ -15,4 +15,6 @@ MonoBehaviour:
   idChar: 76
   idByte: 0
   displayName: the Lighthouse
-  viewProportionThreshold: 0.1
+  visibilityThreshold: 0.25
+  nearMissThreshold: 0.1
+  requiredCount: 1
