@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         movement += GetInwardsWindForce() * windForce;
 
-        if (Physics.Raycast(new Ray(transform.position, Vector3.down), out RaycastHit hit, floorDistance, int.MaxValue, QueryTriggerInteraction.Ignore)) {
+        if (Physics.Raycast(new Ray(transform.localPosition, Vector3.down), out RaycastHit hit, floorDistance, int.MaxValue, QueryTriggerInteraction.Ignore)) {
             if (hit.transform == ridingTransform) {
                 ridingAt = Time.time;
             } else if (hit.transform.CompareTag("Train")) {
@@ -104,12 +104,13 @@ public class PlayerController : MonoBehaviour
         }
 
         // Player rotation - rotate the camera instead of the player themselves
-        pitch += -Input.GetAxis("Mouse Y") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
-        yaw += Input.GetAxis("Mouse X") * rotationSpeed * rotationSpeedScale * Time.deltaTime;
+        float rotation = rotationSpeed * rotationSpeedScale;
+        pitch += -Input.GetAxis("Mouse Y") * rotation;
+        yaw   +=  Input.GetAxis("Mouse X") * rotation;
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
-    [SerializeField] private Vector3 GetWalkingForce() {
+    private Vector3 GetWalkingForce() {
         float r = yaw*Mathf.Deg2Rad;
         Vector3 forward = new Vector3(Mathf.Sin(r), 0, Mathf.Cos(r));
 
@@ -121,7 +122,7 @@ public class PlayerController : MonoBehaviour
         return movement;
     }
 
-    [SerializeField] private Vector3 GetInwardsWindForce() {
+    private Vector3 GetInwardsWindForce() {
         Vector3 force = Vector3.zero;
 
         if (transform.localPosition.x < -500+windDistance) {

@@ -3230,7 +3230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 8
-  rotationSpeed: 350
+  rotationSpeed: 1
   gravity: 25
   jump: 8
   coyoteTime: 20
