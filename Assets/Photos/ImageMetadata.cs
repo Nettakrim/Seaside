@@ -11,13 +11,16 @@ public class ImageMetadata {
     bool moreToSee;
  
     public void Encode(Encoder encoder) {
+        // a version is stored just in case a breaking change is made in the future, that way images could be automatically updated
         encoder.EncodeByte(version);
 
+        // position rotation and fov are needed for teleportation
         DataTypes.EncodeVector3(encoder, position);
         DataTypes.EncodeVector2(encoder, rotation);
         DataTypes.EncodeFloat(encoder, fov);
         
-
+        // storing all the targets is a bit excessive - it could just be a list of booleans
+        // but at only 7 bytes per target it can store 4600 target wrappers, so it doesnt really matter
         List<CameraTargetData.Wrapper> targetsList = new List<CameraTargetData.Wrapper>();
         foreach (int id in targets.Keys) {
             targetsList.AddRange(targets[id]);
@@ -55,12 +58,18 @@ public class ImageMetadata {
     public void SetTargetVisibility(Visibility.VisibilityResult visibilityResult) {
         SetTargets(visibilityResult.visible);
 
+        // checks if there are targets that only slightly failed the visbility check and arent already passing elsewhere in the image
+        // this is used to give a prompt to the player, and is only tracked up until the image is saved
         foreach (CameraTargetData.Wrapper wrapper in visibilityResult.misses) {
             if (!PassesCountRequirement(wrapper.cameraTargetData.GetCombinedID())) {
                 moreToSee = true;
                 return;
             }
         }
+    }
+
+    public void OnSave() {
+        moreToSee = false;
     }
 
     public void SetTargets(List<CameraTargetData.Wrapper> targetsList) {
@@ -110,9 +119,5 @@ public class ImageMetadata {
             }
         }
         return info;
-    }
-
-    public void OnSave() {
-        moreToSee = false;
     }
 }

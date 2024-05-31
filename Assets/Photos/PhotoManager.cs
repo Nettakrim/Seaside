@@ -90,7 +90,7 @@ public class PhotoManager : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject() && MouseOnUI(GetEventSystemRaycastResults());
     }
 
-    //https://forum.unity.com/threads/how-to-detect-if-mouse-is-over-ui.1025533/
+    // https://forum.unity.com/threads/how-to-detect-if-mouse-is-over-ui.1025533/
     private static bool MouseOnUI(List<RaycastResult> eventSystemRaysastResults)
     {
         foreach (RaycastResult curRaycastResult in eventSystemRaysastResults) {

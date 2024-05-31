@@ -37,6 +37,10 @@ public class CameraTargetData : ScriptableObject {
         }
 
         public static int GetByteLength() {
+            // it is very important that this is correct
+            // +2 idChar
+            // +1 idByte
+            // +4 visiblity
             return 7;
         }
 
@@ -53,6 +57,7 @@ public class CameraTargetData : ScriptableObject {
         }
 
         public int CompareTo(Wrapper other) {
+            // sort by id, subsort by visibility
             int compare = cameraTargetData.GetCombinedID().CompareTo(other.cameraTargetData.GetCombinedID());
             if (compare != 0) return compare;
             return visibility.CompareTo(other.visibility);

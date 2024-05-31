@@ -32,6 +32,7 @@ public class GalleryPhoto : MonoBehaviour
         image.texture = tex;
         this.file = file;
 
+        // puts a little checkmark if the photo has any targets that complete a todo
         foreach (int id in metadata.targets.Keys) {
             if (metadata.PassesCountRequirement(id)) {
                 goalMarker.SetActive(true);

@@ -29,6 +29,8 @@ public class BasicTrainElement : TrainElement
     }
 
     void Update() {
+        // all train elements are independant and just follow from one point to the next
+        // this does mean they can desync if framerate is inconsistent
         if (Vector3.Distance(transform.position, next.position) < 1) {
             index++;
             if (index >= trackData.trackPoints.Length) {

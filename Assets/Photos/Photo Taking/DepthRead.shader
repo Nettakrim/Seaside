@@ -41,7 +41,7 @@ Shader "Custom/DepthRead"
                 return o;
             }
 
-            //_LastCameraDepthTexture should mean aspect ratio isnt needed, but it doesnt seem to work?
+            // _LastCameraDepthTexture should mean aspect ratio isnt needed, but it doesnt seem to work?
             sampler2D _CameraDepthTexture;
 
             float _AspectRatio;

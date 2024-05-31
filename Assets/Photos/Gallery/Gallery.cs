@@ -87,12 +87,14 @@ public class Gallery : MonoBehaviour
 
     protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata, FileInfo file) {
         GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
+        // gallery photos can fail if the encoded data is malformed
         bool success = galleryPhoto.Initialise(tex, metadata, file);
         if (!success) {
             Destroy(galleryPhoto.gameObject);
             Destroy(tex);
             return;
         }
+        // at this point we dont need to access the texture data on the cpu
         tex.Apply(false, true);
 
         photos.Add(galleryPhoto);
@@ -104,6 +106,7 @@ public class Gallery : MonoBehaviour
         string file = GetNextFilename();
         File.WriteAllBytes(file, tex.EncodeToPNG());
 
+        // the metadata is sent directly here, since theres no point in decoding the data when you already have it
         AddImageToGallery(tex, imageMetadata, new FileInfo(file));
     }
   
@@ -170,6 +173,8 @@ public class Gallery : MonoBehaviour
             cyclePrompt.SetActive(photos.Count == 2 || photos.Count == 3);
         }
 
+        // reset order then cycle them by the amount needed
+        // this could probably be done in a single loop, but this is simpler
         for (int i = 0; i < photos.Count; i++) {
             photos[i].transform.SetSiblingIndex(i);
         }
@@ -184,6 +189,7 @@ public class Gallery : MonoBehaviour
         selectedInfo.SetActive(true);
         selectedGoals.text = selectedPhoto.GetInfoText();
 
+        // if theres an even amount of photos a copy of the endmost one is added on the other side, that way the ui is centered
         if (photos.Count%2 == 0) {
             loopImage.gameObject.SetActive(true);
             GalleryPhoto galleryPhoto = photos[(currentPhoto+(photos.Count/2))%photos.Count];
@@ -239,6 +245,7 @@ public class Gallery : MonoBehaviour
         selectedPhoto.Teleport(manager.player);
         manager.photoTaking.SetFov(selectedPhoto.GetFov());
         manager.player.SetRotationSpeed(0);
+        // the teleporting bool prevents using A/D to cycle images while the image is fading out
         teleporting = true;
     }
 
@@ -253,6 +260,9 @@ public class Gallery : MonoBehaviour
     }
 
     public Texture DeleteSelected(bool destroyTexture) {
+        // deletes all data associated with the selected image, by default it also gets rid of the texture from memory
+        // but the campfire needed to be able to access it, so the destroyTexture parameter makes it return the texture instead
+
         EventSystem.current.SetSelectedGameObject(null);
         if (photos.Count == 0) return null;
         GalleryPhoto photo = photos[currentPhoto];
@@ -269,7 +279,7 @@ public class Gallery : MonoBehaviour
         SetCurrentPhoto(Random.Range(0, photos.Count));
     }
 
-    //https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
+    // https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
     public static FileInfo[] GetFilesNumerically(DirectoryInfo directory, string searchPattern, int numberPadding = 4) {
         return directory.GetFiles(searchPattern).OrderBy(file =>
             Regex.Replace(file.Name, @"\d+", match => match.Value.PadLeft(numberPadding, '0'))

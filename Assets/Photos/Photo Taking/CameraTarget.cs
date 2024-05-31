@@ -44,6 +44,8 @@ public class CameraTarget : MonoBehaviour
     }
 
     public Bounds GetBounds() {
+        // alternate bounds can be set since usually most objects will have some portion of themselves underground
+        // which then impacts the visibility score
         if (alternateBounds != null) {
             return alternateBounds.bounds;
         }

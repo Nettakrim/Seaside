@@ -106,10 +106,13 @@ public class Sheep : MonoBehaviour
         bool scared = Vector3.Distance(transform.position, player.position) < scareRadius;
 
         if ((scared || someTimePassed) && farFromHome) {
+            // return home
             offset = new Vector2(sheepHome.home.position.x - transform.position.x, sheepHome.home.position.z - transform.position.z) + (Random.insideUnitCircle * sheepHome.homeThreshold/2);
         } else if (scared) {
+            // run away from the player
             offset = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z).normalized * scareWalkDistance;
         } else if (timeDiff > 0 || stuck || (walkForce < 0 && Vector3.Distance(stuckPos, transform.position) > maxWanderDistance)) {
+            // randomly wander
             offset = Random.insideUnitCircle * maxWanderDistance;
         }
 

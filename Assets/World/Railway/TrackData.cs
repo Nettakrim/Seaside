@@ -15,12 +15,16 @@ public class TrackData : MonoBehaviour
         float length = 0f;
         float halfLength = 0f;
 
+        // train types consist of multiple sections with different pools of elements and a random length range
+        // a passenger train for example, is one section of length 1 that is always a locomotive, and another section of around 3-5 which is always passenger carts
+
         foreach (TrainSection section in trainType.sections) {
             int count = Random.Range(section.minLength, section.maxLength);
             for (int i = 0; i < count; i++) {
                 TrainElement trainElement = Instantiate(section.elements[Random.Range(0, section.elements.Length)], transform);
                 trainElement.SetTrackData(this);
                 
+                // length additions are split between loops to center each element
                 length += halfLength;
                 halfLength = trainElement.GetLength()/2;
                 length += halfLength;

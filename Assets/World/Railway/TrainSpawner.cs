@@ -38,6 +38,10 @@ public class TrainSpawner : MonoBehaviour
         TrainType trainType = trainTypes[UnityEngine.Random.Range(0, trainTypes.Length)];
         
         float length = trackData.SpawnTrain(trainType);
+
+        // prevent any trains from spawning inside of existing trains
+        // despite not tracking any trains once theyre spawned, this is still easy to do
+        // the trains move at a predictable speed and are only so long, so (length / m/s) = time to move one length
         blockUntil = Time.time + length/trackData.movementSpeed;
     }
 }

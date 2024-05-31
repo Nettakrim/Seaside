@@ -51,6 +51,7 @@ public class Campfire : Interactable
 
         Gallery gallery = PhotoManager.instance.gallery;
         gallery.SelectRandom();
+        //the false here means instead of completely deleting the image it deletes everything but the texture itself
         StartBurningImage(gallery.DeleteSelected(false));
     }
 
@@ -68,6 +69,7 @@ public class Campfire : Interactable
     }
 
     public void FinishBurningImage() {
+        //at this point the texture can now actually be destroyed
         Destroy(texture);
         image.SetActive(false);
         burntAt = 0;

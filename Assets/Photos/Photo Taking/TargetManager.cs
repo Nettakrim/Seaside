@@ -23,6 +23,7 @@ public class TargetManager : MonoBehaviour
     }
 
     public CameraTargetData GetCameraTargetDataFromCombinedID(int id) {
+        // combined id looks like 00000000ccccccccccccccccbbbbbbbb, where c is the bits of the char, and b is the bits of the byte
         return GetCameraTargetDataFromID((char)(id>>8), (byte)(id&255));
     }
 

@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
             movement = CalculateFlyingForce();
             if (Input.GetKeyDown(KeyCode.Space) || !canFly) {
                 flying = false;
+                // transfer velocity, default movement doesnt track this, so it instead uses the riding mechanism
                 ridingAt = Time.time;
                 Vector3 horizontalFlying = new Vector3(flyingVelocity.x, 0, flyingVelocity.z);
                 ridingSpeed = horizontalFlying.magnitude;
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
         characterController.Move(movement);
 
-        // Player rotation - rotate the camera instead of the player themselves
+        // player rotation - rotate the camera instead of the player themselves
         float rotation = rotationSpeed * rotationSpeedScale;
         pitch += -Input.GetAxis("Mouse Y") * rotation;
         yaw   +=  Input.GetAxis("Mouse X") * rotation;
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
 
         movement += GetInwardsWindForce() * windForce;
 
+        // this system is very specific to trains
         if (Physics.Raycast(new Ray(transform.localPosition, Vector3.down), out RaycastHit hit, floorDistance, int.MaxValue, QueryTriggerInteraction.Ignore)) {
             if (hit.transform == ridingTransform) {
                 ridingAt = Time.time;
@@ -124,6 +126,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 CalculateVerticalForce() {
         if (!characterController.isGrounded) {
+            //fall when above water, float up when below it
             if (transform.localPosition.y > oceanHeight) {
                 downVelocity += gravity*Time.deltaTime;
                 airTime++;
@@ -163,6 +166,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private Vector3 GetInwardsWindForce() {
+        //makes a that softly stops you walking too far and hitting the invisible wall when near the edge of the map
         Vector3 force = Vector3.zero;
 
         if (transform.localPosition.x < -500+windDistance) {
@@ -197,7 +201,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void SetLocalPosition(Vector3 position) {
-        //for some reason character controllers prevent position being set when enabled
+        // for some reason character controllers prevent position being set when enabled
         characterController.enabled = false;
         transform.localPosition = position;
         characterController.enabled = true;
@@ -232,6 +236,7 @@ public class PlayerController : MonoBehaviour
             cosSimilarity = Vector3.Dot(input.normalized, flyingVelocity.normalized);
         }
 
+        // effectively increases the dampening force when youre turning or stop moving
         flyingVelocity = Vector3.Lerp(damped, flyingVelocity, ((cosSimilarity+1)/2)*input.magnitude);
 
         float magnitude = flyingVelocity.magnitude;

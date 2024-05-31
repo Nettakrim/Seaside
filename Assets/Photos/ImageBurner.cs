@@ -9,8 +9,8 @@ namespace ImageBurner {
         public static int size = 8;
 
         public static int GetFlagInt(int width, int height) {
-            //first byte of the flag int is all 0, meaning its this default checksum-style flag, which is some arbitrary hash to do with the width and height of the image
-            //if the essentially reserved 4 bytes at the start ever needed to be used, then the first byte should be something other than 0 to signify that a different format is being used
+            // first byte of the flag int is all 0, meaning its this default checksum-style flag, which is some arbitrary hash to do with the width and height of the image
+            // if the essentially reserved 4 bytes at the start ever needed to be used, then the first byte should be something other than 0 to signify that a different format is being used
             return (((((width+1)<<4)^(height-1)<<1)%16777213)^58913)&0xFFFFFF;
         }
     }
@@ -18,9 +18,10 @@ namespace ImageBurner {
 
 
     public static class CoordinateFolding {
-        //attempts to give each point in an image a single unique other point in the image, but one that is hard to predict
-        //this means the burnt pixels are evenly distributed across the image as noise, instead of being a line at the bottom
-        //this doesnt look as shuffled for different resolutions, and might not even work properly for non-square/non-power of 2
+        // attempts to give each point in an image a single unique other point in the image, but one that is hard to predict
+        // this means the burnt pixels are evenly distributed across the image as noise, instead of being a line at the bottom
+        // this doesnt look as shuffled for different resolutions, and might not even work properly for non-square/non-power of 2
+        // but the game only uses 256x images so its fine
         public static int foldingSteps = 16;
 
         public static (int,int) UnfoldedCoordinates(int pos, int width, int height) {
@@ -56,6 +57,13 @@ namespace ImageBurner {
 
 
     public class Encoder {
+        // hides a byte across the least significant bits of two color values, like so:
+        // byte XXXXXXXX -> rrrrrrrX gggggggX bbbbbbXX aaaaaaaa | rrrrrrrX gggggggX bbbbbbXX aaaaaaaa
+        // this is really hard to spot, but in the 256x images it can store 32kb!
+
+        // instead of encoding a massive byte array all at once, it encodes incrementally like a StreamWriter etc would
+        // this means the object can be passed around in the code and objects can add to it as they need
+
         public Encoder(Texture2D texture) {
             tex = texture;
             position = HeaderInfo.size;
@@ -67,7 +75,7 @@ namespace ImageBurner {
             position = 0;
             DataTypes.EncodeInt32(this, HeaderInfo.GetFlagInt(tex.width, tex.height));
             DataTypes.EncodeInt32(this, length);
-            //force error if you try to encode after finishing
+            // force error if you try to encode after finishing
             limit = -1;
         }
 
@@ -121,6 +129,8 @@ namespace ImageBurner {
 
 
     public class Decoder {
+        // retrieves the bytes from an image, like the encoder this is done incrementally
+
         public Decoder(Texture2D texture) {
             tex = texture;
             position = 0;
@@ -148,7 +158,7 @@ namespace ImageBurner {
         }
 
         public void Close() {
-            //force error if you try to decode after finishing
+            // force error if you try to decode after finishing
             limit = -1;
             isValid = false;
         }
@@ -209,6 +219,9 @@ namespace ImageBurner {
 
 
     public static class DataTypes {
+        // the encoder/decoders only deal with bytes and byte arrays
+        // all the more specific things are put here
+
         public static void EncodeInt32(Encoder encoder, int value) {
             encoder.EncodeBytes(BitConverter.GetBytes(value));
         }

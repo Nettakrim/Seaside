@@ -89,6 +89,7 @@ public class PhotoTaking : MonoBehaviour
         }
 
         if (manager.currentMode != PhotoManager.Mode.Gallery) {
+            // NOTE: lerp smoothing with deltatime is slightly innacurate, this should be Exp instead
             UpdateFov(Mathf.Lerp(currentFovScale, targetFovScale, Time.deltaTime * fovLerpSpeed));
         }
     }
@@ -117,6 +118,8 @@ public class PhotoTaking : MonoBehaviour
         currentFovScale = newScale;
         mainCamera.fieldOfView = normalFov*currentFovScale;
         photoCamera.fieldOfView = normalFov*currentFovScale;
+        // slow down camera rotation as you zoom in
+        // this isnt a perfect scale to get the same visual distance, but its close enough
         manager.player.SetRotationSpeed(currentFovScale);
     }
 
@@ -153,6 +156,9 @@ public class PhotoTaking : MonoBehaviour
     }
 
     protected Texture2D GetTextureFromHDR(RenderTexture rt) {
+        // in order for bloom to work, the rendertexture needs to be HDR
+        // which needs to be converted to be in standard colorspace
+
         Texture2D readTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBAHalf, false, false);
 
         ReadPixels(rt, readTex);
