@@ -252,12 +252,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74156108}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.05495013, z: 0, w: 0.99848914}
+  m_LocalRotation: {x: -0, y: -0.05495013, z: -0, w: 0.99848914}
   m_LocalPosition: {x: 84, y: 232, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1561916267}
+  m_Father: {fileID: 1948898426}
   m_LocalEulerAnglesHint: {x: 0, y: -6.3, z: 0}
 --- !u!65 &74156110
 BoxCollider:
@@ -327,6 +327,7 @@ Transform:
   - {fileID: 227978027}
   - {fileID: 2099304671}
   - {fileID: 957431484}
+  - {fileID: 1900902849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &102159190
@@ -2095,51 +2096,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a188d0c91158364419b26c9d8408bc7b, type: 3}
---- !u!1 &482015078
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 482015079}
-  - component: {fileID: 482015080}
-  m_Layer: 0
-  m_Name: CampfireLightDrums
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &482015079
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 482015078}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2773622234862108823}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &482015080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 482015078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b5c61cd4286dde44a067ec788d074a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicData: {fileID: 11400000, guid: 469a7338409b04c4cb7dfaf429a9c1ef, type: 2}
 --- !u!1001 &503305785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3532,51 +3488,6 @@ Transform:
   - {fileID: 239966907}
   m_Father: {fileID: 1699368474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &719658263
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 719658264}
-  - component: {fileID: 719658265}
-  m_Layer: 0
-  m_Name: CampfireHeavyDrums
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &719658264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719658263}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2773622234862108823}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &719658265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 719658263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b5c61cd4286dde44a067ec788d074a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicData: {fileID: 11400000, guid: 59a839119cf7ae64ab2ebeed08f8eb71, type: 2}
 --- !u!1001 &742450844
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4665,12 +4576,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 976856192}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -151, y: 55, z: 154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1561916267}
+  m_Father: {fileID: 1811681679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &976856194
 SphereCollider:
@@ -7858,6 +7769,75 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.5, z: 10}
   m_Center: {x: 0, y: -0.25, z: 0}
+--- !u!1 &1491130647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1491130648}
+  - component: {fileID: 1491130650}
+  - component: {fileID: 1491130649}
+  m_Layer: 0
+  m_Name: Village Drums
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1491130648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491130647}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -444, y: 6, z: -155}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4618963430875170402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1491130649
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491130647}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 131.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1491130650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491130647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c0bb3452e42ba4699934d7fa3b93ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicData: {fileID: 11400000, guid: 59a839119cf7ae64ab2ebeed08f8eb71, type: 2}
+  area: {fileID: 1491130649}
+  fadeDistance: 100
 --- !u!1001 &1501080621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8074,15 +8054,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1687869049}
-  - {fileID: 976856193}
-  - {fileID: 1884853825}
   - {fileID: 1602227704}
   - {fileID: 1167716350}
   - {fileID: 1275153531}
   - {fileID: 1836050274}
-  - {fileID: 1900902849}
-  - {fileID: 74156109}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1561916268
@@ -8097,22 +8072,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0ae0fc309468e4493c83e117f7363d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicAreas:
-  - {fileID: 1687869051}
-  - {fileID: 976856195}
-  - {fileID: 1884853827}
-  - {fileID: 1602227706}
-  - {fileID: 1167716352}
-  - {fileID: 1275153533}
-  - {fileID: 1836050276}
-  - {fileID: 1900902851}
-  - {fileID: 1202466246}
-  - {fileID: 719658265}
-  - {fileID: 482015080}
-  - {fileID: 74156111}
+  musicLayers:
+  - {fileID: 11400000, guid: 790e60a90c8bdcf48931661487fc8c64, type: 2}
+  - {fileID: 11400000, guid: 9458eb6dfa90aa3448d71deb0cd677ae, type: 2}
+  - {fileID: 11400000, guid: fd901326014c02d45898727f89e786fa, type: 2}
+  - {fileID: 11400000, guid: 6e47dd7f8f3d8924c8342d6dbeeadbe4, type: 2}
+  - {fileID: 11400000, guid: 59a839119cf7ae64ab2ebeed08f8eb71, type: 2}
+  - {fileID: 11400000, guid: 469a7338409b04c4cb7dfaf429a9c1ef, type: 2}
+  - {fileID: 11400000, guid: cd233bcf657d68749abb19da12d50569, type: 2}
+  - {fileID: 11400000, guid: 36619e1904475b64a893c8c691a2ff2b, type: 2}
+  - {fileID: 11400000, guid: a8dace2283e2f5b4aa521a06db008a7e, type: 2}
   volumeChangeSpeed: 1
   audioSourcePrefab: {fileID: 8039650993376640156, guid: 61e599a277389e14cba30af80cd04587,
     type: 3}
+  audioSourceParent: {fileID: 1561916267}
   scheduleBuffer: 0.5
 --- !u!1001 &1587422083
 PrefabInstance:
@@ -8765,12 +8738,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687869048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -246, y: 0, z: 379}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1561916267}
+  m_Father: {fileID: 1811681679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1687869050
 SphereCollider:
@@ -9923,6 +9896,8 @@ Transform:
   - {fileID: 1690349252}
   - {fileID: 1227457283}
   - {fileID: 893811941}
+  - {fileID: 976856193}
+  - {fileID: 1687869049}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1836050273
@@ -10109,7 +10084,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1561916267}
+  m_Father: {fileID: 2034728299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1884853826
 SphereCollider:
@@ -10173,12 +10148,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900902848}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 339, y: 126, z: 550}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1561916267}
+  m_Father: {fileID: 89914052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1900902850
 SphereCollider:
@@ -10773,6 +10748,7 @@ Transform:
   m_Children:
   - {fileID: 4154535350906603162}
   - {fileID: 1266763011}
+  - {fileID: 74156109}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1948898427
@@ -11391,6 +11367,7 @@ Transform:
   - {fileID: 1690821329}
   - {fileID: 985415465}
   - {fileID: 1233693926}
+  - {fileID: 1884853825}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2043376918
@@ -12821,23 +12798,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6228409393907358550, guid: 9b14a72064c6cef498e18185df49ca5d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 719658264}
-    - targetCorrespondingSourceObject: {fileID: 6228409393907358550, guid: 9b14a72064c6cef498e18185df49ca5d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 482015079}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b14a72064c6cef498e18185df49ca5d, type: 3}
---- !u!4 &2773622234862108823 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6228409393907358550, guid: 9b14a72064c6cef498e18185df49ca5d,
-    type: 3}
-  m_PrefabInstance: {fileID: 2773622234862108822}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2859576578426926457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13780,6 +13743,7 @@ Transform:
   - {fileID: 5486705610634006645}
   - {fileID: 1433983525}
   - {fileID: 676383559}
+  - {fileID: 1491130648}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4655443694858054780

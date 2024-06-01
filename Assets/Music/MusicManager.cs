@@ -4,47 +4,64 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
+    public static MusicManager instance;
+
     private Transform player;
 
-    [SerializeField] private MusicSource[] musicAreas;
+    [SerializeField] private MusicData[] musicLayers;
+    private List<MusicSource> musicSources;
 
     private List<MusicTrack> musicTracks;
     [SerializeField] private float volumeChangeSpeed = 1;
 
     [SerializeField] private AudioSource audioSourcePrefab;
+    [SerializeField] private Transform audioSourceParent;
 
     [SerializeField] private float scheduleBuffer;
 
-    private void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+    private void Awake() {
+        instance = this;
 
         InitialiseTracks();
     }
 
-    private void InitialiseTracks() {
-        musicTracks = new List<MusicTrack>();
-        double playAt = Time.timeAsDouble+scheduleBuffer;
-
-        // create a music track for all unique layers - if multpile areas use the same musicdata the system just uses whichever reports a higher volume
-        foreach (MusicSource musicArea in musicAreas) {
-            foreach (MusicTrack existing in musicTracks) {
-                if (existing.musicData == musicArea.musicData) {
-                    musicArea.SetIndex(musicTracks.IndexOf(existing));
-                    continue;
-                }
-            }
-
-            AudioSource audioSource = Instantiate(audioSourcePrefab, transform);
-
-            MusicTrack musicTrack = new MusicTrack(musicArea.musicData, audioSource);
-            musicTracks.Add(musicTrack);
-
-            audioSource.PlayScheduled(playAt);
-            musicArea.SetIndex(musicTracks.Count-1);
-        }
+    private void Start() {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         CalculateTracks();
         UpdateTracks(0);
+    }
+
+    private void InitialiseTracks() {
+        musicTracks = new List<MusicTrack>();
+        musicSources = new List<MusicSource>();
+
+        double playAt = Time.timeAsDouble+scheduleBuffer;
+
+        foreach (MusicData musicData in musicLayers) {
+            AudioSource audioSource = Instantiate(audioSourcePrefab, audioSourceParent);
+            audioSource.name = "Source: "+musicData.name;
+
+            MusicTrack musicTrack = new MusicTrack(musicData, audioSource);
+            musicTracks.Add(musicTrack);
+
+            audioSource.PlayScheduled(playAt);
+        }
+    }
+
+    public void AddSource(MusicSource musicSource) {
+        foreach (MusicTrack existing in musicTracks) {
+            if (existing.musicData == musicSource.musicData) {
+                musicSource.SetIndex(musicTracks.IndexOf(existing));
+                break;
+            }
+        }
+
+        musicSources.Add(musicSource);
+    }
+
+    public void RemoveSource(MusicSource musicSource) {
+        musicSources.Remove(musicSource);
     }
 
     private void Update() {
@@ -71,8 +88,8 @@ public class MusicManager : MonoBehaviour
 
         Vector3 listenerPosition = player.position;
 
-        foreach (MusicSource musicArea in musicAreas) {
-            musicTracks[musicArea.GetIndex()].CalculateMusicArea(musicArea, listenerPosition);
+        foreach (MusicSource musicSource in musicSources) {
+            musicTracks[musicSource.GetIndex()].CalculateMusicSource(musicSource, listenerPosition);
         }
     }
 }

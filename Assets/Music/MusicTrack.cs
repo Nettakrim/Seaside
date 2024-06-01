@@ -16,8 +16,8 @@ public class MusicTrack {
         volumeTarget = new MusicTarget();
     }
 
-    public void CalculateMusicArea(MusicSource musicArea, Vector3 listenerPosition) {
-        volumeTarget.SetTarget(musicArea.GetVolume(listenerPosition));
+    public void CalculateMusicSource(MusicSource musicSource, Vector3 listenerPosition) {
+        volumeTarget.SetTarget(musicSource.GetVolume(listenerPosition));
     }
 
     public void Reset() {
