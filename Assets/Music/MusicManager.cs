@@ -27,9 +27,6 @@ public class MusicManager : MonoBehaviour
 
     private void Start() {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        CalculateTracks();
-        UpdateTracks(0);
     }
 
     private void InitialiseTracks() {
