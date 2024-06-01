@@ -36,6 +36,7 @@ public class MusicManager : MonoBehaviour
         musicTracks = new List<MusicTrack>();
         musicSources = new List<MusicSource>();
 
+        //play scheduled ensures the music has had time to load
         double playAt = Time.timeAsDouble+scheduleBuffer;
 
         foreach (MusicData musicData in musicLayers) {
@@ -88,7 +89,8 @@ public class MusicManager : MonoBehaviour
     }
 
     private void CalculateTracks() {
-        // if the tracks go out of sync (they might, currently untested) they can be synced here
+        // as long as the tracks are all the exact same sample rate/count, they dont desync
+        // if this ever changes, they should be synced here
         foreach (MusicTrack musicTrack in musicTracks) {
             musicTrack.Reset();
         }
