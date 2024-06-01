@@ -50,14 +50,21 @@ public class MusicManager : MonoBehaviour
     }
 
     public void AddSource(MusicSource musicSource) {
+        bool found = false;
+
         foreach (MusicTrack existing in musicTracks) {
             if (existing.musicData == musicSource.musicData) {
                 musicSource.SetIndex(musicTracks.IndexOf(existing));
+                found = true;
                 break;
             }
         }
 
-        musicSources.Add(musicSource);
+        if (found) {
+            musicSources.Add(musicSource);
+        } else {
+            Debug.LogWarning("Music source "+musicSource+" has layer "+musicSource.musicData+" which is not present in manager "+name);
+        }
     }
 
     public void RemoveSource(MusicSource musicSource) {

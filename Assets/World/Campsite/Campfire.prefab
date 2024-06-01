@@ -9930,6 +9930,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2341987882920900245}
   - component: {fileID: 7902141803016765123}
+  - component: {fileID: 3948649904255687646}
   m_Layer: 0
   m_Name: CampfireDrums
   m_TagString: Untagged
@@ -9965,6 +9966,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicData: {fileID: 11400000, guid: 469a7338409b04c4cb7dfaf429a9c1ef, type: 2}
+--- !u!114 &3948649904255687646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845992263165393213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b5c61cd4286dde44a067ec788d074a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicData: {fileID: 11400000, guid: 16e69b363691fd34f9a9a13eaf8b1247, type: 2}
 --- !u!1001 &1310023548964012857
 PrefabInstance:
   m_ObjectHideFlags: 0

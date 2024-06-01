@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5034536402979063802}
   - component: {fileID: 5705239564005181644}
-  - component: {fileID: 6485451825781010002}
+  - component: {fileID: 8259022627440152922}
   m_Layer: 0
   m_Name: MusicSources
   m_TagString: Untagged
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicData: {fileID: 11400000, guid: 59a839119cf7ae64ab2ebeed08f8eb71, type: 2}
---- !u!114 &6485451825781010002
+--- !u!114 &8259022627440152922
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5c61cd4286dde44a067ec788d074a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicData: {fileID: 11400000, guid: 469a7338409b04c4cb7dfaf429a9c1ef, type: 2}
+  musicData: {fileID: 11400000, guid: 896220e325d09944f83ab0b4d06bcace, type: 2}
 --- !u!1 &1348068345246379229
 GameObject:
   m_ObjectHideFlags: 0
