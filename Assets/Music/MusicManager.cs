@@ -29,7 +29,7 @@ public class MusicManager : MonoBehaviour
         foreach (MusicSource musicArea in musicAreas) {
             foreach (MusicTrack existing in musicTracks) {
                 if (existing.musicData == musicArea.musicData) {
-                    musicArea.index = musicTracks.IndexOf(existing);
+                    musicArea.SetIndex(musicTracks.IndexOf(existing));
                     continue;
                 }
             }
@@ -40,7 +40,7 @@ public class MusicManager : MonoBehaviour
             musicTracks.Add(musicTrack);
 
             audioSource.PlayScheduled(playAt);
-            musicArea.index = musicTracks.Count-1;
+            musicArea.SetIndex(musicTracks.Count-1);
         }
 
         CalculateTracks();
@@ -72,7 +72,7 @@ public class MusicManager : MonoBehaviour
         Vector3 listenerPosition = player.position;
 
         foreach (MusicSource musicArea in musicAreas) {
-            musicTracks[musicArea.index].CalculateMusicArea(musicArea, listenerPosition);
+            musicTracks[musicArea.GetIndex()].CalculateMusicArea(musicArea, listenerPosition);
         }
     }
 }

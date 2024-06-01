@@ -5,9 +5,17 @@ using UnityEngine;
 public class MusicSource : MonoBehaviour
 {
     public MusicData musicData;
-    public int index;
+    private int index;
 
     public virtual float GetVolume(Vector3 listenerPosition) {
-        return 1f;
+        return gameObject.activeInHierarchy ? 1 : 0;
+    }
+
+    public void SetIndex(int to) {
+        index = to;
+    }
+
+    public int GetIndex() {
+        return index;
     }
 }
