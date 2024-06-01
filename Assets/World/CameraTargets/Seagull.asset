@@ -16,5 +16,5 @@ MonoBehaviour:
   idByte: 1
   displayName: a Seagull
   visibilityThreshold: 0.2
-  nearMissThreshold: 0.1
+  nearMissThreshold: 0.05
   requiredCount: 1
