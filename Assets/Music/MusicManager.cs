@@ -6,8 +6,6 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager instance;
 
-    private Transform player;
-
     [SerializeField] private MusicData[] musicLayers;
     private List<MusicSource> musicSources;
 
@@ -23,10 +21,6 @@ public class MusicManager : MonoBehaviour
         instance = this;
 
         InitialiseTracks();
-    }
-
-    private void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void InitialiseTracks() {
@@ -92,7 +86,7 @@ public class MusicManager : MonoBehaviour
             musicTrack.Reset();
         }
 
-        Vector3 listenerPosition = player.position;
+        Vector3 listenerPosition = PhotoManager.instance.GetPlayerPosition();
 
         foreach (MusicSource musicSource in musicSources) {
             musicTracks[musicSource.GetIndex()].CalculateMusicSource(musicSource, listenerPosition);

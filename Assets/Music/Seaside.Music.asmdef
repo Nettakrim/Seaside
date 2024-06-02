@@ -1,3 +1,16 @@
 {
-	"name": "Seaside.Music"
+    "name": "Seaside.Music",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c35235362d2800141a399f71abec8b4c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

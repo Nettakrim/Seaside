@@ -8,7 +8,6 @@ public class LumberButton : Interactable
 
     [SerializeField] private BoxCollider targetRange;
     [SerializeField] private GameObject target;
-    private Transform player;
 
     [SerializeField] private Material active;
     [SerializeField] private Material inactive;
@@ -16,13 +15,9 @@ public class LumberButton : Interactable
 
     bool running = false;
 
-    protected void Start() {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-
     protected void Update() {
         if (running) {
-            target.SetActive(targetRange.bounds.Contains(player.position));
+            target.SetActive(targetRange.bounds.Contains(PhotoManager.instance.GetPlayerPosition()));
             if (CanInteract(null)) {
                 running = false;
                 SetButtonMaterial(true);

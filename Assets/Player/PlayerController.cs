@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            SceneManager.LoadScene("MainMenu");
+            SceneLoader.instance.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
         Vector3 movement;

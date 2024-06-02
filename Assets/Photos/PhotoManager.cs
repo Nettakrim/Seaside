@@ -174,4 +174,8 @@ public class PhotoManager : MonoBehaviour
         tutorialStep = 0;
         tutorial.gameObject.SetActive(false);
     }
+
+    public Vector3 GetPlayerPosition() {
+        return player.transform.position;
+    }
 }

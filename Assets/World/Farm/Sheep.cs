@@ -11,8 +11,6 @@ public class Sheep : MonoBehaviour
 
     protected float pitch;
 
-    protected Transform player;
-
     protected float targetX;
     protected float targetZ;
 
@@ -41,7 +39,6 @@ public class Sheep : MonoBehaviour
 
     protected void Start() {
         rb = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         targetX = transform.position.x;
         targetZ = transform.position.z;
@@ -96,6 +93,7 @@ public class Sheep : MonoBehaviour
 
     protected void UpdateTarget() {
         Vector2 offset = Vector2.zero;
+        Vector3 playerPos = PhotoManager.instance.GetPlayerPosition();
 
         float timeDiff = Time.time - nextTargetAt;
         float speed = rb.velocity.magnitude;
@@ -103,14 +101,14 @@ public class Sheep : MonoBehaviour
         bool someTimePassed = timeDiff > -minWanderTime/2;
         bool stuck = someTimePassed && speed < 0.1f && targetOffset.magnitude > deadzone+slowdownDistance/2;
         bool farFromHome = Vector3.Distance(transform.position, sheepHome.home.position) > sheepHome.homeThreshold;
-        bool scared = Vector3.Distance(transform.position, player.position) < scareRadius;
+        bool scared = Vector3.Distance(transform.position, playerPos) < scareRadius;
 
         if ((scared || someTimePassed) && farFromHome) {
             // return home
             offset = new Vector2(sheepHome.home.position.x - transform.position.x, sheepHome.home.position.z - transform.position.z) + (Random.insideUnitCircle * sheepHome.homeThreshold/2);
         } else if (scared) {
             // run away from the player
-            offset = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z).normalized * scareWalkDistance;
+            offset = new Vector2(transform.position.x - playerPos.x, transform.position.z - playerPos.z).normalized * scareWalkDistance;
         } else if (timeDiff > 0 || stuck || (walkForce < 0 && Vector3.Distance(stuckPos, transform.position) > maxWanderDistance)) {
             // randomly wander
             offset = Random.insideUnitCircle * maxWanderDistance;
@@ -142,17 +140,5 @@ public class Sheep : MonoBehaviour
 
 
         targetOffset = new Vector3(targetX, transform.position.y, targetZ) - transform.position;
-    }
-
-    protected void NewWanderTarget() {
-        Vector2 offset = Random.insideUnitCircle * maxWanderDistance;
-        targetX = transform.position.x + offset.x;
-        targetZ = transform.position.z + offset.y;
-    }
-
-    protected void NewScareTarget() {
-        Vector2 offset = (transform.position - player.position) * maxWanderDistance;
-        targetX = transform.position.x + offset.x;
-        targetZ = transform.position.z + offset.y;
     }
 }

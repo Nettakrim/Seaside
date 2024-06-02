@@ -5,13 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private SceneTransition sceneTransition;
+
     private void Awake() {
         Cursor.lockState = CursorLockMode.None;
     }
 
     public void Play() {
-        SceneManager.LoadScene("Seaside");
-        SceneManager.LoadScene("Player", LoadSceneMode.Additive);
+        LoadArea("Seaside");
+    }
+
+    public void LoadArea(string area) {
+        SceneLoader sceneLoader = SceneLoader.instance;
+        if (!sceneLoader.HasTransition()) {
+            sceneLoader.SetTransition(sceneTransition);
+        }
+
+        sceneLoader.LoadArea(area);
     }
 
     public void Quit() {
