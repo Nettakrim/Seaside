@@ -46,4 +46,8 @@ public class TodoItem : MonoBehaviour
     public bool IsType(CameraTargetData cameraTargetData) {
         return this.cameraTargetData == cameraTargetData;
     }
+
+    public string GetHint() {
+        return cameraTargetData.hint;
+    }
 }

@@ -18,3 +18,4 @@ MonoBehaviour:
   visibilityThreshold: 0.2
   nearMissThreshold: 0.05
   requiredCount: 1
+  hint: You may need to use the zoom to See Gulls :3

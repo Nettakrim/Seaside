@@ -15,6 +15,8 @@ public class CameraTargetData : ScriptableObject {
     public float nearMissThreshold = 0.15f;
     public int requiredCount = 1;
 
+    public string hint;
+
     public int GetCombinedID() {
         return (idChar << 8) + idByte;
     }

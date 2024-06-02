@@ -18,3 +18,4 @@ MonoBehaviour:
   visibilityThreshold: 0.25
   nearMissThreshold: 0.1
   requiredCount: 1
+  hint: If only you didn't need to walk so far...

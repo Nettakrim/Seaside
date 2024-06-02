@@ -18,3 +18,4 @@ MonoBehaviour:
   visibilityThreshold: 0.1
   nearMissThreshold: 0.05
   requiredCount: 5
+  hint: Sheep are scared of photographers...

@@ -18,3 +18,4 @@ MonoBehaviour:
   visibilityThreshold: 0.15
   nearMissThreshold: 0.05
   requiredCount: 1
+  hint: The train runs on a strict 10 minute schedule.

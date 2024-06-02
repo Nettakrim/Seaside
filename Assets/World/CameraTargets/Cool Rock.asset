@@ -18,3 +18,4 @@ MonoBehaviour:
   visibilityThreshold: 0.25
   nearMissThreshold: 0.2
   requiredCount: 1
+  hint: Only the coolest of rocks hang out in the forest!

@@ -43,6 +43,8 @@ public class Gallery : MonoBehaviour
     [SerializeField] protected GameObject exitPrompt;
     [SerializeField] protected GameObject cyclePrompt;
 
+    [SerializeField] protected TextMeshProUGUI hintText;
+
     protected bool ready;
     protected bool teleporting;
 
@@ -62,6 +64,7 @@ public class Gallery : MonoBehaviour
             todoItems.Add(todoItem);
         }
         UpdateTodoList();
+        hintText.transform.SetAsLastSibling();
 
         ready = true;
         teleporting = false;
@@ -292,15 +295,25 @@ public class Gallery : MonoBehaviour
 
     protected void UpdateTodoList() {
         int c = 0;
+        TodoItem uncomplete = null;
         foreach (TodoItem todoItem in todoItems) {
             if (todoItem.UpdateComplete(photos)) {
                 c++;
+            } else {
+                uncomplete = todoItem;
             }
         }
         if (c == todoItems.Count) {
             foreach (TodoItem todoItem in todoItems) {
                 todoItem.SetComplete(true);
             }
+        }
+        
+        if (c == todoItems.Count-1) {
+            hintText.gameObject.SetActive(true);
+            hintText.text = uncomplete.GetHint();
+        } else {
+            hintText.gameObject.SetActive(false);
         }
     }
 
