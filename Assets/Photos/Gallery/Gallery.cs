@@ -141,13 +141,11 @@ public class Gallery : MonoBehaviour
 
     public void Update() {
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
-            if (ready) {
-                if (Input.GetKeyDown(KeyCode.D)) {
+            if (ready && InputManager.instance.moveX.GetDown()) {
+                if (InputManager.instance.moveX.value > 0) {
                     SetCurrentPhoto(currentPhoto+1);
                     UpdateGrid();
-                }
-
-                if (Input.GetKeyDown(KeyCode.A)) {
+                } else {
                     SetCurrentPhoto(currentPhoto-1);
                     UpdateGrid();
                 }

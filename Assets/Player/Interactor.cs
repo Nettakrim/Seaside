@@ -21,7 +21,7 @@ public class Interactor : MonoBehaviour
     }
 
     private void UpdateInteractable() {
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) {
+        if (InputManager.instance.interact.GetDown()) {
             current.OnInteract(this);
         }
     }

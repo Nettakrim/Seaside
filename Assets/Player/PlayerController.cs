@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update() {
-        if (!SceneLoader.instance.IsLoadingScene() && Input.GetKeyDown(KeyCode.Escape)) {
+        if (!SceneLoader.instance.IsLoadingScene() && InputManager.instance.pause.GetDown()) {
             SceneLoader.instance.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
@@ -256,7 +256,7 @@ public class PlayerController : MonoBehaviour
         if (!movementLocked) {
             Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-            Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 input = new Vector2(InputManager.instance.moveX.value, InputManager.instance.moveY.value);
             if (input.magnitude > 1) input.Normalize();
 
             movement += rotation * Vector3.forward * input.y;

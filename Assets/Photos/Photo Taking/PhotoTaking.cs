@@ -54,16 +54,10 @@ public class PhotoTaking : MonoBehaviour
     protected void Update() {
         if (manager.currentMode == PhotoManager.Mode.PhotoTaking) {
             if (canZoom) {
-                if (Input.GetKey(KeyCode.W)) {
-                    targetFovScale -= fovChangeSpeed * Time.deltaTime;
-                }
-
-                if (Input.GetKey(KeyCode.S)) {
-                    targetFovScale += fovChangeSpeed * Time.deltaTime;
-                }
+                targetFovScale += fovChangeSpeed * -InputManager.instance.moveY.value * Time.deltaTime;
                 targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
             } else {
-                canZoom |= Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S);
+                canZoom |= InputManager.instance.moveY.GetDown();
             }
 
             if (InputManager.instance.jump.GetDown()) {
@@ -71,18 +65,20 @@ public class PhotoTaking : MonoBehaviour
                 result.SetActive(true);
             }
 
-            if (Input.GetKeyDown(KeyCode.A)) {
+            float x = InputManager.instance.moveX.value;
+
+            if (x < -0.8f) {
                 ClearTakenPhoto();
             }
 
-            if (Input.GetKeyDown(KeyCode.D)) {
+            if (x > 0.8f) {
                 if (SaveLastPhoto()) {
                     manager.gallery.SetCurrentPhoto(-1);
                     manager.SetMode(PhotoManager.Mode.Gallery);
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) {
+            if (InputManager.instance.interact.GetDown()) {
                 showControls = !showControls;
                 prompt.SetActive(showControls);
             }

@@ -61,11 +61,12 @@ public class PhotoManager : MonoBehaviour
     }
 
     protected void Update() {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !MouseOnUI()) {
+        // TODO: check if controller
+        if (InputManager.instance.photo.GetDown() && (InputManager.instance.isController || !MouseOnUI())) {
             SetMode(currentMode == Mode.Walking ? Mode.PhotoTaking : Mode.Walking);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1)) {
+        if (InputManager.instance.gallery.GetDown()) {
             SetMode(currentMode == Mode.Walking ? Mode.Gallery : Mode.Walking);
         }
 
@@ -131,14 +132,14 @@ public class PhotoManager : MonoBehaviour
                     NextTutorialStep();
                 }
             } else if (tutorialStep == 3) {
-                if (Input.GetKeyDown(KeyCode.Mouse1) && currentMode == Mode.Gallery) {
+                if (InputManager.instance.gallery.GetDown() && currentMode == Mode.Gallery) {
                     EndTutorial();
                 }
             } else {
                 if (player.IsFlying()) {
                     tutorialStep |= 8;
                 }
-                if (Input.GetKey(KeyCode.T)) {
+                if (InputManager.instance.train.GetDown()) {
                     tutorialStep |= 16;
                 }
                 if (tutorialStep >= 28) {
