@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (!SceneLoader.instance.IsLoadingScene() && Input.GetKeyDown(KeyCode.Escape)) {
             SceneLoader.instance.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 

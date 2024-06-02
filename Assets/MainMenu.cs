@@ -12,6 +12,9 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Play() {
+        if (SceneLoader.instance.IsLoadingScene()) {
+            return;
+        }
         LoadArea("Seaside");
     }
 

@@ -87,6 +87,11 @@ public class SceneLoader : MonoBehaviour
         yield return null;
 
         yield return StartCoroutine(activeTransition.Uncover());
+        sceneLoads.Clear();
+    }
+
+    public bool IsLoadingScene() {
+        return sceneLoads.Count > 0;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
