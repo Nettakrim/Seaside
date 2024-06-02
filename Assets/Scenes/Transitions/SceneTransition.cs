@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public abstract class SceneTransition : MonoBehaviour
+public class SceneTransition : MonoBehaviour
 {
     public float enterTime = 1;
     public float exitTime = 1;
 
     public float rampUpSpeed = 1;
+
+    public TransitionType[] transitions;
 
     public IEnumerator Cover() {
         float time = 0;
@@ -20,11 +23,15 @@ public abstract class SceneTransition : MonoBehaviour
         CoverUpdate(1);
     }
 
-    protected abstract void CoverUpdate(float time);
+    public void CoverUpdate(float time) {
+        foreach (TransitionType transition in transitions) {
+            transition.CoverUpdate(time);
+        }
+    }
 
     public IEnumerator Uncover() {
         float time = 0;
-        
+
         float rampUp = 0;
         float scale = 1;
 
@@ -41,5 +48,9 @@ public abstract class SceneTransition : MonoBehaviour
         UncoverUpdate(1);
     }
 
-    protected abstract void UncoverUpdate(float time);
+    public void UncoverUpdate(float time) {
+        foreach (TransitionType transition in transitions) {
+            transition.UncoverUpdate(time);
+        }
+    }
 }

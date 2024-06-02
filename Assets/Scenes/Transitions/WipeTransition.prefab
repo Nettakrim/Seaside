@@ -89,6 +89,8 @@ GameObject:
   - component: {fileID: 8400122177739314135}
   - component: {fileID: 1013988108674601857}
   - component: {fileID: -7722061950673822832}
+  - component: {fileID: 4603474996029767078}
+  - component: {fileID: 5855961406994082036}
   m_Layer: 5
   m_Name: WipeTransition
   m_TagString: Untagged
@@ -210,10 +212,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 3674139492946180390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1dbf13198729c144a91059061f92a05, type: 3}
+  m_Script: {fileID: 11500000, guid: fe8306946874d714ba323bfaa5aee309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enterTime: 1
   exitTime: 1
   rampUpSpeed: 0.3
+  transitions:
+  - {fileID: 4603474996029767078}
+  - {fileID: 5855961406994082036}
+--- !u!114 &4603474996029767078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3674139492946180390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1dbf13198729c144a91059061f92a05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   animator: {fileID: 1013988108674601857}
+--- !u!114 &5855961406994082036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3674139492946180390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f16d05aeb5b1cbc48af386f93c24dae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 0ac940e7d3d87e949be97c7ba059d9fa, type: 2}
+  parameter: MusicVolume

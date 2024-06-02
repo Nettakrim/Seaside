@@ -41,6 +41,11 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    private void Start() {
+        CalculateTracks();
+        UpdateTracks(0);
+    }
+
     public void AddSource(MusicSource musicSource) {
         bool found = false;
 
