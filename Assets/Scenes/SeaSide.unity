@@ -8154,6 +8154,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cd233bcf657d68749abb19da12d50569, type: 2}
   - {fileID: 11400000, guid: 36619e1904475b64a893c8c691a2ff2b, type: 2}
   - {fileID: 11400000, guid: a8dace2283e2f5b4aa521a06db008a7e, type: 2}
+  - {fileID: 11400000, guid: 03159ee695656ed4596f7a129e64252d, type: 2}
   volumeChangeSpeed: 1
   audioSourcePrefab: {fileID: 8039650993376640156, guid: 61e599a277389e14cba30af80cd04587,
     type: 3}

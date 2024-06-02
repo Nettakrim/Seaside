@@ -49,6 +49,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float topFlyingSpeed;
     [SerializeField] private float flyingDecay;
 
+    // if another area with its own music was added this would have to change
+    [SerializeField] private GameObject flyingMusic;
+
     private void Awake() {
         characterController = GetComponent<CharacterController>();
         ridingAt = -rideTime;
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
             movement = CalculateFlyingForce();
             if (jumpKeyPressed || !canFly) {
                 flying = false;
+                flyingMusic.SetActive(false);
                 // transfer velocity, default movement doesnt track this, so it instead uses the riding mechanism
                 ridingAt = Time.time;
                 Vector3 horizontalFlying = new Vector3(flyingVelocity.x, 0, flyingVelocity.z);
@@ -79,6 +83,7 @@ public class PlayerController : MonoBehaviour
 
             if (canFly && jumpKeyPressed && airTime > coyoteTime) {
                 flying = true;
+                flyingMusic.SetActive(true);
                 flyingVelocity = new Vector3(movement.x, -downVelocity, movement.z);
                 jumpBuffered = false;
             }
