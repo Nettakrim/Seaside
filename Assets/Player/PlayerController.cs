@@ -60,10 +60,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 movement;
+        bool jumpKeyPressed = InputManager.instance.jump.GetDown();
 
         if (flying) {
             movement = CalculateFlyingForce();
-            if (Input.GetKeyDown(KeyCode.Space) || !canFly) {
+            if (jumpKeyPressed || !canFly) {
                 flying = false;
                 // transfer velocity, default movement doesnt track this, so it instead uses the riding mechanism
                 ridingAt = Time.time;
@@ -74,9 +75,9 @@ public class PlayerController : MonoBehaviour
             }
         } else {
             movement = CalculateHorizontalForce();
-            movement += CalculateVerticalForce();
+            movement += CalculateVerticalForce(jumpKeyPressed);
 
-            if (canFly && Input.GetKeyDown(KeyCode.Space) && airTime > coyoteTime) {
+            if (canFly && jumpKeyPressed && airTime > coyoteTime) {
                 flying = true;
                 flyingVelocity = new Vector3(movement.x, -downVelocity, movement.z);
                 jumpBuffered = false;
@@ -89,8 +90,8 @@ public class PlayerController : MonoBehaviour
 
         // player rotation - rotate the camera instead of the player themselves
         float rotation = rotationSpeed * rotationSpeedScale;
-        pitch += -Input.GetAxis("Mouse Y") * rotation;
-        yaw   +=  Input.GetAxis("Mouse X") * rotation;
+        pitch += -InputManager.instance.turnY.value * rotation;
+        yaw   +=  InputManager.instance.turnX.value * rotation;
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
@@ -124,7 +125,7 @@ public class PlayerController : MonoBehaviour
         return movement;
     }
 
-    private Vector3 CalculateVerticalForce() {
+    private Vector3 CalculateVerticalForce(bool jumpKeyPressed) {
         if (!characterController.isGrounded) {
             //fall when above water, float up when below it
             if (transform.localPosition.y > oceanHeight) {
@@ -140,7 +141,7 @@ public class PlayerController : MonoBehaviour
             airTime = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && (downVelocity >= -0.1 || airTime == 0) && !movementLocked) {
+        if (jumpKeyPressed && (downVelocity >= -0.1 || airTime == 0) && !movementLocked) {
             jumpBuffered |= true;
         }
 
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
         float r = yaw*Mathf.Deg2Rad;
         Vector3 forward = new Vector3(Mathf.Sin(r), 0, Mathf.Cos(r));
 
-        Vector3 movement = (forward*Input.GetAxis("Vertical")) + (new Vector3(forward.z, 0, -forward.x)*Input.GetAxis("Horizontal"));
+        Vector3 movement = (forward*InputManager.instance.moveY.value) + (new Vector3(forward.z, 0, -forward.x)*InputManager.instance.moveX.value);
         if (movement.magnitude > 1) movement.Normalize();
 
         if (transform.localPosition.y < oceanHeight) movement *= oceanWalkSpeedMultiplier;

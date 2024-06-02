@@ -153,7 +153,7 @@ public class Gallery : MonoBehaviour
                 }
             }
 
-            if (Input.GetKey(KeyCode.Space)) {
+            if (InputManager.instance.jump.Get()) {
                 TeleportStart();
             }
 

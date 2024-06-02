@@ -66,7 +66,7 @@ public class PhotoTaking : MonoBehaviour
                 canZoom |= Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            if (InputManager.instance.jump.GetDown()) {
                 TakePhoto();
                 result.SetActive(true);
             }
