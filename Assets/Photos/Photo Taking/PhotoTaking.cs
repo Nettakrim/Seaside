@@ -65,7 +65,7 @@ public class PhotoTaking : MonoBehaviour
                 result.SetActive(true);
             }
 
-            float x = InputManager.instance.moveX.GetRaw();
+            float x = InputManager.instance.moveX.rawValue;
 
             if (x < -0.8f) {
                 ClearTakenPhoto();

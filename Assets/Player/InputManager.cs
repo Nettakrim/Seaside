@@ -58,6 +58,9 @@ public class InputManager : MonoBehaviour
         public float value;
         public float lastValue;
 
+        public float rawValue;
+        public float lastRawValue;
+
         public string name;
         
         public Axis(string name) {
@@ -67,6 +70,9 @@ public class InputManager : MonoBehaviour
         public void Update() {
             lastValue = value;
             value = Input.GetAxis(name);
+
+            lastRawValue = rawValue;
+            rawValue = Input.GetAxisRaw(name);
         }
 
         public bool Get() {
@@ -74,11 +80,7 @@ public class InputManager : MonoBehaviour
         }
 
         public bool GetDown() {
-            return (value > 0f || value < 0f) && lastValue == 0f;
-        }
-
-        public float GetRaw() {
-            return Input.GetAxisRaw(name);
+            return (rawValue > 0f || rawValue < 0f) && lastRawValue == 0f;
         }
     }
 }

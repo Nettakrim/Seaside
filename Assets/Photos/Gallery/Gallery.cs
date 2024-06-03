@@ -143,7 +143,7 @@ public class Gallery : MonoBehaviour
     public void Update() {
         if (manager.currentMode == PhotoManager.Mode.Gallery) {
             if (ready && InputManager.instance.moveX.GetDown()) {
-                if (InputManager.instance.moveX.value > 0) {
+                if (InputManager.instance.moveX.rawValue > 0) {
                     SetCurrentPhoto(currentPhoto+1);
                     UpdateGrid();
                 } else {
