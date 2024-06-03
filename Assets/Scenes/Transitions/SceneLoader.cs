@@ -40,7 +40,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     public void LoadArea(string area) {
-        currentAreaName = area;
+        currentAreaName = area.ToLowerInvariant();
         LoadScene(area, LoadSceneMode.Single);
     }
 
@@ -95,7 +95,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        if (mode == LoadSceneMode.Single && scene.name == currentAreaName) {
+        if (mode == LoadSceneMode.Single && scene.name.ToLowerInvariant() == currentAreaName) {
             Instantiate(playerPrefab);
         }
     }
