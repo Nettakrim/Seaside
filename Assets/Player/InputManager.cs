@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
-    public bool isController;
+    [NonSerialized] public bool isController;
 
     public Axis turnX = new Axis("Mouse X");
     public Axis turnY = new Axis("Mouse Y");
@@ -22,6 +24,8 @@ public class InputManager : MonoBehaviour
 
     public Axis pause = new Axis("Pause");
 
+    private GameObject lost;
+
     public void Awake() {
         if (instance != null) {
             Destroy(this);
@@ -34,7 +38,8 @@ public class InputManager : MonoBehaviour
 
     public void Update() {
         UpdateAxes();
-        // update isController
+
+        UpdateController();
     }
 
     private void UpdateAxes() {
@@ -81,6 +86,26 @@ public class InputManager : MonoBehaviour
 
         public bool GetDown() {
             return (rawValue > 0f || rawValue < 0f) && lastRawValue == 0f;
+        }
+    }
+
+    private void UpdateController() {
+        if (isController && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))) {
+            isController = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton0)) {
+            isController = true;
+            if (EventSystem.current.currentSelectedGameObject == null && lost != null && lost.activeInHierarchy) {
+                EventSystem.current.SetSelectedGameObject(lost);
+            }
+        }
+    }
+
+    public void SetLost(GameObject lost) {
+        this.lost = lost;
+        if (isController) {
+            EventSystem.current.SetSelectedGameObject(lost);
         }
     }
 }

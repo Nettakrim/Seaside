@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneTransition: {fileID: -7722061950673822832, guid: 04fe4f3aa215344479fd20cf647676c4,
     type: 3}
+  playButton: {fileID: 1475171609}
 --- !u!4 &189910159
 Transform:
   m_ObjectHideFlags: 0
@@ -1384,7 +1385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8afe06be25147a499bde89bf107f9b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isController: 0
 --- !u!4 &1544941214
 Transform:
   m_ObjectHideFlags: 0

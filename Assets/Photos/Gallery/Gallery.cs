@@ -49,6 +49,8 @@ public class Gallery : MonoBehaviour
     protected bool ready;
     protected bool teleporting;
 
+    [SerializeField] protected GameObject lost;
+
     protected void Awake() {
         LoadFromFiles();
         if (photos.Count > 0) {
@@ -152,7 +154,7 @@ public class Gallery : MonoBehaviour
                 }
             }
 
-            if (InputManager.instance.jump.Get()) {
+            if (!InputManager.instance.isController && InputManager.instance.jump.Get()) {
                 TeleportStart();
             }
 
@@ -222,6 +224,7 @@ public class Gallery : MonoBehaviour
         manager.player.SetRotationSpeed(0);
         manager.interactor.SetCanInteract(false);
         UpdateGrid();
+        InputManager.instance.SetLost(lost);
     }
 
     public void CloseGallery() {

@@ -61,7 +61,6 @@ public class PhotoManager : MonoBehaviour
     }
 
     protected void Update() {
-        // TODO: check if controller
         if (InputManager.instance.photo.GetDown() && (InputManager.instance.isController || !MouseOnUI())) {
             SetMode(currentMode == Mode.Walking ? Mode.PhotoTaking : Mode.Walking);
         }

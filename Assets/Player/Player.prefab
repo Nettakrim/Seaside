@@ -2628,6 +2628,7 @@ MonoBehaviour:
   exitPrompt: {fileID: 5617890362036031392}
   cyclePrompt: {fileID: 8219714120909305833}
   hintText: {fileID: 4619526210018033893}
+  lost: {fileID: 2150429927868437442}
 --- !u!114 &4610719639023068394
 MonoBehaviour:
   m_ObjectHideFlags: 0
