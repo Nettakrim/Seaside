@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PlayerSpawn
   - IgnoreUI
   - Interactable
   - Train
@@ -12,10 +11,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Photo Only
+  - PhotoOnly
   - Water
   - UI
-  - 
+  - Terrain
   - 
   - 
   - 

@@ -48,8 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float topFlyingSpeed;
     [SerializeField] private float flyingDecay;
 
-    // if another area with its own music was added this would have to change
-    [SerializeField] private GameObject flyingMusic;
+    [SerializeField] private LayerMask terrain;
 
     private void Awake() {
         characterController = GetComponent<CharacterController>();
@@ -67,24 +66,16 @@ public class PlayerController : MonoBehaviour
         if (flying) {
             movement = CalculateFlyingForce();
             if (jumpKeyPressed || !canFly) {
-                flying = false;
-                flyingMusic.SetActive(false);
-                // transfer velocity, default movement doesnt track this, so it instead uses the riding mechanism
-                ridingAt = Time.time;
-                Vector3 horizontalFlying = new Vector3(flyingVelocity.x, 0, flyingVelocity.z);
-                ridingSpeed = horizontalFlying.magnitude;
-                ridingDirection = horizontalFlying.normalized;
-                downVelocity = -flyingVelocity.y;
+                if (Physics.Raycast(new Ray(transform.position, Vector3.down), transform.position.y, terrain)) {
+                    SetFlying(false, movement);
+                }
             }
         } else {
             movement = CalculateHorizontalForce();
             movement += CalculateVerticalForce(jumpKeyPressed);
 
             if (canFly && jumpKeyPressed && airTime > coyoteTime) {
-                flying = true;
-                flyingMusic.SetActive(true);
-                flyingVelocity = new Vector3(movement.x, -downVelocity, movement.z);
-                jumpBuffered = false;
+                SetFlying(true, movement);
             }
         }
 
@@ -97,6 +88,31 @@ public class PlayerController : MonoBehaviour
         pitch += -InputManager.instance.turnY.value * rotation;
         yaw   +=  InputManager.instance.turnX.value * rotation;
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
+    }
+
+    private void SetFlying(bool to, Vector3 movement) {
+        if (flying == to) {
+            return;
+        }
+        flying = to;
+
+        if (flying) {
+            AreaData.instance.flyingMusic.SetActive(true);
+            flyingVelocity = new Vector3(movement.x, -downVelocity, movement.z);
+            jumpBuffered = false;
+        } else {
+            AreaData.instance.flyingMusic.SetActive(false);
+            // transfer velocity, default movement doesnt track this, so it instead uses the riding mechanism
+            ridingAt = Time.time;
+            Vector3 horizontalFlying = new Vector3(flyingVelocity.x, 0, flyingVelocity.z);
+            ridingSpeed = horizontalFlying.magnitude;
+            ridingDirection = horizontalFlying.normalized;
+            downVelocity = -flyingVelocity.y;
+        }
+
+        foreach (GameObject disable in AreaData.instance.disableWhileFlying) {
+            disable.SetActive(!flying);
+        }
     }
 
     private Vector3 CalculateHorizontalForce() {
@@ -213,12 +229,12 @@ public class PlayerController : MonoBehaviour
     }
 
     public void TeleportToDefaultSpawnPosition() {
-        GameObject[] spawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
-        if (spawns.Length == 0) {
+        int length = AreaData.instance.playerSpawns.Length;
+        if (length == 0) {
             Debug.LogWarning("No objects with the PlayerSpawn tag found");
             return;
         }
-        Transform spawn = spawns[Random.Range(0, spawns.Length)].transform;
+        Transform spawn = AreaData.instance.playerSpawns[Random.Range(0, length)].transform;
         SetPositionAndRotation(spawn.position, new Vector2(spawn.rotation.eulerAngles.x, spawn.rotation.eulerAngles.y));
     }
 

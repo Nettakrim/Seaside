@@ -566,7 +566,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1384,6 +1384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8afe06be25147a499bde89bf107f9b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isController: 0
 --- !u!4 &1544941214
 Transform:
   m_ObjectHideFlags: 0
@@ -2002,10 +2003,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1506147050}
     m_Modifications:
+    - target: {fileID: 313949907965676823, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6203860471230158516, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6725031033458258913, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8097576854806601644, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
         type: 3}
       propertyPath: m_Name
       value: Terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525632222031867047, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8581474212032836991, guid: 5126b2ea4707c7d49bd7cdef4ad90fe3,
         type: 3}
