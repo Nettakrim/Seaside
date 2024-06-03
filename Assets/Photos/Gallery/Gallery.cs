@@ -7,6 +7,7 @@ using ImageBurner;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
@@ -136,7 +137,7 @@ public class Gallery : MonoBehaviour
     }
 
     public string GetSaveDirectory() {
-        return Application.persistentDataPath + "/1/";
+        return Application.persistentDataPath + "/"+SceneLoader.instance.GetCurrentAreaName()+"/";
     }
 
     public void Update() {

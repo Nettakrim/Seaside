@@ -99,4 +99,8 @@ public class SceneLoader : MonoBehaviour
             Instantiate(playerPrefab);
         }
     }
+
+    public string GetCurrentAreaName() {
+        return currentAreaName;
+    }
 }

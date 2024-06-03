@@ -76,5 +76,9 @@ public class InputManager : MonoBehaviour
         public bool GetDown() {
             return (value > 0f || value < 0f) && lastValue == 0f;
         }
+
+        public float GetRaw() {
+            return Input.GetAxisRaw(name);
+        }
     }
 }
