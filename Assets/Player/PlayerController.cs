@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
         if (flying) {
             movement = CalculateFlyingForce();
-            if (jumpKeyPressed || !canFly) {
+            if ((jumpKeyPressed || !canFly) && !movementLocked) {
                 if (Physics.Raycast(new Ray(transform.position, Vector3.down), transform.position.y, terrain)) {
                     SetFlying(false, movement);
                 }
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
             movement = CalculateHorizontalForce();
             movement += CalculateVerticalForce(jumpKeyPressed);
 
-            if (canFly && jumpKeyPressed && airTime > coyoteTime) {
+            if (canFly && jumpKeyPressed && airTime > coyoteTime && !movementLocked) {
                 SetFlying(true, movement);
             }
         }
