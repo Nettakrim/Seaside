@@ -2,7 +2,8 @@
     "name": "Trains",
     "rootNamespace": "",
     "references": [
-        "GUID:c35235362d2800141a399f71abec8b4c"
+        "GUID:c35235362d2800141a399f71abec8b4c",
+        "GUID:94baaba7aeece5e4ba1ddbcadbc69e4a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

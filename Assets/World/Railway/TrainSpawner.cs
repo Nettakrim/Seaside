@@ -16,7 +16,7 @@ public class TrainSpawner : MonoBehaviour
     public float blockUntil;
 
     void Update() {
-        if (PhotoManager.instance != null && PhotoManager.instance.isComplete && Input.GetKeyDown(KeyCode.T)) {
+        if (PhotoManager.instance.isComplete && InputManager.instance.train.GetDown()) {
             SpawnRandomTrain();
         }
 
