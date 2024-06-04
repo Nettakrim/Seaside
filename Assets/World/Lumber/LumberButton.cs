@@ -30,7 +30,7 @@ public class LumberButton : Interactable
     }
 
     public override string GetPrompt() {
-        return "Press Q/E to cut a log!";
+        return "Press <sprite=\"Keyboard\" index=5> to cut a log!";
     }
 
     public override void OnInteract(Interactor interactor) {

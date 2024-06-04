@@ -153,20 +153,20 @@ public class PhotoManager : MonoBehaviour
         tutorial.gameObject.SetActive(currentMode == Mode.Walking);
         
         if (tutorialStep == 1) {
-            tutorial.text = "Use the Mouse to look around and WASD/Space to move!";
+            tutorial.text = "Use <sprite=\"Keyboard\" index=1> to look around and <sprite=\"Keyboard\" index=0>/<sprite=\"Keyboard\" index=2> to move!";
             startPosition = player.transform.position;
         }
 
         if (tutorialStep == 2) {
-            tutorial.text = "Press the Left Mouse Button to start taking pictures";
+            tutorial.text = "Press <sprite=\"Keyboard\" index=3> to start taking pictures";
         }
 
         if (tutorialStep == 3) {
-            tutorial.text = "Press the Right Mouse Button to see your photos and to-do list";
+            tutorial.text = "Press the <sprite=\"Keyboard\" index=4> to see your photos and to-do list";
         }
 
         if (tutorialStep >= 4) {
-            tutorial.text = "Game Complete! Press Space while in the air to fly, Press T to spawn a train, or delete all your photos to start over!";
+            tutorial.text = "Game Complete! Press <sprite=\"Keyboard\" index=2> while in the air to fly, Press T to spawn a train, or delete all your photos to start over!";
         }
     }
 

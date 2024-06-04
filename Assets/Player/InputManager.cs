@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
+    
     [NonSerialized] public bool isController;
+    [NonSerialized] public UnityEvent<bool> onIsControllerChange = new UnityEvent<bool>();
 
     public Axis turnX = new Axis("Mouse X");
     public Axis turnY = new Axis("Mouse Y");
@@ -97,15 +100,20 @@ public class InputManager : MonoBehaviour
 
     private void UpdateController() {
         if (isController && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))) {
-            isController = false;
+            SetIsController(false);
+        }
+        if (Input.GetKeyDown(KeyCode.JoystickButton0) && !isController) {
+            SetIsController(true);
         }
 
-        if (Input.GetKeyDown(KeyCode.JoystickButton0)) {
-            isController = true;
-        }
         if (submit.GetDown() && EventSystem.current.currentSelectedGameObject == null && lost != null) {
             EventSystem.current.SetSelectedGameObject(lost);
         }
+    }
+
+    public void SetIsController(bool to) {
+        isController = to;
+        onIsControllerChange.Invoke(to);
     }
 
     public void SetLost(GameObject lost) {

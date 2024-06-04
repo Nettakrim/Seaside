@@ -167,6 +167,8 @@ public class Gallery : MonoBehaviour
             selectedImage.gameObject.SetActive(false);
             selectedInfo.SetActive(false);
             cameraPrompt.SetActive(true);
+            exitPrompt.SetActive(false);
+            cyclePrompt.SetActive(false);
             return;
         } else {
             cameraPrompt.SetActive(false);

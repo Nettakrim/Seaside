@@ -436,7 +436,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1525783246048749199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -447,26 +447,28 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Space:
+  m_text: '<sprite="Keyboard" index=2>:
 
     Take Photo
 
 
-    D: Save
+    <sprite="Keyboard"
+    index=11>: Save
 
-    A: Clear
-
-
-    W/S: Zoom
+    <sprite="Keyboard" index=10>: Clear
 
 
-    LMB:
-    Exit
-
-    RMB: Todo List
+    <sprite="Keyboard"
+    index=6>: Zoom
 
 
-    Q/E:
+    <sprite="Keyboard" index=3>: Exit
+
+    <sprite="Keyboard"
+    index=4>: Todo List
+
+
+    <sprite="Keyboard" index=5>:
 
     Hide controls'
   m_isRightToLeft: 0
@@ -1166,7 +1168,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3364167480575161370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -1177,7 +1179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Left Mouse to use the Camera and start taking photos!
+  m_text: Press <sprite="Keyboard" index=3> to use the Camera and start taking photos!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c55d0660d2deba84d873d0a2e64c25fb, type: 2}
   m_sharedMaterial: {fileID: -6603308641556153849, guid: c55d0660d2deba84d873d0a2e64c25fb,
@@ -2074,7 +2076,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5617890362036031392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -2085,7 +2087,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'RMB: Exit'
+  m_text: '<sprite="Keyboard" index=4>: Exit'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c55d0660d2deba84d873d0a2e64c25fb, type: 2}
   m_sharedMaterial: {fileID: -6603308641556153849, guid: c55d0660d2deba84d873d0a2e64c25fb,
@@ -2743,7 +2745,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6889706827815111393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -2878,7 +2880,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7244605437228080706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -3621,7 +3623,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8219714120909305833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 07b59cec4db7963438b10e2ee3e7f4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -3632,9 +3634,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'A/D: Cycle Selected
+  m_text: '<sprite="Keyboard" index=7>: Cycle Selected
 
-    Space: Teleport'
+    <sprite="Keyboard" index=2>:
+    Teleport'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c55d0660d2deba84d873d0a2e64c25fb, type: 2}
   m_sharedMaterial: {fileID: -6603308641556153849, guid: c55d0660d2deba84d873d0a2e64c25fb,
