@@ -72,7 +72,7 @@ public class PhotoTaking : MonoBehaviour
             }
 
             if (x > 0.8f) {
-                if (SaveLastPhoto()) {
+                if (currentMetadata != null && SaveLastPhoto()) {
                     manager.gallery.SetCurrentPhoto(-1);
                     manager.SetMode(PhotoManager.Mode.Gallery);
                 }

@@ -26,14 +26,19 @@ public class ControlsText : TextMeshProUGUI
     protected void TextChanged(Object obj) {
         if (obj == this) {
             SetController(InputManager.instance.isController);
+            Rebuild(UnityEngine.UI.CanvasUpdate.PreRender);
         }
     }
 
     protected void SetController(bool to) {
         if (to) {
-            SetText(text.Replace(keyboardSprite, controllerSprite));
+            if (text.Contains(keyboardSprite)) {
+                SetText(text.Replace(keyboardSprite, controllerSprite));
+            }
         } else {
-            SetText(text.Replace(controllerSprite, keyboardSprite));
+            if (text.Contains(controllerSprite)) {
+                SetText(text.Replace(controllerSprite, keyboardSprite));
+            }
         }
     }
 
