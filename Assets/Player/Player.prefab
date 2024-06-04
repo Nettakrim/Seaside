@@ -968,6 +968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 8
   rotationSpeed: 1
+  controllerRotationScale: 150
   gravity: 25
   jump: 8
   coyoteTime: 20

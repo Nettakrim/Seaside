@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float rotationSpeed = 200f;
+    [SerializeField] private float controllerRotationScale;
     [SerializeField] private float gravity = 1f;
     [SerializeField] private float jump = 100f;
 
@@ -87,6 +88,11 @@ public class PlayerController : MonoBehaviour
         float rotation = rotationSpeed * rotationSpeedScale;
         pitch += -InputManager.instance.turnY.value * rotation;
         yaw   +=  InputManager.instance.turnX.value * rotation;
+
+        rotation *= Time.deltaTime * controllerRotationScale;
+        pitch += InputManager.instance.turnYController.value * rotation;
+        yaw   += InputManager.instance.turnXController.value * rotation;
+
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 

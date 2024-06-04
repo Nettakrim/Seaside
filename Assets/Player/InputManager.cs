@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
 
     public Axis turnX = new Axis("Mouse X");
     public Axis turnY = new Axis("Mouse Y");
+    public Axis turnXController = new Axis("Controller X");
+    public Axis turnYController = new Axis("Controller Y");
 
     public Axis moveX = new Axis("Horizontal");
     public Axis moveY = new Axis("Vertical");
@@ -45,6 +47,8 @@ public class InputManager : MonoBehaviour
     private void UpdateAxes() {
         turnX.Update();
         turnY.Update();
+        turnXController.Update();
+        turnYController.Update();
 
         moveX.Update();
         moveY.Update();
