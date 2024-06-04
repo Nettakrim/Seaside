@@ -116,9 +116,10 @@ public class ImageMetadata {
 
         }
         if (moreToSee) {
-            info += "Get a clear view...";
             if (targets.Count == 0) {
-                info += "\n- Zoom in\n- Move closer";
+                info += "Get a clear view...\n- Zoom in\n- Move closer";
+            } else {
+                info += "Get a clear view\nto see more...";
             }
         }
         return info;
