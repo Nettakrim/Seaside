@@ -1,5 +1,5 @@
 {
-    "name": "Main",
+    "name": "Seaside.Main",
     "rootNamespace": "",
     "references": [
         "GUID:35e28227cfe9bca49a9e9f58452ce5ca",
