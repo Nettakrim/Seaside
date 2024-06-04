@@ -12,14 +12,11 @@ public class MainMenu : MonoBehaviour
         InputManager.instance.SetLost(playButton);
     }
 
-    public void Play() {
+    public void LoadArea(string area) {
         if (SceneLoader.instance.IsLoadingScene()) {
             return;
         }
-        LoadArea("Seaside");
-    }
 
-    public void LoadArea(string area) {
         SceneLoader sceneLoader = SceneLoader.instance;
         if (!sceneLoader.HasTransition()) {
             sceneLoader.SetTransition(sceneTransition);
