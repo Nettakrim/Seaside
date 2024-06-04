@@ -447,30 +447,29 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<sprite="Keyboard" index=2>:
-
-    Take Photo
+  m_text: '<sprite="Keyboard" index=2>: Take Photo
 
 
-    <sprite="Keyboard"
-    index=11>: Save
+    <sprite="Keyboard" index=11>:
+    Save
 
     <sprite="Keyboard" index=10>: Clear
 
 
-    <sprite="Keyboard"
-    index=6>: Zoom
+    <sprite="Keyboard" index=6>:
+    Zoom
 
 
     <sprite="Keyboard" index=3>: Exit
 
+    <sprite="Keyboard" index=4>:
+    Todo List
+
+
+    <sprite="Keyboard" index=5>: Hide controls
+
     <sprite="Keyboard"
-    index=4>: Todo List
-
-
-    <sprite="Keyboard" index=5>:
-
-    Hide controls'
+    index=12>: Main Menu'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c55d0660d2deba84d873d0a2e64c25fb, type: 2}
   m_sharedMaterial: {fileID: -6603308641556153849, guid: c55d0660d2deba84d873d0a2e64c25fb,
