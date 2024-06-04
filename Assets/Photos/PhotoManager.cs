@@ -166,7 +166,7 @@ public class PhotoManager : MonoBehaviour
         }
 
         if (tutorialStep >= 4) {
-            tutorial.text = "Game Complete! Press <sprite=\"Keyboard\" index=2> while in the air to fly, Press T to spawn a train, or delete all your photos to start over!";
+            tutorial.text = "Game Complete! Press <sprite=\"Keyboard\" index=2> while in the air to fly, Press <sprite=\"Keyboard\" index=13> to spawn a train, or delete all your photos to start over!";
         }
     }
 

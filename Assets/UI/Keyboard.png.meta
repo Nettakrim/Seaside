@@ -358,6 +358,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Keyboard_12
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 240
+        width: 16
+        height: 16
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6adc7d32fcb9e5546b87d2a7150d1e5c
+      internalID: -1611214962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_13
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 240
+        width: 16
+        height: 16
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e75c11f071c9244fb0395f68fc57062
+      internalID: -1260804767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -373,6 +415,8 @@ TextureImporter:
       Keyboard_1: -932277519
       Keyboard_10: 316691152
       Keyboard_11: 1749641106
+      Keyboard_12: -1611214962
+      Keyboard_13: -1260804767
       Keyboard_2: 304792337
       Keyboard_3: 680121671
       Keyboard_4: -1319321815

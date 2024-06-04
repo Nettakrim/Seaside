@@ -112,6 +112,18 @@ MonoBehaviour:
     m_Scale: 1
     m_Name: Controller_11
     m_HashCode: -2008642237
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 12
+    m_Scale: 1
+    m_Name: Controller_12
+    m_HashCode: -2008642240
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 13
+    m_Scale: 1
+    m_Name: Controller_13
+    m_HashCode: -2008642239
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -305,6 +317,38 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1140978000, guid: f48afa69f6293df46a948d5a729eaab9, type: 3}
+  - m_Index: 12
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: -0
+      m_HorizontalBearingY: 16
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 192
+      m_Y: 240
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 716520756, guid: f48afa69f6293df46a948d5a729eaab9, type: 3}
+  - m_Index: 13
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: -0
+      m_HorizontalBearingY: 16
+      m_HorizontalAdvance: 16
+    m_GlyphRect:
+      m_X: 208
+      m_Y: 240
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 88330040, guid: f48afa69f6293df46a948d5a729eaab9, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
 --- !u!21 &8248915049816673020
