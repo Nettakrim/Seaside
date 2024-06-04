@@ -128,6 +128,7 @@ public class PhotoTaking : MonoBehaviour
         currentMetadata.position = manager.player.GetPosition();
         currentMetadata.rotation = manager.player.GetRotation();
         currentMetadata.fov = photoCamera.fieldOfView;
+        currentMetadata.flags = (byte)(PhotoManager.instance.player.IsFlying() ? 1 : 0);
         currentMetadata.SetTargetVisibility(Visibility.GetVisibleCameraTargets(photoCamera, this, TargetManager.instance.targetsInWorld));
         info.text = currentMetadata.GetInfoText();
     }

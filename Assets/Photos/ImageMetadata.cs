@@ -7,6 +7,7 @@ public class ImageMetadata {
     public Vector3 position;
     public Vector2 rotation;
     public float fov;
+    public byte flags;
     public Dictionary<int, List<CameraTargetData.Wrapper>> targets;
     bool moreToSee;
  
@@ -18,6 +19,7 @@ public class ImageMetadata {
         DataTypes.EncodeVector3(encoder, position);
         DataTypes.EncodeVector2(encoder, rotation);
         DataTypes.EncodeFloat(encoder, fov);
+        encoder.EncodeByte(flags);
         
         // storing all the targets is a bit excessive - it could just be a list of booleans
         // but at only 7 bytes per target it can store 4600 target wrappers, so it doesnt really matter
@@ -40,6 +42,7 @@ public class ImageMetadata {
         position = DataTypes.DecodeVector3(decoder);
         rotation = DataTypes.DecodeVector2(decoder);
         fov = DataTypes.DecodeFloat(decoder);
+        flags = decoder.DecodeByte();
 
         (int length, int size) = DataTypes.DecodeByteArrayListStart(decoder);
         List<CameraTargetData.Wrapper> targetsList = new List<CameraTargetData.Wrapper>(length);

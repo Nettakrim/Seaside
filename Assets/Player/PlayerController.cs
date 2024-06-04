@@ -96,8 +96,8 @@ public class PlayerController : MonoBehaviour
         cameras.rotation = Quaternion.Euler(pitch, yaw, 0);
     }
 
-    private void SetFlying(bool to, Vector3 movement) {
-        if (flying == to) {
+    public void SetFlying(bool to, Vector3 movement) {
+        if (flying == to || !canFly) {
             return;
         }
         flying = to;

@@ -44,6 +44,7 @@ public class GalleryPhoto : MonoBehaviour
 
     public void Teleport(PlayerController playerController) {
         playerController.SetPositionAndRotation(metadata.position, metadata.rotation);
+        playerController.SetFlying((metadata.flags&1) == 1, Vector3.zero);
     }
 
     public float GetFov() {
