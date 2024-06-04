@@ -154,10 +154,6 @@ public class Gallery : MonoBehaviour
                 }
             }
 
-            if (!InputManager.instance.isController && InputManager.instance.jump.Get()) {
-                TeleportStart();
-            }
-
             ready = !teleporting;
         }
     }

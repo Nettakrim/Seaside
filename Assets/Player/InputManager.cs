@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour
     public Axis train = new Axis("Train");
 
     public Axis pause = new Axis("Pause");
+    public Axis submit = new Axis("Submit");
 
     private GameObject lost;
 
@@ -61,6 +62,7 @@ public class InputManager : MonoBehaviour
         train.Update();
 
         pause.Update();
+        submit.Update();
     }
 
     public class Axis {
@@ -100,16 +102,14 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.JoystickButton0)) {
             isController = true;
-            if (EventSystem.current.currentSelectedGameObject == null && lost != null && lost.activeInHierarchy) {
-                EventSystem.current.SetSelectedGameObject(lost);
-            }
+        }
+        if (submit.GetDown() && EventSystem.current.currentSelectedGameObject == null && lost != null) {
+            EventSystem.current.SetSelectedGameObject(lost);
         }
     }
 
     public void SetLost(GameObject lost) {
         this.lost = lost;
-        if (isController) {
-            EventSystem.current.SetSelectedGameObject(lost);
-        }
+        EventSystem.current.SetSelectedGameObject(lost);
     }
 }

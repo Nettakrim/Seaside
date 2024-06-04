@@ -16,6 +16,6 @@ MonoBehaviour:
   idByte: 0
   displayName: '# Sheep'
   visibilityThreshold: 0.1
-  nearMissThreshold: 0.05
+  nearMissThreshold: 0.025
   requiredCount: 5
   hint: Sheep are scared of photographers...
