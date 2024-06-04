@@ -49,7 +49,8 @@ public class Gallery : MonoBehaviour
     protected bool ready;
     protected bool teleporting;
 
-    [SerializeField] protected GameObject lost;
+    [SerializeField] protected GameObject teleport;
+    [SerializeField] protected GameObject delete;
 
     protected void Awake() {
         LoadFromFiles();
@@ -203,6 +204,8 @@ public class Gallery : MonoBehaviour
         }
 
         teleporting = false;
+
+        ResetDeleteConfirm();
     }
 
     public void SetCurrentPhoto(int to) {
@@ -220,7 +223,7 @@ public class Gallery : MonoBehaviour
         manager.player.SetRotationSpeed(0);
         manager.interactor.SetCanInteract(false);
         UpdateGrid();
-        InputManager.instance.SetLost(lost);
+        InputManager.instance.SetLost(teleport);
     }
 
     public void CloseGallery() {
@@ -256,8 +259,22 @@ public class Gallery : MonoBehaviour
         teleporting = false;
     }
 
-    public void DeleteSelected() {
-        DeleteSelected(true);
+    public void DeleteWithConfirm(Transform button) {
+        GameObject start = button.GetChild(0).gameObject;
+        GameObject confirm = button.GetChild(1).gameObject;
+        bool confirmed = confirm.activeSelf;
+
+        start.SetActive(confirmed);
+        confirm.SetActive(!confirmed);
+
+        if (confirmed) {
+            DeleteSelected(true);
+        }
+    }
+
+    private void ResetDeleteConfirm() {
+        delete.transform.GetChild(0).gameObject.SetActive(true);
+        delete.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public Texture DeleteSelected(bool destroyTexture) {
