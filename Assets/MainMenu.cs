@@ -44,7 +44,9 @@ public class MainMenu : MonoBehaviour
     }
 
     public void TogglePersistentSave() {
-        SetPersistentSave(!SaveManager.instance.persistentSave);
+        bool to = !SaveManager.instance.persistentSave;
+        SetPersistentSave(to);
+        PlayerPrefs.SetInt("PersistentSave", to ? 1 : 0);
     }
 
     private void SetPersistentSave(bool newPersistent) {
@@ -52,7 +54,6 @@ public class MainMenu : MonoBehaviour
 
         persistentOn.SetActive(newPersistent);
         persistentOff.SetActive(!newPersistent);
-        PlayerPrefs.SetInt("PersistentSave", newPersistent ? 1 : 0);
     }
 
     public void Quit() {
