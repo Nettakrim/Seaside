@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
         webglHide.SetActive(!isWebgl);
         webglShow.SetActive(isWebgl);
 
-        SetPersistentSave(PlayerPrefs.GetInt("PersistentSave", isWebgl ? 0 : 1) == 1);
+        SetPersistentSave(isWebgl ? (PlayerPrefs.GetInt("PersistentSave", 0) == 1) : true);
     }
 
     public void LoadArea(string area) {
