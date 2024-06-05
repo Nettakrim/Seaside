@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using ImageBurner;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Gallery : MonoBehaviour
@@ -79,70 +76,32 @@ public class Gallery : MonoBehaviour
     public void LoadFromFiles() {
         photos = new List<GalleryPhoto>();
 
-        string directory = GetSaveDirectory();
-        if (Directory.Exists(directory)) {
-            foreach (FileInfo file in GetFilesNumerically(new DirectoryInfo(directory), "*.png")) {
-                byte[] bytes = File.ReadAllBytes(file.FullName);
-                Texture2D tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-                tex.filterMode = FilterMode.Point;
-                ImageConversion.LoadImage(tex, bytes);
-
-                AddImageToGallery(tex, null, file);
-            }
-        } else {
-            Directory.CreateDirectory(directory);
+        List<SaveData> files = SaveManager.instance.LoadFiles();
+        foreach (SaveData saveData in files) {
+            AddImageToGallery(saveData, null);
         }
     }
 
-    protected void AddImageToGallery(Texture2D tex, ImageMetadata metadata, FileInfo file) {
-        GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
+    protected void AddImageToGallery(SaveData saveData, ImageMetadata metadata) {
         // gallery photos can fail if the encoded data is malformed
-        bool success = galleryPhoto.Initialise(tex, metadata, file);
+        bool success = saveData.SetMetadata(metadata);
         if (!success) {
-            Destroy(galleryPhoto.gameObject);
-            Destroy(tex);
+            saveData.DeleteTexture();
             return;
         }
-        // at this point we dont need to access the texture data on the cpu
-        tex.Apply(false, true);
 
+        GalleryPhoto galleryPhoto = Instantiate(galleryPhotoPrefab, photoLayoutParent);
+        galleryPhoto.Initialise(saveData);
         photos.Add(galleryPhoto);
     }
 
     public void SaveNewImage(Texture2D tex, ImageMetadata imageMetadata) {
         imageMetadata.Encode((Encoder)tex);
 
-        string file = GetNextFilename();
-        File.WriteAllBytes(file, tex.EncodeToPNG());
+        SaveData saveData = SaveManager.instance.SaveImage(tex);
 
         // the metadata is sent directly here, since theres no point in decoding the data when you already have it
-        AddImageToGallery(tex, imageMetadata, new FileInfo(file));
-    }
-  
-    protected string GetNextFilename() {
-        int id;
-        
-        string path = GetSaveDirectory();
-        if (File.Exists(path + (photos.Count+1).ToString() + ".png")) {
-            id = 0;
-            string[] files = Directory.GetFiles(path, "*.png");
-            foreach (string file in files) {
-                string s = file[path.Length..^4];
-                if (int.TryParse(s, out int i)) {
-                    if (i > id) {
-                        id = i;
-                    }
-                }
-            }
-        } else {
-            id = photos.Count;
-        }
-
-        return GetSaveDirectory() + (id+1).ToString() + ".png";
-    }
-
-    public string GetSaveDirectory() {
-        return Application.persistentDataPath + "/"+SceneLoader.instance.GetCurrentAreaName()+"/";
+        AddImageToGallery(saveData, imageMetadata);
     }
 
     public void Update() {
@@ -189,7 +148,7 @@ public class Gallery : MonoBehaviour
         }
 
         selectedPhoto = photos[currentPhoto];
-        selectedImage.texture = selectedPhoto.GetTexture();
+        selectedImage.texture = selectedPhoto.GetSaveData().tex;
         selectedImage.gameObject.SetActive(true);
         selectedInfo.SetActive(true);
         selectedGoals.text = selectedPhoto.GetInfoText();
@@ -198,7 +157,7 @@ public class Gallery : MonoBehaviour
         if (photos.Count%2 == 0) {
             loopImage.gameObject.SetActive(true);
             GalleryPhoto galleryPhoto = photos[(currentPhoto+(photos.Count/2))%photos.Count];
-            loopImage.texture = galleryPhoto.GetTexture();
+            loopImage.texture = galleryPhoto.GetSaveData().tex;
             loopButton.onClick.RemoveAllListeners();
             loopButton.onClick.AddListener(delegate {OnClickGalleryPhoto(galleryPhoto);});
             loopImage.transform.GetChild(0).gameObject.SetActive(galleryPhoto.transform.GetChild(0).gameObject.activeSelf);
@@ -289,23 +248,19 @@ public class Gallery : MonoBehaviour
         if (photos.Count == 0) return null;
         GalleryPhoto photo = photos[currentPhoto];
         photos.Remove(photo);
-        Texture texture = photo.Destroy();
-        if (destroyTexture) Destroy(texture);
+        Destroy(photo.gameObject);
+
+        SaveData saveData = photo.GetSaveData();
+        if (destroyTexture) saveData.DeleteTexture();
+        saveData.DeleteFile();
 
         SetCurrentPhoto(currentPhoto-1);
         UpdateGrid();
-        return destroyTexture ? null : texture;
+        return destroyTexture ? null : saveData.tex;
     }
 
     public void SelectRandom() {
         SetCurrentPhoto(Random.Range(0, photos.Count));
-    }
-
-    // https://stackoverflow.com/questions/12077182/c-sharp-sort-files-by-natural-number-ordering-in-the-name
-    public static FileInfo[] GetFilesNumerically(DirectoryInfo directory, string searchPattern, int numberPadding = 4) {
-        return directory.GetFiles(searchPattern).OrderBy(file =>
-            Regex.Replace(file.Name, @"\d+", match => match.Value.PadLeft(numberPadding, '0'))
-        ).ToArray();
     }
 
     public int PhotoCount() {
