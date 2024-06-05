@@ -69,6 +69,12 @@ public class PhotoManager : MonoBehaviour
             SetMode(currentMode == Mode.Walking ? Mode.Gallery : Mode.Walking);
         }
 
+        UpdateCompletion();
+
+        UpdateTutorial();
+    }
+
+    public void UpdateCompletion() {
         if (!isComplete) {
             if (gallery.AllGoalsComplete()) {
                 isComplete = true;
@@ -82,8 +88,6 @@ public class PhotoManager : MonoBehaviour
                 player.SetCanFly(false);
             }
         }
-
-        UpdateTutorial();
     }
 
     public bool MouseOnUI() {

@@ -54,13 +54,6 @@ public class Gallery : MonoBehaviour
 
     protected void Awake() {
         LoadFromFiles();
-        if (photos.Count > 0) {
-            SelectRandom();
-            photos[currentPhoto].Teleport(manager.player);
-        } else {
-            manager.player.TeleportToDefaultSpawnPosition();
-            manager.NextTutorialStep();
-        }
         
         foreach (CameraTargetData target in TargetManager.instance.GetCameraTargetDatas()) {
             TodoItem todoItem = Instantiate(todoItemPrefab, todoList);
@@ -69,6 +62,15 @@ public class Gallery : MonoBehaviour
         }
         UpdateTodoList();
         hintText.transform.SetAsLastSibling();
+        manager.UpdateCompletion();
+
+        if (photos.Count > 0) {
+            SelectRandom();
+            photos[currentPhoto].Teleport(manager.player);
+        } else {
+            manager.player.TeleportToDefaultSpawnPosition();
+            manager.NextTutorialStep();
+        }
 
         ready = true;
         teleporting = false;
