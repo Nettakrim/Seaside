@@ -41,6 +41,11 @@ public class PhotoTaking : MonoBehaviour
 
     protected bool showControls;
 
+    [SerializeField] protected AudioSource zoomSound;
+    [SerializeField] protected float zoomLoopTo;
+    [SerializeField] protected float zoomLoopFrom;
+
+
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
         normalFov = mainCamera.fieldOfView;
@@ -54,8 +59,22 @@ public class PhotoTaking : MonoBehaviour
     protected void Update() {
         if (manager.currentMode == PhotoManager.Mode.PhotoTaking) {
             if (canZoom) {
-                targetFovScale += fovChangeSpeed * -InputManager.instance.moveY.value * Time.deltaTime;
+                InputManager.Axis fovChange = InputManager.instance.moveY;
+                targetFovScale += fovChangeSpeed * -fovChange.value * Time.deltaTime;
                 targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
+
+                if (fovChange.GetDown()) {
+                    zoomSound.Play();
+                    zoomSound.time = 0;
+                }
+                if (fovChange.Get() && !(targetFovScale == minFovScale || targetFovScale == maxFovScale)) {
+                    if (zoomSound.time > zoomLoopFrom) {
+                        zoomSound.time = zoomLoopTo+(zoomLoopFrom-zoomSound.time);
+                    }
+                } else if (zoomSound.time < zoomLoopFrom) {
+                    zoomSound.time = zoomLoopFrom;
+                }
+
             } else {
                 canZoom |= InputManager.instance.moveY.GetDown();
             }
