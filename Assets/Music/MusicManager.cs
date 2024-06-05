@@ -16,6 +16,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private Transform audioSourceParent;
 
     [SerializeField] private float scheduleBuffer;
+    [SerializeField] private float webglScheduleBuffer;
 
     private void Awake() {
         instance = this;
@@ -27,8 +28,12 @@ public class MusicManager : MonoBehaviour
         musicTracks = new List<MusicTrack>();
         musicSources = new List<MusicSource>();
 
-        //play scheduled ensures the music has had time to load
-        double playAt = Time.timeAsDouble+scheduleBuffer;
+        //play scheduled ensures the music has had time to load, this takes longer on webgl
+        #if UNITY_WEBGL
+            double playAt = Time.timeAsDouble+webglScheduleBuffer;
+        #else
+            double playAt = Time.timeAsDouble+scheduleBuffer;
+        #endif
 
         foreach (MusicData musicData in musicLayers) {
             AudioSource audioSource = Instantiate(audioSourcePrefab, audioSourceParent);
