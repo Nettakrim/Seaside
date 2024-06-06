@@ -138,6 +138,7 @@ public class PhotoTaking : MonoBehaviour
         manager.interactor.SetCanInteract(false);
         ClearTakenPhoto();
         canZoom = false;
+        lastFovChange = InputManager.instance.moveY.rawValue == 0 ? 0 : (InputManager.instance.moveY.rawValue > 0 ? 1 : -1);
         prompt.SetActive(showControls);
     }
 

@@ -197,6 +197,7 @@ public class Gallery : MonoBehaviour
         manager.player.SetMovementLock(false);
         manager.player.SetRotationSpeed(1);
         manager.interactor.SetCanInteract(true);
+        teleportSound.audioSource.Stop();
     }
 
     public void OnClickGalleryPhoto(GalleryPhoto galleryPhoto) {
