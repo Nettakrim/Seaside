@@ -41,7 +41,7 @@ public class PhotoTaking : MonoBehaviour
 
     protected bool showControls;
 
-    [SerializeField] protected AudioSource zoomSound;
+    [SerializeField] protected RandomAudioSource zoomSound;
     [SerializeField] protected float zoomLoopTo;
     [SerializeField] protected float zoomLoopFrom;
     [SerializeField] protected float zoomLoopBackScale;
@@ -51,6 +51,7 @@ public class PhotoTaking : MonoBehaviour
     [SerializeField] protected float zoomInPitch;
     [SerializeField] protected float zoomOutPitch;
 
+    [SerializeField] protected RandomAudioSource takePicture;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
@@ -79,24 +80,25 @@ public class PhotoTaking : MonoBehaviour
                 targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
 
                 if (down) {
-                    zoomSound.Play();
-                    zoomSound.time = 0;
+                    zoomSound.PlayRandom();
+                    zoomSound.audioSource.time = 0;
                     zoomLoopBackAt = zoomLoopFrom+(Random.value*zoomBackDelay);
                 }
                 if ((sign == 1 && targetFovScale > minFovScale) || (sign == -1 && targetFovScale < maxFovScale)) {
-                    if (zoomSound.time > zoomLoopBackAt) {
-                        zoomSound.time = zoomLoopTo+(Random.value*(zoomLoopFrom-zoomLoopTo)*zoomLoopBackScale);
+                    if (zoomSound.audioSource.time > zoomLoopBackAt) {
+                        zoomSound.audioSource.time = zoomLoopTo+(Random.value*(zoomLoopFrom-zoomLoopTo)*zoomLoopBackScale);
                         zoomLoopBackAt = zoomLoopFrom+(Random.value*zoomBackDelay);
                     }
-                } else if (zoomSound.time < zoomLoopBackAt) {
-                    zoomSound.time = zoomLoopBackAt;
+                } else if (zoomSound.audioSource.time < zoomLoopBackAt) {
+                    zoomSound.audioSource.time = zoomLoopBackAt;
                 }
-                zoomSound.pitch = Mathf.Lerp(zoomInPitch, zoomOutPitch, Mathf.InverseLerp(minFovScale, maxFovScale, currentFovScale));
+                zoomSound.audioSource.pitch = Mathf.Lerp(zoomInPitch, zoomOutPitch, Mathf.InverseLerp(minFovScale, maxFovScale, currentFovScale));
             }
 
             if (InputManager.instance.jump.GetDown()) {
                 TakePhoto();
                 result.SetActive(true);
+                takePicture.PlayRandom();
             }
 
             float x = InputManager.instance.moveX.rawValue;

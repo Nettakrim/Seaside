@@ -18,6 +18,8 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float scheduleBuffer;
     [SerializeField] private float webglScheduleBuffer;
 
+    private Transform listener;
+
     private void Awake() {
         instance = this;
 
@@ -96,10 +98,14 @@ public class MusicManager : MonoBehaviour
             musicTrack.Reset();
         }
 
-        Vector3 listenerPosition = PhotoManager.instance.GetPlayerPosition();
+        Vector3 listenerPosition = listener.position;
 
         foreach (MusicSource musicSource in musicSources) {
             musicTracks[musicSource.GetIndex()].CalculateMusicSource(musicSource, listenerPosition);
         }
+    }
+
+    public void SetListener(Transform listener) {
+        this.listener = listener;
     }
 }

@@ -1,9 +1,7 @@
 {
-    "name": "Seaside.Music",
+    "name": "Seaside.Audio",
     "rootNamespace": "",
-    "references": [
-        "GUID:c35235362d2800141a399f71abec8b4c"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

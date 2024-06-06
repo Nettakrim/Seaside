@@ -32,6 +32,7 @@ public class PhotoManager : MonoBehaviour
     public void Awake() {
         instance = this;
         Cursor.lockState = CursorLockMode.Locked;
+        MusicManager.instance.SetListener(player.transform);
     }
 
     public void SetMode(Mode mode) {
