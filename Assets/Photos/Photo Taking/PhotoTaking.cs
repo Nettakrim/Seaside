@@ -51,7 +51,9 @@ public class PhotoTaking : MonoBehaviour
     [SerializeField] protected float zoomInPitch;
     [SerializeField] protected float zoomOutPitch;
 
-    [SerializeField] protected RandomAudioSource takePicture;
+    [SerializeField] protected RandomAudioSource shutterSound;
+    [SerializeField] protected RandomAudioSource clearSound;
+    [SerializeField] protected RandomAudioSource saveSound;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
@@ -98,12 +100,15 @@ public class PhotoTaking : MonoBehaviour
             if (InputManager.instance.jump.GetDown()) {
                 TakePhoto();
                 result.SetActive(true);
-                takePicture.PlayRandom();
+                shutterSound.PlayRandom();
             }
 
             float x = InputManager.instance.moveX.rawValue;
 
             if (x < -0.8f) {
+                if (currentMetadata != null) {
+                    clearSound.PlayRandom();
+                }
                 ClearTakenPhoto();
             }
 
@@ -111,6 +116,7 @@ public class PhotoTaking : MonoBehaviour
                 if (currentMetadata != null && SaveLastPhoto()) {
                     manager.gallery.SetCurrentPhoto(-1);
                     manager.SetMode(PhotoManager.Mode.Gallery);
+                    saveSound.PlayRandom();
                 }
             }
 
