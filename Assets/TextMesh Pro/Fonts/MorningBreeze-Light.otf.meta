@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3ddd05cb676b7ea499b63df22359a686
+guid: 9542f9e349671ad41b5c924cee4f0bf9
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,9 +9,9 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Coffee Mood
+  - Morning Breeze
   fallbackFontReferences:
-  - {fileID: 12800000, guid: d6e8f3e9ef8c29844bc06a8e516e750d, type: 3}
+  - {fileID: 12800000, guid: 2126fe8802e93b1489eeb6b0e56655ef, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
