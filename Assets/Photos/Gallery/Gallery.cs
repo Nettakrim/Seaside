@@ -49,6 +49,9 @@ public class Gallery : MonoBehaviour
     [SerializeField] protected GameObject teleport;
     [SerializeField] protected GameObject delete;
 
+    [SerializeField] protected RandomAudioSource deleteSound;
+    [SerializeField] protected RandomAudioSource teleportSound;
+
     protected void Awake() {
         LoadFromFiles();
         
@@ -204,6 +207,7 @@ public class Gallery : MonoBehaviour
 
     public void TeleportStart() {
         if (selectedPhoto == null) return;
+        teleportSound.PlayRandom();
         EventSystem.current.SetSelectedGameObject(null);
         teleportAnimation.Play("TeleportEnter");
     }
@@ -232,6 +236,7 @@ public class Gallery : MonoBehaviour
 
         if (confirmed) {
             DeleteSelected(true);
+            deleteSound.PlayRandom();
         }
     }
 
