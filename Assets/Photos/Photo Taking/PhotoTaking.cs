@@ -44,6 +44,12 @@ public class PhotoTaking : MonoBehaviour
     [SerializeField] protected AudioSource zoomSound;
     [SerializeField] protected float zoomLoopTo;
     [SerializeField] protected float zoomLoopFrom;
+    [SerializeField] protected float zoomLoopBackScale;
+    protected float zoomLoopBackAt;
+    [SerializeField] protected float zoomBackDelay;
+    protected int lastFovChange;
+    [SerializeField] protected float zoomInPitch;
+    [SerializeField] protected float zoomOutPitch;
 
 
     protected void Start() {
@@ -58,25 +64,34 @@ public class PhotoTaking : MonoBehaviour
 
     protected void Update() {
         if (manager.currentMode == PhotoManager.Mode.PhotoTaking) {
+
+            InputManager.Axis fovChange = InputManager.instance.moveY;
+            int sign = fovChange.rawValue == 0 ? 0 : (fovChange.rawValue > 0 ? 1 : -1);
+            bool down = sign != lastFovChange && sign != 0;
+            if (down) {
+                //canZoom prevents zooming from already holding a movement direction when entering photo mode
+                canZoom = true;
+            }
+            lastFovChange = sign;
+
             if (canZoom) {
-                InputManager.Axis fovChange = InputManager.instance.moveY;
                 targetFovScale += fovChangeSpeed * -fovChange.value * Time.deltaTime;
                 targetFovScale = Mathf.Clamp(targetFovScale, minFovScale, maxFovScale);
 
-                if (fovChange.GetDown()) {
+                if (down) {
                     zoomSound.Play();
                     zoomSound.time = 0;
+                    zoomLoopBackAt = zoomLoopFrom+(Random.value*zoomBackDelay);
                 }
-                if (fovChange.Get() && !(targetFovScale == minFovScale || targetFovScale == maxFovScale)) {
-                    if (zoomSound.time > zoomLoopFrom) {
-                        zoomSound.time = zoomLoopTo+(zoomLoopFrom-zoomSound.time);
+                if ((sign == 1 && targetFovScale > minFovScale) || (sign == -1 && targetFovScale < maxFovScale)) {
+                    if (zoomSound.time > zoomLoopBackAt) {
+                        zoomSound.time = zoomLoopTo+(Random.value*(zoomLoopFrom-zoomLoopTo)*zoomLoopBackScale);
+                        zoomLoopBackAt = zoomLoopFrom+(Random.value*zoomBackDelay);
                     }
-                } else if (zoomSound.time < zoomLoopFrom) {
-                    zoomSound.time = zoomLoopFrom;
+                } else if (zoomSound.time < zoomLoopBackAt) {
+                    zoomSound.time = zoomLoopBackAt;
                 }
-
-            } else {
-                canZoom |= InputManager.instance.moveY.GetDown();
+                zoomSound.pitch = Mathf.Lerp(zoomInPitch, zoomOutPitch, Mathf.InverseLerp(minFovScale, maxFovScale, currentFovScale));
             }
 
             if (InputManager.instance.jump.GetDown()) {

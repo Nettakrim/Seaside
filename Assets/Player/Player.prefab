@@ -2660,7 +2660,11 @@ MonoBehaviour:
   prompt: {fileID: 1525783246048749199}
   zoomSound: {fileID: 8765944382057759728}
   zoomLoopTo: 0.4
-  zoomLoopFrom: 0.8
+  zoomLoopFrom: 0.75
+  zoomLoopBackScale: 0.75
+  zoomBackDelay: 0.1
+  zoomInPitch: 1.05
+  zoomOutPitch: 0.975
 --- !u!1 &6828938064465853354
 GameObject:
   m_ObjectHideFlags: 0
