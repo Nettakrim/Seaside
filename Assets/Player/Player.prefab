@@ -3206,8 +3206,7 @@ MonoBehaviour:
   player: {fileID: 6767478402594659029}
   interactor: {fileID: 5158680962368423837}
   tutorial: {fileID: 6224377768226746741}
-  tutorialWalkDistance: 100
-  isComplete: 0
+  tutorialWalkDistance: 5
 --- !u!114 &6356143399721024575
 MonoBehaviour:
   m_ObjectHideFlags: 0

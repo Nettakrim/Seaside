@@ -8,6 +8,7 @@ using TMPro;
 public class PhotoManager : MonoBehaviour
 {
     [NonSerialized] public Mode currentMode;
+    [NonSerialized] public bool isComplete;
 
     public Gallery gallery;
     public PhotoTaking photoTaking;
@@ -20,8 +21,6 @@ public class PhotoManager : MonoBehaviour
     protected int tutorialStep;
     protected Vector3 startPosition;
     [SerializeField] protected float tutorialWalkDistance;
-
-    public bool isComplete;
 
     public enum Mode {
         Walking,
@@ -128,7 +127,7 @@ public class PhotoManager : MonoBehaviour
             }
 
             if (tutorialStep == 1) {
-                if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance) {
+                if (Vector3.Distance(startPosition, player.transform.position) > tutorialWalkDistance && InputManager.instance.jump.GetDown()) {
                     NextTutorialStep();
                 }
             } else if (tutorialStep == 2) {
