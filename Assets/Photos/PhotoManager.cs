@@ -167,7 +167,7 @@ public class PhotoManager : MonoBehaviour
         }
 
         if (tutorialStep == 3) {
-            tutorial.text = "Press the <sprite=\"Keyboard\" index=4> to see your photos and to-do list";
+            tutorial.text = "Press <sprite=\"Keyboard\" index=4> to see your photos and to-do list";
         }
 
         if (tutorialStep >= 4) {
