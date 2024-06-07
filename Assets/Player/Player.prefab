@@ -1475,6 +1475,8 @@ MonoBehaviour:
   terrain:
     serializedVersion: 2
     m_Bits: 64
+  playerCollider: {fileID: 1016091380469702570}
+  maxSnapDropDistance: 1
 --- !u!114 &5158680962368423837
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,6 +51,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LayerMask terrain;
 
+    [SerializeField] private CapsuleCollider playerCollider;
+    [SerializeField] private float maxSnapDropDistance;
+
     private void Awake() {
         characterController = GetComponent<CharacterController>();
         ridingAt = -rideTime;
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
         if (flying) {
             movement = CalculateFlyingForce();
+
             if ((jumpKeyPressed || !canFly) && !movementLocked) {
                 if (Physics.Raycast(new Ray(transform.position, Vector3.down), transform.position.y, terrain)) {
                     SetFlying(false, movement);
@@ -81,6 +85,10 @@ public class PlayerController : MonoBehaviour
         }
 
         movement *= Time.deltaTime;
+
+        if (!flying) {
+            movement += CalculateFloorSnapOffset();
+        }
 
         characterController.Move(movement);
 
@@ -298,5 +306,20 @@ public class PlayerController : MonoBehaviour
 
     public bool IsFlying() {
         return flying;
+    }
+
+    public Vector3 CalculateFloorSnapOffset() {
+        if (airTime > 2) return Vector3.zero;
+
+        float offset = playerCollider.height/2 - playerCollider.radius;
+        bool floorFound = Physics.SphereCast(transform.position+new Vector3(0, -offset, 0), playerCollider.radius, Vector3.down, out RaycastHit snapHit, transform.position.y, int.MaxValue, QueryTriggerInteraction.Ignore);
+        if (floorFound) {
+            if (Physics.Raycast(transform.position+new Vector3(0, -playerCollider.height/2, 0), Vector3.down, maxSnapDropDistance)) {
+                float newY = offset + snapHit.point.y + (snapHit.normal.y*playerCollider.radius);
+                return new Vector3(0, newY - transform.position.y, 0);
+            }
+        }
+
+        return Vector3.zero;
     }
 }
