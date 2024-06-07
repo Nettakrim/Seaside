@@ -309,7 +309,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public Vector3 CalculateFloorSnapOffset() {
-        if (airTime > 2) return Vector3.zero;
+        // airtime check means jumping cancels snapping, riding check is because slopes on trains act buggy and this helps
+        if (airTime > 2 || Time.time-ridingAt < rideTime/2) return Vector3.zero;
 
         float offset = playerCollider.height/2 - playerCollider.radius;
         bool floorFound = Physics.SphereCast(transform.position+new Vector3(0, -offset, 0), playerCollider.radius, Vector3.down, out RaycastHit snapHit, transform.position.y, int.MaxValue, QueryTriggerInteraction.Ignore);
