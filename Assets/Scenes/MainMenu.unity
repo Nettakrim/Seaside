@@ -215,7 +215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Save progress permanently: off'
+  m_text: 'Save progress permanently: OFF'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8335e4b488627e0428d2fe6e79870507, type: 2}
   m_sharedMaterial: {fileID: -6448543067485199260, guid: 8335e4b488627e0428d2fe6e79870507,
@@ -1191,7 +1191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Save progress permanently: on'
+  m_text: 'Save progress permanently: ON'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8335e4b488627e0428d2fe6e79870507, type: 2}
   m_sharedMaterial: {fileID: -6448543067485199260, guid: 8335e4b488627e0428d2fe6e79870507,
