@@ -317,7 +317,9 @@ public class PlayerController : MonoBehaviour
         if (floorFound) {
             if (Physics.Raycast(transform.position+new Vector3(0, -playerCollider.height/2, 0), Vector3.down, maxSnapDropDistance)) {
                 float newY = offset + snapHit.point.y + (snapHit.normal.y*playerCollider.radius);
-                return new Vector3(0, newY - transform.position.y, 0);
+                if (newY > oceanHeight) {
+                    return new Vector3(0, newY - transform.position.y, 0);
+                }
             }
         }
 
