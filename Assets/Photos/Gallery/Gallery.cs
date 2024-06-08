@@ -51,6 +51,8 @@ public class Gallery : MonoBehaviour
 
     [SerializeField] protected RandomAudioSource deleteSound;
     [SerializeField] protected RandomAudioSource teleportSound;
+    [SerializeField] protected RandomAudioSource openSound;
+    [SerializeField] protected RandomAudioSource closeSound;
 
     protected void Awake() {
         LoadFromFiles();
@@ -190,6 +192,7 @@ public class Gallery : MonoBehaviour
         manager.interactor.SetCanInteract(false);
         UpdateGrid();
         InputManager.instance.SetLost(teleport);
+        openSound.PlayRandom();
     }
 
     public void CloseGallery() {
@@ -198,6 +201,7 @@ public class Gallery : MonoBehaviour
         manager.player.SetRotationSpeed(1);
         manager.interactor.SetCanInteract(true);
         teleportSound.audioSource.Stop();
+        closeSound.PlayRandom();
     }
 
     public void OnClickGalleryPhoto(GalleryPhoto galleryPhoto) {

@@ -53,7 +53,9 @@ public class PhotoTaking : MonoBehaviour
 
     [SerializeField] protected RandomAudioSource shutterSound;
     [SerializeField] protected RandomAudioSource clearSound;
-    [SerializeField] protected RandomAudioSource saveSound;
+    [SerializeField] protected RandomAudioSource toggleSound;
+    [SerializeField] protected float openPitch;
+    [SerializeField] protected float closePitch;
 
     protected void Start() {
         renderTexture = photoCamera.targetTexture;
@@ -116,7 +118,6 @@ public class PhotoTaking : MonoBehaviour
                 if (currentMetadata != null && SaveLastPhoto()) {
                     manager.gallery.SetCurrentPhoto(-1);
                     manager.SetMode(PhotoManager.Mode.Gallery);
-                    saveSound.PlayRandom();
                 }
             }
 
@@ -140,6 +141,8 @@ public class PhotoTaking : MonoBehaviour
         canZoom = false;
         lastFovChange = InputManager.instance.moveY.rawValue == 0 ? 0 : (InputManager.instance.moveY.rawValue > 0 ? 1 : -1);
         prompt.SetActive(showControls);
+        toggleSound.audioSource.pitch = openPitch;
+        toggleSound.PlayRandom();
     }
 
     public void CloseCameraMode() {
@@ -147,6 +150,8 @@ public class PhotoTaking : MonoBehaviour
         manager.player.SetMovementLock(false);
         manager.interactor.SetCanInteract(true);
         targetFovScale = 1;
+        toggleSound.audioSource.pitch = closePitch;
+        toggleSound.PlayRandom();
     }
 
     public void SetFov(float fov) {
