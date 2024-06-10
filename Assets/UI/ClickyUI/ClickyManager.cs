@@ -10,6 +10,8 @@ namespace ClickyUI {
         public RandomAudioSource pointerEnter;
         public RandomAudioSource pointerExit;
 
+        private bool active;
+
         public void Start() {
             if (instance != null) {
                 Destroy(gameObject);
@@ -18,22 +20,30 @@ namespace ClickyUI {
 
             instance = this;
             DontDestroyOnLoad(this);
+
+            // webgl doesnt like playing the sounds properly so it sounds sorta bad
+            // until a fix is figured out, its better to just not have clickyui
+            #if UNITY_WEBGL
+            active = false;
+            #else
+            active = true;
+            #endif
         }
 
         public static void PointerDown() {
-            instance.pointerDown.PlayRandom();
+            if (instance.active) instance.pointerDown.PlayRandom();
         }
 
         public static void PointerUp() {
-            instance.pointerUp.PlayRandom();
+            if (instance.active) instance.pointerUp.PlayRandom();
         }
 
         public static void PointerEnter() {
-            instance.pointerEnter.PlayRandom();
+            if (instance.active) instance.pointerEnter.PlayRandom();
         }
 
         public static void PointerExit() {
-            instance.pointerExit.PlayRandom();
+            if (instance.active) instance.pointerExit.PlayRandom();
         }
     }
 }
