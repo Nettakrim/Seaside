@@ -1,12 +1,9 @@
 {
-    "name": "Seaside.Main",
+    "name": "ClickyUI",
     "rootNamespace": "",
     "references": [
-        "GUID:35e28227cfe9bca49a9e9f58452ce5ca",
-        "GUID:94baaba7aeece5e4ba1ddbcadbc69e4a",
-        "GUID:c35235362d2800141a399f71abec8b4c",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:2ae6acacfe9a10a4ba951c44ab8eaf76"
+        "GUID:b7743ac1403d97846809962d7246a67a",
+        "GUID:94baaba7aeece5e4ba1ddbcadbc69e4a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

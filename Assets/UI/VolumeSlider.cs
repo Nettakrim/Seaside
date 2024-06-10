@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using ClickyUI;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class VolumeSlider: Slider
+public class VolumeSlider: ClickySlider
 {
     public AudioMixer mixer;
     public string parameter;
