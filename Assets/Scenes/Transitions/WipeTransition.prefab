@@ -247,4 +247,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 0ac940e7d3d87e949be97c7ba059d9fa, type: 2}
-  parameter: MusicVolume
+  parameter: MasterVolume
