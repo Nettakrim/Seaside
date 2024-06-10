@@ -31,6 +31,7 @@ public class InputManager : MonoBehaviour
     public Axis submit = new Axis("Submit");
 
     private GameObject lost;
+    private bool isSettingLost;
 
     public void Awake() {
         if (instance != null) {
@@ -117,7 +118,14 @@ public class InputManager : MonoBehaviour
     }
 
     public void SetLost(GameObject lost) {
+        // selects an object and sets it to be selected again if its somehow deselected
         this.lost = lost;
+        isSettingLost = true;
         EventSystem.current.SetSelectedGameObject(lost);
+        isSettingLost = false;
+    }
+
+    public bool IsSettingLost() {
+        return isSettingLost;
     }
 }

@@ -31,7 +31,7 @@ namespace ClickyUI {
 
         public override void OnSelect(BaseEventData eventData) {
             base.OnSelect(eventData);
-            if (!hovered || InputManager.instance.isController) {
+            if ((!hovered || InputManager.instance.isController) && !InputManager.instance.IsSettingLost()) {
                 ClickyManager.PointerEnter();
             }
         }
