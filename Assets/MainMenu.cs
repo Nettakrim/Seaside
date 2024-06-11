@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject persistentOff;
 
     private void Awake() {
-        Cursor.lockState = CursorLockMode.None;
+        InputManager.instance.SetCursorLock(false);
         InputManager.instance.SetLost(playButton);
 
         #if UNITY_WEBGL

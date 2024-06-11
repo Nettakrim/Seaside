@@ -33,6 +33,8 @@ public class InputManager : MonoBehaviour
     private GameObject lost;
     private bool isSettingLost;
 
+    private bool lockCursor;
+
     public void Awake() {
         if (instance != null) {
             Destroy(this);
@@ -115,6 +117,7 @@ public class InputManager : MonoBehaviour
     public void SetIsController(bool to) {
         isController = to;
         onIsControllerChange.Invoke(to);
+        UpdateCursorLock();
     }
 
     public void SetLost(GameObject lost) {
@@ -127,5 +130,14 @@ public class InputManager : MonoBehaviour
 
     public bool IsSettingLost() {
         return isSettingLost;
+    }
+
+    public void SetCursorLock(bool locked) {
+        lockCursor = locked;
+        UpdateCursorLock();
+    }
+
+    private void UpdateCursorLock() {
+        Cursor.lockState = (lockCursor || isController) ? CursorLockMode.Locked : CursorLockMode.None;
     }
 }

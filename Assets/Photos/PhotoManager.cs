@@ -30,7 +30,7 @@ public class PhotoManager : MonoBehaviour
 
     public void Awake() {
         instance = this;
-        Cursor.lockState = CursorLockMode.Locked;
+        InputManager.instance.SetCursorLock(true);
         MusicManager.instance.SetListener(player.transform);
     }
 
@@ -45,10 +45,10 @@ public class PhotoManager : MonoBehaviour
         currentMode = mode;
 
         if (currentMode == Mode.Gallery) {
-            Cursor.lockState = CursorLockMode.None;
+            InputManager.instance.SetCursorLock(false);
             gallery.OpenGallery();
         } else {
-            Cursor.lockState = CursorLockMode.Locked;
+            InputManager.instance.SetCursorLock(true);
         }
 
         if (currentMode == Mode.PhotoTaking) {
