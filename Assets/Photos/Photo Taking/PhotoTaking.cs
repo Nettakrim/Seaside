@@ -118,6 +118,7 @@ public class PhotoTaking : MonoBehaviour
                 if (currentMetadata != null && SaveLastPhoto()) {
                     manager.gallery.SetCurrentPhoto(-1);
                     manager.SetMode(PhotoManager.Mode.Gallery);
+                    ClearTakenPhoto();
                 }
             }
 
@@ -137,7 +138,6 @@ public class PhotoTaking : MonoBehaviour
         cameraOverlay.SetActive(true);
         manager.player.SetMovementLock(true);
         manager.interactor.SetCanInteract(false);
-        ClearTakenPhoto();
         canZoom = false;
         lastFovChange = InputManager.instance.moveY.rawValue == 0 ? 0 : (InputManager.instance.moveY.rawValue > 0 ? 1 : -1);
         prompt.SetActive(showControls);
