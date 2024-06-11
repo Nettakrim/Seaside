@@ -5555,6 +5555,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1170105750}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 19e708e6a21995f47904eb5f6f40c9b9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1170105751}
     - targetCorrespondingSourceObject: {fileID: -3133498875991405556, guid: 19e708e6a21995f47904eb5f6f40c9b9,
         type: 3}
       insertIndex: -1
@@ -5638,7 +5642,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.017506324, y: 0.0049999994, z: 0.14999998}
+  m_Size: {x: 0.017506324, y: 0, z: 0.14999998}
   m_Center: {x: 0.0037500004, y: 0, z: 0.06499998}
 --- !u!65 &1170105749
 BoxCollider:
@@ -5682,6 +5686,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.015, y: 0.015, z: 0.09999998}
   m_Center: {x: 0.00000023841858, y: 0.000000059604645, z: 0.050000228}
+--- !u!95 &1170105751
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170105746}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bf5cc4ba4e0fdbd4fa5c8dc8bf0f5bb2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1184437415
 GameObject:
   m_ObjectHideFlags: 0
@@ -11110,6 +11136,7 @@ GameObject:
   - component: {fileID: 1948898426}
   - component: {fileID: 1948898427}
   - component: {fileID: 1948898428}
+  - component: {fileID: 1948898429}
   m_Layer: 0
   m_Name: Railway
   m_TagString: Untagged
@@ -11153,7 +11180,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ad8cef789db9bfc4a9bc22431a869a70, type: 2}
   tracks:
   - {fileID: 1948898428}
-  blockUntil: 0
 --- !u!114 &1948898428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11181,6 +11207,20 @@ MonoBehaviour:
   - {fileID: 1429789310}
   movementSpeed: 15
   rotationSpeed: 10
+--- !u!114 &1948898429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948898425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b41cd420463754db034351ddd5a914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trainSpawner: {fileID: 1948898427}
+  animator: {fileID: 1170105751}
 --- !u!1001 &1958678794
 PrefabInstance:
   m_ObjectHideFlags: 0

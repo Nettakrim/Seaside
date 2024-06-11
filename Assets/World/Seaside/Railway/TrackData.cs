@@ -36,4 +36,12 @@ public class TrackData : MonoBehaviour
         length += halfLength;
         return length;
     }
+
+    public float GetLength() {
+        float length = 0;
+        for (int i = 1; i < trackPoints.Length; i++) {
+            length += Vector3.Distance(trackPoints[i-1].position, trackPoints[i].position);
+        }
+        return length;
+    }
 }
