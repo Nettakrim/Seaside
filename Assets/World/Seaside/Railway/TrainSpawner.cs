@@ -51,7 +51,7 @@ public class TrainSpawner : MonoBehaviour
 
     public float ProgressToTrainSpawn() {
         if (Time.time < trainSpawnedAt + blockDuration + trainDuration) {
-            return 0;
+            return 1;
         }
         DateTime date = DateTime.Now;
         int roundedMinutes = ((date.Minute+minutes)/minutes)*minutes;

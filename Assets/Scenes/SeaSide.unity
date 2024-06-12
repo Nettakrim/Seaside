@@ -11221,6 +11221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trainSpawner: {fileID: 1948898427}
   animator: {fileID: 1170105751}
+  maxProgressSpeed: 0.1
 --- !u!1001 &1958678794
 PrefabInstance:
   m_ObjectHideFlags: 0
